@@ -18,7 +18,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint 'src/**/*.{js,jsx}' --fix",
+     "format": "prettier --write 'src/**/*.{js,jsx,json,css,md}'"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +42,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "jest": "^27.5.1",
     "react-test-renderer": "^19.1.1"
   },

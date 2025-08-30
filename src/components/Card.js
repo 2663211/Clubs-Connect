@@ -1,15 +1,24 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types'; // for type checking
 import '../styles/Card.css';
-import props from 'prop-types';
 
-
-export default function Card(props) {
+export default function Card({ imageUrl, description }) {
   return (
     <section className="card">
       <section className="card-content">
-        <img src={props.image} alt="image describing content under" className="card-image" />
-        <p className="card-description">{props.description}</p>
+        <img
+          src={imageUrl}
+          alt={description} // describe content only
+          className="card-image"
+        />
+        <p className="card-description">{description}</p>
       </section>
     </section>
   );
 }
+
+// Optional: Prop type checking
+Card.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
