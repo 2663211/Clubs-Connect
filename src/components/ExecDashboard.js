@@ -23,6 +23,7 @@ export default function ExecDashboard() {
     data.forEach((club)=>{
       clubs.push(club.CSO);
     }
+    
   )
     //console.log(data)
     //console.log("Echp");
@@ -35,6 +36,7 @@ export default function ExecDashboard() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
        const user = session.user;
+
        getExecList(user);
         
     }
@@ -47,13 +49,15 @@ export default function ExecDashboard() {
 
 //getExecList(userIdForExec);
 
+const uniqueArray = clubs.filter((item, index) => clubs.indexOf(item) === index);
+
 const createList = (list) => {
   const listItems = list.map(club =>
     <li>{club}</li>
   );
   return listItems;
 }
-const cso_list = createList(clubs);
+const cso_list = createList(uniqueArray);
   //  const listItems = clubs.map(person =>
   //   <li>{person}</li>
   // );
@@ -62,7 +66,7 @@ const cso_list = createList(clubs);
     <main>
       <h1>Exec Member Dashboard</h1>
       <p data-testid = "welcome">Welcome, executive member! Here you can oversee operations and review reports.</p>
-      <ul data-testid = "cso-list">{cso_list}</ul>;
+      <ul data-testid = "cso-list">{cso_list}</ul>
       
     </main>
   );
