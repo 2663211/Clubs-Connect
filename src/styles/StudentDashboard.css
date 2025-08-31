@@ -14,7 +14,7 @@
   font-size: 1.5rem;
 }
 
-.nav-links {
+.nav-bar {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -22,10 +22,18 @@
   padding: 0;
 }
 
-.nav-links a {
+.nav-bar a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+.nav-links:hover{
+  color: #FBBA23;
+}
+
+.nav-links.active{
+  color: #FBBA23;
 }
 
 

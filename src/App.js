@@ -7,6 +7,8 @@ import StudentDashboard from './components/StudentDashboard';
 import ExecDashboard from './components/ExecDashboard';
 import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
+import StudentProfile from "./components/StudentProfile";
+
 
 
 
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/dashboard/exec" element={<ExecDashboard />} />
         <Route path="/entities/sgo" element={<SGOentities />} />
         <Route path="/profile/sgo" element={<SGOprofile />} />
+        <Route path="/profile/student" element={<StudentProfile />} />
+        
 
         {/* Redirect unknown routes to homepage */}
         <Route path="*" element={<Navigate to="/" replace />} />
