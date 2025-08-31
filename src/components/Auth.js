@@ -1,11 +1,11 @@
 //PABI'S CODE
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../supabaseClient.js';
 import { useLocation } from 'react-router-dom';
 import '../styles/Auth.css';
-import StudentDashboard from './StudentDashboard';
-import SGODashboard from './SGODashboard';
-import ExecDashboard from './ExecDashboard';
+import StudentDashboard from './StudentDashboard.js';
+import SGODashboard from './SGODashboard.js';
+import ExecDashboard from './ExecDashboard.js';
 
 export default function Auth() {
   const [name, setName] = useState('')

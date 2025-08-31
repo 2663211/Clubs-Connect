@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Homepage.css';
-import Footer from './Footer';
-import Card from './Card';
+import Footer from './Footer.js';
+import Card from './Card.js';
 import clubImage from '../images/clubs.png';
 import events from '../images/event.jpg';
 import collab from '../images/collab.jpg';

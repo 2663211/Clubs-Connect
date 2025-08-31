@@ -1,6 +1,7 @@
 
 import { BrowserRouter } from 'react-router-dom';
 import{render, screen, cleanup,fireEvent, waitFor} from '@testing-library/react';
+import { supabase } from '../supabaseClient';
 import Auth from "./Auth.js";
 //import { supabase } from '../supabaseClient.js';
 
@@ -14,6 +15,7 @@ import Auth from "./Auth.js";
 //         })
 //     }
 // }));
+
 
 afterEach(()=>{
     cleanup();
