@@ -1,0 +1,7 @@
+.cards-container {
+  display: flex;
+  gap: 20px; /* Space between cards */
+  flex-wrap: wrap; /* Cards wrap to next line on smaller screens */
+  justify-content: center; /* Center the cards */
+  margin-top: 20px; /* Add some space above the cards */
+}
