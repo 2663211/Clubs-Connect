@@ -5,7 +5,7 @@ export default function UpcomingEvents() {
   const [loading, setLoading] = useState(true);
 
   // Use environment variable for API URL
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = "https://clubs-connect-api.onrender.com";
 
   useEffect(() => {
     const fetchEvents = async () => {
