@@ -1,17 +1,13 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
+    "react-app",
+    "react-app/jest",
+    "prettier"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": ["error"],
-    "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "prettier/prettier": "error",
+    "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

@@ -24,7 +24,7 @@ afterEach(() => {
   cleanup();
 });
 
-test("test", () => {
+test("basic truthy test", () => {
   expect(true).toBe(true);
 });
 test("renders without crashing", () => {
@@ -74,15 +74,17 @@ test("button input should be rendered", () => {
 });
 
 test("SignUp button input should be rendered", async () => {
-  await waitFor(() =>
-    render(
-      <BrowserRouter>
-        <Auth />
-      </BrowserRouter>
-    )
+  render(
+    <BrowserRouter>
+      <Auth />
+    </BrowserRouter>
   );
-  const buttonInputEl = screen.getByTestId("SignUp-button");
-  expect(buttonInputEl).toBeInTheDocument();
+  const someButton = screen.getByTestId("SignUp-button");
+  fireEvent.click(someButton);
+  await waitFor(() => {
+    expect(someButton).toBeInTheDocument(); // Only assertions in waitFor
+  });
+  expect(someButton).toBeInTheDocument();
 });
 test("userEmail input should change", () => {
   render(

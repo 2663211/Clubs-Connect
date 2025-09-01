@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient.js';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient.js";
 
 export default function ExecPost() {
-  const [caption, setCaption] = useState('');
+  const [caption, setCaption] = useState("");
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -93,7 +93,7 @@ export default function ExecPost() {
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         rows={4}
-        style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem' }}
+        style={{ width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
       />
 
       <input
@@ -106,15 +106,15 @@ export default function ExecPost() {
         onClick={handleSubmit}
         disabled={loading}
         style={{
-          padding: '0.5rem 1rem',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
+          padding: "0.5rem 1rem",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
         }}
       >
-        {loading ? 'Posting...' : 'Post'}
+        {loading ? "Posting..." : "Post"}
       </button>
     </div>
   );

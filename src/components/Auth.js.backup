@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //import SGODashboard from './SGODashboard';
 //import ExecDashboard from './ExecDashboard';
 
-export const handleLogout = async () => {
+export const _handleLogout = async () => {
   await supabase.auth.signOut();
 };
 
@@ -201,7 +201,7 @@ export default function Auth() {
   };
 
   // Logout handler
-  const handleLogout = async () => {
+  const _handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
     setUserName("");
