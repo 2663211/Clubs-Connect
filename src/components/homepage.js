@@ -1,5 +1,5 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Homepage.css';
 import Footer from './Footer';
 import Card from './Card';
@@ -19,7 +19,13 @@ export default function Homepage() {
             <li>
               <button
                 onClick={() => navigate('/auth', { state: { form: 'signup' } })}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Sign Up
               </button>
@@ -27,7 +33,13 @@ export default function Homepage() {
             <li>
               <button
                 onClick={() => navigate('/auth', { state: { form: 'login' } })}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Log In
               </button>
@@ -59,4 +71,3 @@ export default function Homepage() {
     </>
   );
 }
-
