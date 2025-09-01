@@ -4,11 +4,7 @@ import props from "prop-types";
 
 export default function Card(props) {
   return (
-    <section
-      className="card"
-      onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'default' }}
-    >
+    <section className="card">
       <section className="card-content">
         <img
           src={props.image}

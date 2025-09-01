@@ -29,33 +29,33 @@ export default function ExecPost() {
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
   const handleSubmit = async () => {
-    if (!user) return alert('You must be logged in to post.');
-    if (!file) return alert('Please select a file.');
+    if (!user) return alert("You must be logged in to post.");
+    if (!file) return alert("Please select a file.");
 
     setLoading(true);
 
     try {
       // 1. Upload file to Supabase Storage
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('media')
+        .from("media")
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage.from('media').getPublicUrl(filePath);
+      const { data } = supabase.storage.from("media").getPublicUrl(filePath);
       const mediaUrl = data.publicUrl;
 
-      const mediaType = file.type.startsWith('image')
-        ? 'image'
-        : file.type.startsWith('video')
-          ? 'video'
-          : 'audio';
+      const mediaType = file.type.startsWith("image")
+        ? "image"
+        : file.type.startsWith("video")
+          ? "video"
+          : "audio";
 
       // 2. Insert post (no profile_id)
-      const { error: insertError } = await supabase.from('posts').insert([
+      const { error: insertError } = await supabase.from("posts").insert([
         {
           caption,
           media_url: mediaUrl,
@@ -65,12 +65,12 @@ export default function ExecPost() {
 
       if (insertError) throw insertError;
 
-      alert('Post created successfully!');
-      setCaption('');
+      alert("Post created successfully!");
+      setCaption("");
       setFile(null);
     } catch (err) {
       console.error(err);
-      alert('Error creating post: ' + err.message);
+      alert("Error creating post: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -79,11 +79,11 @@ export default function ExecPost() {
   return (
     <div
       style={{
-        maxWidth: '600px',
-        margin: '1rem auto',
-        padding: '1rem',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
+        maxWidth: "600px",
+        margin: "1rem auto",
+        padding: "1rem",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
       }}
     >
       <h2>Create Post</h2>
@@ -99,7 +99,7 @@ export default function ExecPost() {
       <input
         type="file"
         onChange={handleFileChange}
-        style={{ marginBottom: '1rem' }}
+        style={{ marginBottom: "1rem" }}
       />
 
       <button

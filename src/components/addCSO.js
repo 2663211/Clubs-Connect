@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import '../styles/addCSO.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import "../styles/addCSO.css";
 
 // Simplified Executive Search Component
 function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Filter out already selected executives
@@ -21,7 +21,7 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
 
   const selectExecutive = (executive) => {
     onAdd(executive);
-    setSearch('');
+    setSearch("");
     setShowSuggestions(false);
   };
 
@@ -70,17 +70,17 @@ function AddCSO() {
 
   // Initial form state
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    cluster: '',
-    subscription: '',
+    name: "",
+    description: "",
+    cluster: "",
+    subscription: "",
     executives: [],
   });
 
   const [logoFile, setLogoFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('');
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [executives, setExecutives] = useState([]);
   const [selectedExecutives, setSelectedExecutives] = useState([]);
 
@@ -94,38 +94,38 @@ function AddCSO() {
     try {
       // Get executive records
       const { data: execData } = await supabase
-        .from('executive')
+        .from("executive")
         .select('id, "student/staff_number"');
 
       if (!execData || execData.length === 0) return;
 
       // Get profile names
       const studentNumbers = execData
-        .map((e) => e['student/staff_number'])
+        .map((e) => e["student/staff_number"])
         .filter(Boolean);
 
       const { data: profiles } = await supabase
-        .from('profiles')
-        .select('id, full_name')
-        .in('id', studentNumbers);
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", studentNumbers);
 
       // Combine data
       const executivesWithNames = execData.map((exec) => ({
         id: exec.id,
-        student_staff_number: exec['student/staff_number'],
+        student_staff_number: exec["student/staff_number"],
         name:
-          profiles?.find((p) => p.id === exec['student/staff_number'])
-            ?.full_name || 'Unknown',
+          profiles?.find((p) => p.id === exec["student/staff_number"])
+            ?.full_name || "Unknown",
       }));
 
       setExecutives(executivesWithNames);
     } catch (error) {
-      showMessage('Failed to load executives', 'error');
+      showMessage("Failed to load executives", "error");
     }
   }
 
   // Helper function to show messages
-  function showMessage(text, type = 'info') {
+  function showMessage(text, type = "info") {
     setMessage(text);
     setMessageType(type);
   }
@@ -159,33 +159,33 @@ function AddCSO() {
     if (!file) return;
 
     // Validate file
-    if (!file.type.startsWith('image/')) {
-      showMessage('Please select an image file', 'error');
+    if (!file.type.startsWith("image/")) {
+      showMessage("Please select an image file", "error");
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      showMessage('File size must be less than 5MB', 'error');
+      showMessage("File size must be less than 5MB", "error");
       return;
     }
 
     setLogoFile(file);
-    showMessage('');
+    showMessage("");
   }
 
   // Upload logo to storage
   async function uploadLogo(file) {
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
 
     const { error } = await supabase.storage
-      .from('cso-logos')
+      .from("cso-logos")
       .upload(fileName, file);
 
     if (error) throw error;
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from('cso-logos').getPublicUrl(fileName);
+    } = supabase.storage.from("cso-logos").getPublicUrl(fileName);
 
     return publicUrl;
   }
@@ -198,7 +198,7 @@ function AddCSO() {
     try {
       // Validate required fields
       if (!formData.name || !formData.cluster) {
-        throw new Error('Name and cluster are required');
+        throw new Error("Name and cluster are required");
       }
 
       // Upload logo if selected
@@ -209,7 +209,7 @@ function AddCSO() {
 
       // Create CSO record
       const { data: cso, error } = await supabase
-        .from('cso')
+        .from("cso")
         .insert([
           {
             name: formData.name,
@@ -229,23 +229,23 @@ function AddCSO() {
         const links = formData.executives.map((execId) => ({
           cso_id: cso.id,
           exec_id: execId,
-          portfolio: 'Member',
+          portfolio: "Member",
           can_post: true,
-          start_date: new Date().toISOString().split('T')[0],
+          start_date: new Date().toISOString().split("T")[0],
         }));
 
         const { error: linkError } = await supabase
-          .from('cso_exec')
+          .from("cso_exec")
           .insert(links);
 
         if (linkError) throw linkError;
       }
 
       // Success - redirect
-      showMessage('CSO created successfully!', 'success');
-      setTimeout(() => navigate('/CSO'), 2000);
+      showMessage("CSO created successfully!", "success");
+      setTimeout(() => navigate("/CSO"), 2000);
     } catch (error) {
-      showMessage(error.message || 'Failed to create CSO', 'error');
+      showMessage(error.message || "Failed to create CSO", "error");
     } finally {
       setLoading(false);
     }
@@ -271,7 +271,7 @@ function AddCSO() {
           <input
             type="text"
             value={formData.name}
-            onChange={(e) => updateField('name', e.target.value)}
+            onChange={(e) => updateField("name", e.target.value)}
             required
           />
         </label>
@@ -281,7 +281,7 @@ function AddCSO() {
           Description
           <textarea
             value={formData.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={(e) => updateField("description", e.target.value)}
             rows="3"
           />
         </label>
@@ -291,7 +291,7 @@ function AddCSO() {
           Cluster *
           <select
             value={formData.cluster}
-            onChange={(e) => updateField('cluster', e.target.value)}
+            onChange={(e) => updateField("cluster", e.target.value)}
             required
           >
             <option value="">Select a cluster...</option>
@@ -312,8 +312,8 @@ function AddCSO() {
             <input
               type="radio"
               value="no"
-              checked={formData.subscription === 'no'}
-              onChange={(e) => updateField('subscription', e.target.value)}
+              checked={formData.subscription === "no"}
+              onChange={(e) => updateField("subscription", e.target.value)}
             />
             No
           </label>
@@ -321,8 +321,8 @@ function AddCSO() {
             <input
               type="radio"
               value="yes"
-              checked={formData.subscription === 'yes'}
-              onChange={(e) => updateField('subscription', e.target.value)}
+              checked={formData.subscription === "yes"}
+              onChange={(e) => updateField("subscription", e.target.value)}
             />
             Yes
           </label>
@@ -342,11 +342,11 @@ function AddCSO() {
         {/* Form Actions */}
         <section className="form-actions">
           <button type="submit" disabled={loading} className="btn btn-primary">
-            {loading ? 'Creating CSO...' : 'Add CSO'}
+            {loading ? "Creating CSO..." : "Add CSO"}
           </button>
           <button
             type="button"
-            onClick={() => navigate('/entities/sgo')}
+            onClick={() => navigate("/entities/sgo")}
             className="btn btn-secondary"
           >
             Cancel
