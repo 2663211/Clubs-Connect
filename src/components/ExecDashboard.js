@@ -3,13 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles/ExecDashboard.css";
 import { handleLogout } from "./Auth";
 
-<<<<<<< HEAD
 
 
-export default function StudentDashboard() {
-=======
 export default function ExecDashboard() {
->>>>>>> 7a86cd0049b71a2457039fd7dae9096bb8a00162
   const navigate = useNavigate();
 
   return (
