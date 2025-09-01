@@ -1,11 +1,11 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Homepage.css';
-import Footer from './Footer';
-import Card from './Card';
-import clubImage from '../images/clubs.png';
-import events from '../images/event.jpg';
-import collab from '../images/collab.jpg';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Homepage.css";
+import Footer from "./Footer";
+import Card from "./Card";
+import clubImage from "../images/clubs.png";
+import events from "../images/event.jpg";
+import collab from "../images/collab.jpg";
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -18,12 +18,12 @@ export default function Homepage() {
           <ul>
             <li>
               <button
-                onClick={() => navigate('/auth', { state: { form: 'signup' } })}
+                onClick={() => navigate("/auth", { state: { form: "signup" } })}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
                   padding: 0,
                 }}
               >
@@ -32,12 +32,12 @@ export default function Homepage() {
             </li>
             <li>
               <button
-                onClick={() => navigate('/auth', { state: { form: 'login' } })}
+                onClick={() => navigate("/auth", { state: { form: "login" } })}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
                   padding: 0,
                 }}
               >

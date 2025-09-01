@@ -2,14 +2,12 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./components/homepage";
 import Auth from "./components/Auth";
-import SGODashboard from './components/SGODashboard';
-import StudentDashboard from './components/StudentDashboard';
-import ExecDashboard from './components/ExecDashboard';
-import SGOentities from './components/SGOentities';
-import SGOprofile from './components/SGOprofile';
-import AddCSO from './components/addCSO';
-
-
+import SGODashboard from "./components/SGODashboard";
+import StudentDashboard from "./components/StudentDashboard";
+import ExecDashboard from "./components/ExecDashboard";
+import SGOentities from "./components/SGOentities";
+import SGOprofile from "./components/SGOprofile";
+import AddCSO from "./components/addCSO";
 
 export default function App() {
   return (

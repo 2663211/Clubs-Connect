@@ -5,8 +5,8 @@
   padding: 25px;
   background: #f8f9fa;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
 }
 
 .add-cso-container h1 {
@@ -167,9 +167,9 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-  display: flex;          /* Lay out labels horizontally */
-  gap: 20px;              /* Space between Yes/No */
-  align-items: center;    /* Align radio dot vertically with text */
+  display: flex; /* Lay out labels horizontally */
+  gap: 20px; /* Space between Yes/No */
+  align-items: center; /* Align radio dot vertically with text */
 }
 
 .cso-form fieldset.subscription legend {
@@ -178,14 +178,11 @@ textarea {
 
 .cso-form fieldset.subscription label {
   display: flex;
-  align-items: center;    /* Align the radio dot with text */
-  gap: 8px;               /* Space between radio and label text */
+  align-items: center; /* Align the radio dot with text */
+  gap: 8px; /* Space between radio and label text */
   cursor: pointer;
 }
 
 .cso-form fieldset.subscription input[type="radio"] {
-  margin: 0;              /* Remove default margin */
+  margin: 0; /* Remove default margin */
 }
-
-
-

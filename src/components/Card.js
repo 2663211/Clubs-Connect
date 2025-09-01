@@ -1,14 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types'; // for type checking
-import '../styles/Card.css';
+import React from "react";
+import "../styles/Card.css";
+import props from "prop-types";
 
-export default function Card({ imageUrl, description, onClick }) {
+export default function Card(props) {
   return (
-    <section
-      className="card"
-      onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'default' }}
-    >
+    <section className="card">
       <section className="card-content">
         <img
           src={props.image}
@@ -20,10 +16,3 @@ export default function Card({ imageUrl, description, onClick }) {
     </section>
   );
 }
-
-// Optional: Prop type checking
-Card.propTypes = {
-  imageUrl: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};

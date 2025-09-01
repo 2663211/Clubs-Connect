@@ -1,16 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/SGODashboard.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/SGODashboard.css";
 
 export default function SGODashboard() {
   const navigate = useNavigate();
 
   const addCSO = () => {
-    navigate('/addCSO');
+    navigate("/addCSO");
   };
 
   const back = () => {
-    navigate('/SGO');
+    navigate("/SGO");
   };
 
   return (
