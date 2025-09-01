@@ -243,7 +243,7 @@ function AddCSO() {
 
       // Success - redirect
       showMessage('CSO created successfully!', 'success');
-      setTimeout(() => navigate('/CSO'), 2000);
+      setTimeout(() => navigate('/entities/sgo'), 2000);
     } catch (error) {
       showMessage(error.message || 'Failed to create CSO', 'error');
     } finally {
