@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState([]);
@@ -7,8 +7,8 @@ export default function UpcomingEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/events"); // server API
-        if (!res.ok) throw new Error("Failed to fetch events");
+        const res = await fetch('http://localhost:5001/api/events'); // server API
+        if (!res.ok) throw new Error('Failed to fetch events');
         const data = await res.json();
         setEvents(data);
       } catch (err) {

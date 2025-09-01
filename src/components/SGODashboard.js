@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from './Card';
+import Card from './Card.js';
 import '../styles/SGODashboard.css';
 
 export default function SGODashboard() {

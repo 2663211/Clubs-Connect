@@ -6,13 +6,6 @@ export default function StudentDashboard() {
       <p>
         Welcome, student! Here you can view your clubs, events, and updates.
       </p>
-
     </main>
-
-   
-
-    
-
-  
   );
 }
