@@ -4,10 +4,13 @@ export default function UpcomingEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Use environment variable for API URL
+  const API_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/events"); // server API
+        const res = await fetch(`${API_URL}/api/events`);
         if (!res.ok) throw new Error("Failed to fetch events");
         const data = await res.json();
         setEvents(data);
@@ -19,7 +22,7 @@ export default function UpcomingEvents() {
     };
 
     fetchEvents();
-  }, []);
+  }, [API_URL]);
 
   if (loading) return <p>Loading events...</p>;
   if (!events.length) return <p>No upcoming events.</p>;

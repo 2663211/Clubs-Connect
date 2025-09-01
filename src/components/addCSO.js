@@ -346,7 +346,7 @@ function AddCSO() {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/entities/sgo")}
+            onClick={() => navigate("/CSO")}
             className="btn btn-secondary"
           >
             Cancel
