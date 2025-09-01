@@ -31,7 +31,7 @@ export default function StudentHeader(){
                 </li>
                  <li className='nav-links'>
                   <button
-                    onClick={() => navigate('/dashboard/exec')}
+                    onClick={() => navigate('/search')}
                     style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
                   >
                     Search
