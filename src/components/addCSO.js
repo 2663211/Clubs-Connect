@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import '../styles/addCSO.css';
 
 // Simplified Executive Search Component
 function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
@@ -305,7 +306,7 @@ function AddCSO() {
         </label>
 
         {/* Subscription Required */}
-        <fieldset>
+        <fieldset className="subscription">
           <legend>Subscription Required</legend>
           <label>
             <input
@@ -345,7 +346,7 @@ function AddCSO() {
           </button>
           <button
             type="button"
-            onClick={() => navigate('/CSO')}
+            onClick={() => navigate('/entities/sgo')}
             className="btn btn-secondary"
           >
             Cancel
@@ -357,3 +358,4 @@ function AddCSO() {
 }
 
 export default AddCSO;
+

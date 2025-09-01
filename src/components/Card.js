@@ -10,8 +10,12 @@ export default function Card({ imageUrl, description, onClick }) {
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
       <section className="card-content">
-        <img src={imageUrl} alt={description} className="card-image" />
-        <p className="card-description">{description}</p>
+        <img
+          src={props.image}
+          alt="image describing content under"
+          className="card-image"
+        />
+        <p className="card-description">{props.description}</p>
       </section>
     </section>
   );
