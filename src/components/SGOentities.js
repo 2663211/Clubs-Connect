@@ -12,7 +12,6 @@ export default function SGODashboard() {
   const [statusType, setStatusType] = useState('success'); // 'success' | 'error' | 'info'
 
 
-
   useEffect(() => {
   fetchEntities();
   }, []);
@@ -79,7 +78,7 @@ async function handleDelete(entityId) {
                 onClick={() => navigate('/dashboard/sgo')}
                 style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
               >
-                Dashborad
+                Dashboard
               </button>
             </li>
              <li>
@@ -124,14 +123,7 @@ async function handleDelete(entityId) {
           Create Entity
         </button>
 
-        {statusMessage && (
-          <p className={`status-message ${statusType}`}>
-            {statusMessage}
-          </p>
-        )}
-
-
-        <section className="entities-grid">
+         <section className="entities-list">
           {loading ? (
             <p>Loading entities...</p>
           ) : entities.length === 0 ? (
@@ -165,6 +157,12 @@ async function handleDelete(entityId) {
                     }
                   >
                     Delete Entity
+                  </button>&nbsp;&nbsp;
+                  <button
+                    className="btn-page"
+                    onClick={() => navigate(`/entities/${entity.id}`)}
+                  >
+                    Go to page
                   </button>
                 </footer>
               </article>
