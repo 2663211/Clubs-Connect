@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./components/homepage.js";
-import Auth from "./components/Auth.js";
-import SGODashboard from './components/SGODashboard.js';
-import StudentDashboard from './components/StudentDashboard.js';
-import ExecDashboard from './components/ExecDashboard.js';
-import SGOentities from './components/SGOentities.js';
-import SGOprofile from './components/SGOprofile.js';
-import AddCSO from './components/addCSO.js';
+import HomePage from "./components/homepage";
+import Auth from "./components/Auth";
+import SGODashboard from './components/SGODashboard';
+import StudentDashboard from './components/StudentDashboard';
+import ExecDashboard from './components/ExecDashboard';
+import SGOentities from './components/SGOentities';
+import SGOprofile from './components/SGOprofile';
+import AddCSO from './components/addCSO';
 
 
 

@@ -6,6 +6,15 @@ import '../styles/Auth.css';
 import StudentDashboard from './StudentDashboard.js';
 import SGODashboard from './SGODashboard.js';
 import ExecDashboard from './ExecDashboard.js';
+import { useNavigate } from 'react-router-dom'
+//import StudentDashboard from './StudentDashboard';
+//import SGODashboard from './SGODashboard';
+//import ExecDashboard from './ExecDashboard';
+
+
+export const handleLogout = async () => {
+  await supabase.auth.signOut();
+};
 
 export default function Auth() {
   const [name, setName] = useState('');
@@ -26,6 +35,9 @@ export default function Auth() {
 
   const allowedDomain = '@students.wits.ac.za';
   const isWitsEmail = (email) => email.toLowerCase().endsWith(allowedDomain);
+
+  const navigate = useNavigate();
+
 
   // Fetch profile full_name and role from Supabase profiles table
   const fetchProfile = async (userId) => {
@@ -74,9 +86,13 @@ export default function Auth() {
         } else {
           setUser(session.user);
           fetchProfile(session.user.id).then((profile) => {
-            setUserName(profile?.full_name || '');
-            setRole(profile?.role || '');
-          });
+            setUserName(profile?.full_name || '')
+            setRole(profile?.role || '')
+
+          if (profile?.role === 'student') navigate('/dashboard/student')
+          else if (profile?.role === 'sgo') navigate('/dashboard/sgo')
+          else if (profile?.role === 'exec') navigate('/dashboard/exec')
+          })
         }
       }
     });
@@ -98,9 +114,16 @@ export default function Auth() {
             });
           }
         } else {
-          setUser(null);
-          setUserName('');
-          setRole('');
+          setUser(session.user)
+          await createProfileIfNotExists(session.user)
+          fetchProfile(session.user.id).then((profile) => {
+            setUserName(profile?.full_name || '')
+            setRole(profile?.role || '')
+
+          if (profile?.role === 'student') navigate('/dashboard/student')
+          else if (profile?.role === 'sgo') navigate('/dashboard/sgo')
+          else if (profile?.role === 'exec') navigate('/dashboard/exec')
+          })
         }
       }
     );
@@ -162,12 +185,17 @@ export default function Auth() {
       return;
     }
 
-    const profile = await fetchProfile(data.user.id);
-    setUser(data.user);
-    setUserName(profile?.full_name || '');
-    setRole(profile?.role || '');
-    setLoading(false);
-  };
+    const profile = await fetchProfile(data.user.id)
+    setUser(data.user)
+    setUserName(profile?.full_name || '')
+    setRole(profile?.role || '')
+    setLoading(false)
+
+    if (profile?.role === 'student') navigate('/dashboard/student')
+    else if (profile?.role === 'sgo') navigate('/dashboard/sgo')
+    else if (profile?.role === 'exec') navigate('/dashboard/exec')
+
+  }
 
   // Google OAuth Sign in
   const handleGoogleSignIn = async () => {
@@ -215,14 +243,17 @@ export default function Auth() {
   }
 
   return (
-    <>
-      {user ? (
-        // Dashboard view (no auth-container, no background)
-        <main>
-          <section aria-label="User Info">
-            <p>Welcome, {userName || user.user_metadata?.name || user.email}</p>
-            <button onClick={handleLogout}>Logout</button>
-          </section>
+  <>
+    {user ? (
+
+      <main>
+        {/*
+        <section aria-label="User Info">
+          <p>Welcome, {userName || user.user_metadata?.name || user.email}</p>
+          <button onClick={handleLogout}>Logout</button>
+        </section>
+        
+       
 
           {role === 'student' && <StudentDashboard />}
           {role === 'sgo' && <SGODashboard />}
@@ -235,6 +266,20 @@ export default function Auth() {
             <header>
               <h1>Clubs Connect</h1>
             </header>
+        {role === 'student' && <StudentDashboard />}
+        {role === 'sgo' && <SGODashboard />}
+        {role === 'exec' && <ExecDashboard />}
+
+        */}
+
+      </main>
+    ) : (
+      // Auth forms view with background container and styling
+      <section className="auth-container" aria-label="Authentication Forms">
+        <main>
+          <header>
+            <h1>Clubs Connect</h1>
+          </header>
 
             {isRegistering ? (
               <form onSubmit={handleSignUp}>

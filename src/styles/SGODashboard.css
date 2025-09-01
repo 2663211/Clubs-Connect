@@ -1,7 +1,259 @@
-.cards-container {
+
+.DashboardHeader {
+  background-color: #043673; /* blue */
+  height: 10%; /* 10% of viewport height */
   display: flex;
-  gap: 20px; /* Space between cards */
-  flex-wrap: wrap; /* Cards wrap to next line on smaller screens */
-  justify-content: center; /* Center the cards */
-  margin-top: 20px; /* Add some space above the cards */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: white;
 }
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.user-header,
+.user-row {
+  display: flex;
+  padding: 12px 16px;
+  align-items: center;
+}
+
+/*TO MOVE THE HEADER TITLES*/
+.avatar-text {
+  padding-left: 40px; /* move Avatar text */
+}
+.name-text {
+  padding-left: 20px; /* move Name text differently */
+}
+.role-text {
+  padding-left: 10px; /* move Role text differently */
+}
+
+
+/* Avatar column */
+.user-header span:first-child,
+.user-row span:first-child {
+  width: 50px;           
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px; /* space between avatar and name */
+}
+
+/* Name column */
+.user-header span:nth-child(2),
+.user-row span:nth-child(2) {
+  width: 300px; /* fixed width for Name column */
+  flex-shrink: 0;
+  padding-left: 80px; /* optional extra space */
+}
+
+/* Role column */
+.user-header span:nth-child(3),
+.user-row span:nth-child(3) {
+  flex: 1; /* Role takes remaining space */
+}
+
+.user-header {
+  background-color: #5F7C9F; /* blue-ish header */
+  color: black;               /* text color */
+  font-weight: bold;
+  border-radius: 8px;         /* full rounded corners like rows */
+  margin-bottom: 12px;        /* space between header and first row */
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* space between user blocks */
+}
+
+.user-row {
+  background-color: #f0f4ff;  /* light blue row */
+  border-radius: 8px;          /* match header corners */
+  position: relative;          /* for dropdown positioning */
+}
+
+/* Avatar image */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Placeholder for users with no avatar */
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+
+/*THE THREE DOTS*/
+
+.menu-btn {
+  background: transparent; /* remove button background */
+  border: none;            /* remove button border */
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;              /* remove extra padding */
+  margin-left: auto;       /* push to the far right */
+  color: #333;
+}
+
+/* Dropdown card for actions */
+.dropdown-menu {
+  display: none;           /* hidden by default */
+  position: absolute;      /* relative to the row */
+  top: 100%;               /* just below the row */
+  right: 16px;             /* adjust horizontal position */
+  background-color: white; /* card background */
+  border: 1px solid #ccc;  /* border */
+  border-radius: 8px;      /* rounded corners */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;              /* remove extra padding */
+  min-width: 120px;
+  flex-direction: column;
+  z-index: 10;
+}
+
+/* Buttons inside dropdown */
+.dropdown-menu li button {
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;      /* smaller padding for less space */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu li button:hover {
+  background-color: #5F7C9F; /* hover highlight */
+}
+
+/* Show dropdown only when row has 'show' class */
+.user-row.show .dropdown-menu {
+  display: flex;
+}
+
+/* Nested menu to the left of parent */
+.nested-menu {
+  display: none;           /* hidden by default */
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 100%;             /* appear to the left of parent menu */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 120px;
+  padding: 0;              /* remove extra padding */
+  z-index: 20;
+}
+
+/* Nested menu header */
+.nested-header {
+  font-weight: bold;
+  padding: 6px 12px;       /* match button padding */
+  border-bottom: 1px solid #ccc;
+  background-color: #5F7C9F; /* header color */
+}
+
+/* Buttons inside nested menu */
+.nested-menu li button {
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;       /* match header padding */
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nested-menu li button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Show nested menu only when active */
+.user-row.show .nested-menu {
+  display: flex;
+}
+
+
+
+
+
+/*HANDLING DELETE*/
+
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0; left:0; bottom:0; right:0 */
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.modal-actions button:first-child {
+  background-color: #043673;
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background-color: #ccc;
+}
+
+

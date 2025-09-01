@@ -1,0 +1,52 @@
+
+.EntityHeader {
+  background-color: #043673; /* blue */
+  height: 10%; /* 10% of viewport height */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: white;
+}
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+.create-entity-btn {
+  background-color: #043673; /* Blue color */
+  color: white; /* White text */
+  font-size: 1.2rem; /* Bigger text */
+  padding: 12px 24px; /* Bigger button */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  margin-top: 20px; /* Some spacing from heading */
+  transition: background-color 0.3s ease;
+}
+
+.create-entity-btn:hover {
+  background-color: #043673; /* Darker blue on hover */
+}
+
+
+
+
+
+
+
