@@ -87,6 +87,7 @@ function AddCSO() {
   // Load executives on component mount
   useEffect(() => {
     loadExecutives();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Simplified function to load executives
