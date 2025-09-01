@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint 'src/**/*.{js,jsx}' --fix",
-     "format": "prettier --write 'src/**/*.{js,jsx,json,css,md}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,json,css,md}'"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +47,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jest": "^27.5.1",
+    "prettier": "^3.6.2",
     "react-test-renderer": "^19.1.1"
   },
   "home": "https://github.com/2663211/Clubs-Connect.git"
