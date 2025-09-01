@@ -19,7 +19,7 @@ export default function SGODashboard() {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, full_name, role')
+        .select('id, full_name, role, avatar_url')
         .order('full_name', { ascending: true });
 
       if (error) {
@@ -183,18 +183,26 @@ export default function SGODashboard() {
           <section className="user-container">
             {/* Header Row */}
             <header className="user-header">
-              <span>Name</span>
-              <span>Role</span>
-              <span></span> {/* empty span for menu column alignment */}
+              <span className="avatar-col"><span className="header-text avatar-text">Avatar</span></span>
+              <span className="name-col"><span className="header-text name-text">Name</span></span>
+              <span className="role-col"><span className="header-text role-text">Role</span></span>
+              <span></span> {/* empty span for menu column */}
             </header>
 
             {/* User Rows */}
             <ul className="user-list">
               {users.map((user, index) => (
                 <li
-                  key={index}
+                  key={user.id}
                   className={`user-row ${activeIndex === index ? 'show' : ''}`}
                 >
+                  <span>
+                    {user.avatar_url ? (
+                      <img src={user.avatar_url} alt={`${user.full_name} avatar`} className="avatar" />
+                    ) : (
+                      <span className="avatar-placeholder">{user.full_name[0]}</span>
+                    )}
+                  </span>
                   <span>{user.full_name}</span>
                   <span>{user.role}</span>
                   <button

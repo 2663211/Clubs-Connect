@@ -35,23 +35,49 @@
   align-items: center;
 }
 
-.user-header span:first-child,
-.user-row span:first-child {
-  width: 300px; /* fixed width for Name column */
-  flex-shrink: 0;
+/*TO MOVE THE HEADER TITLES*/
+.avatar-text {
+  padding-left: 40px; /* move Avatar text */
+}
+.name-text {
+  padding-left: 20px; /* move Name text differently */
+}
+.role-text {
+  padding-left: 10px; /* move Role text differently */
 }
 
-.user-header span:last-child,
-.user-row span:last-child {
+
+/* Avatar column */
+.user-header span:first-child,
+.user-row span:first-child {
+  width: 50px;           
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px; /* space between avatar and name */
+}
+
+/* Name column */
+.user-header span:nth-child(2),
+.user-row span:nth-child(2) {
+  width: 300px; /* fixed width for Name column */
+  flex-shrink: 0;
+  padding-left: 80px; /* optional extra space */
+}
+
+/* Role column */
+.user-header span:nth-child(3),
+.user-row span:nth-child(3) {
   flex: 1; /* Role takes remaining space */
 }
 
 .user-header {
   background-color: #5F7C9F; /* blue-ish header */
-  color: black;               /* white text for contrast */
+  color: black;               /* text color */
   font-weight: bold;
   border-radius: 8px;         /* full rounded corners like rows */
-  margin-bottom: 12px;         /* space between header and first row */
+  margin-bottom: 12px;        /* space between header and first row */
 }
 
 .user-list {
@@ -66,9 +92,32 @@
 .user-row {
   background-color: #f0f4ff;  /* light blue row */
   border-radius: 8px;          /* match header corners */
-  position: relative; /* for dropdown positioning */
-  
+  position: relative;          /* for dropdown positioning */
 }
+
+/* Avatar image */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Placeholder for users with no avatar */
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+
+/*THE THREE DOTS*/
 
 .menu-btn {
   background: transparent; /* remove button background */
@@ -159,6 +208,8 @@
 .user-row.show .nested-menu {
   display: flex;
 }
+
+
 
 
 

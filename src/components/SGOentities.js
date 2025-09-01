@@ -1,10 +1,33 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/SGOentities.css';
 import { handleLogout } from './Auth';
+import { supabase } from '../supabaseClient'; 
 
 export default function SGODashboard() {
   const navigate = useNavigate();
+  const [entities, setEntities] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+  fetchEntities();
+  }, []);
+
+  async function fetchEntities() {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.from('cso').select('*');
+      if (error) throw error;
+      setEntities(data);
+    } catch (err) {
+      console.error('Failed to fetch entities:', err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  
   
   return (
     <article>
@@ -55,9 +78,28 @@ export default function SGODashboard() {
 
       <main className="content">
 
-        <h1>THIS IS WHERE YOU WILL CREATE ENTITIES</h1>
+       <button
+          className="create-entity-btn"
+          onClick={() => navigate('/entities/add')}
+        >
+          Create Entity
+        </button>
 
-
+         <section className="entities-list">
+          {loading ? (
+            <p>Loading entities...</p>
+          ) : entities.length === 0 ? (
+            <p>No entities found.</p>
+          ) : (
+            <ul>
+              {entities.map((entity) => (
+                <li key={entity.id}>
+                  <strong>{entity.name}</strong> — {entity.cluster}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
       </main>
     </article>
