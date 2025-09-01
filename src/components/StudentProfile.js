@@ -260,14 +260,19 @@ const handleUpdate = async () => {
         return acc;
       }, {});
 
-      const csosWithStatus = csoData.map((cso) => ({
-        ...cso,
-        isFollowing: followMap[cso.id] || false,
-      }));
+      // only include CSOs not followed
+        const unfollowedCsos = csoData
+        .map((cso) => ({
+            ...cso,
+            isFollowing: followMap[cso.id] || false,
+        }))
+        .filter((cso) => !cso.isFollowing);
 
-      setCsos(csosWithStatus);
-      setLoading(false);
+        setCsos(unfollowedCsos);
+        setLoading(false);
     };
+
+     
 
     
       fetchCsos();
@@ -304,11 +309,8 @@ const handleUpdate = async () => {
     }
 
     // refresh list
-    setCsos((prev) =>
-      prev.map((cso) =>
-        cso.id === csoId ? { ...cso, isFollowing: !isFollowing } : cso
-      )
-    );
+     // refresh list → remove followed CSO from view
+    setCsos((prev) => prev.filter((cso) => cso.id !== csoId));
   };
 
   const [visibleCount, setVisibleCount] = useState(10); // 👈 show 10 at first
@@ -406,7 +408,7 @@ const handleUpdate = async () => {
             {/* //<div className="card"> */}
             <h3>Interests:</h3>
             {csos.slice(0,visibleCount).map((cso) =>(
-                <div className="interest-item">
+                <div className="interest-item" key={cso.id}>
                 <img src={cso.logo_url ||"https://dummyimage.com/40x40/000000/ffffff&text=W"} alt={cso.name}/>
                 <div>
                 <p className="title">{cso.name}</p>
