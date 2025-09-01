@@ -1,4 +1,3 @@
-
 .EntityHeader {
   background-color: #043673; /* blue */
   height: 10%; /* 10% of viewport height */
@@ -27,9 +26,18 @@
   font-weight: bold;
 }
 
+.create-entity-btn {
+  background-color: #043673; /* Blue color */
+  color: white; /* White text */
+  font-size: 1.2rem; /* Bigger text */
+  padding: 12px 24px; /* Bigger button */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  margin-top: 20px; /* Some spacing from heading */
+  transition: background-color 0.3s ease;
+}
 
-
-
-
-
-
+.create-entity-btn:hover {
+  background-color: #043673; /* Darker blue on hover */
+}

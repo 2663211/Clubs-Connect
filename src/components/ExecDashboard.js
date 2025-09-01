@@ -1,52 +1,61 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'
-import '../styles/ExecDashboard.css';
-import { handleLogout } from './Auth';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/ExecDashboard.css";
+import { handleLogout } from "./Auth";
 
+<<<<<<< HEAD
 
 
 export default function StudentDashboard() {
+=======
+export default function ExecDashboard() {
+>>>>>>> 7a86cd0049b71a2457039fd7dae9096bb8a00162
   const navigate = useNavigate();
-  
+
   return (
     <article className="dashboard">
       <header className="ExecHeader">
         <h1>Clubs Connect</h1>
         <nav>
           <ul className="nav-links">
-             <li>
+            <li>
               <button
-                onClick={() => navigate('/profile')}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                onClick={() => navigate("/profile")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
               >
                 Profile
               </button>
             </li>
             <li>
               <button
-              onClick={async () => {
-                await handleLogout();
-                navigate('/auth');     
-              }}
-              style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
-            >
-              Logout
-            </button>
+                onClick={async () => {
+                  await handleLogout();
+                  navigate("/auth");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Logout
+              </button>
             </li>
-      
           </ul>
         </nav>
       </header>
 
       <main>
-      <h1>EXEC Dashboard</h1>
-      
-    </main>
-
+        <h1>EXEC Dashboard</h1>
+      </main>
     </article>
   );
-
 }
-
-
-

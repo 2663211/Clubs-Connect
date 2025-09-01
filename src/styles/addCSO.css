@@ -1,0 +1,188 @@
+/* Container */
+.add-cso-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.add-cso-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Status messages */
+.status-message {
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.status-message.info {
+  background: #e7f3ff;
+  color: #084298;
+}
+
+.status-message.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-message.error {
+  background: #f8d7da;
+  color: #842029;
+}
+
+/* Form */
+.cso-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cso-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: 8px;
+}
+
+.cso-form input[type="text"],
+.cso-form input[type="file"],
+.cso-form select,
+.cso-form textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Fieldsets */
+.cso-form fieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.cso-form legend {
+  font-weight: 600;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary {
+  background: #043673;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #043673;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+/* Executive Search */
+.suggestions-dropdown {
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.suggestions-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestions-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.executive-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chip {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Subscription Required Radio Buttons */
+.cso-form fieldset.subscription {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  display: flex; /* Lay out labels horizontally */
+  gap: 20px; /* Space between Yes/No */
+  align-items: center; /* Align radio dot vertically with text */
+}
+
+.cso-form fieldset.subscription legend {
+  font-weight: 600;
+}
+
+.cso-form fieldset.subscription label {
+  display: flex;
+  align-items: center; /* Align the radio dot with text */
+  gap: 8px; /* Space between radio and label text */
+  cursor: pointer;
+}
+
+.cso-form fieldset.subscription input[type="radio"] {
+  margin: 0; /* Remove default margin */
+}
