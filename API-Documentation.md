@@ -16,21 +16,27 @@ https://clubs-connect-api.onrender.com
 - **Description**: Confirms that the server is running.
 - **Response Example**:
 ```json
+
 {
   "message": "Server is running!",
   "timestamp": "2025-09-02T22:30:15.123Z"
 }
+```
 
-📅 Events API
-GET /api/events
+---
 
-Description: Fetch all upcoming events (only events with a future date).
+## 📅 Events API
 
-Method: GET
+### `GET /api/events`
 
-Authentication: None required (public).
+- **Description**: Fetch all upcoming events (only events with a future date).  
+- **Method**: `GET`  
+- **Authentication**: None required (public).  
 
-✅ Success Response
+---
+
+#### ✅ Success Response
+```json
 [
   {
     "id": 1,
@@ -47,13 +53,14 @@ Authentication: None required (public).
     "description": "Hands-on session on AI tools"
   }
 ]
+```
 
 
-❌ Error Response
+### ❌ Error Response
 
 { "error": "Failed to fetch events" }
 
-🛠️ Usage Examples
+### 🛠️ Usage Examples
 JavaScript (React / Browser)
 
 fetch("https://clubs-connect-api.onrender.com/api/events")
@@ -75,7 +82,7 @@ cURL
 curl https://clubs-connect-api.onrender.com/api/events
 
 
-⚠️ Notes
+### ⚠️ Notes
 
 ✅ API is read-only for now (GET only).
 
@@ -85,7 +92,7 @@ curl https://clubs-connect-api.onrender.com/api/events
 
 🔄 API auto-updates when new events are added to Supabase.
 
-🚀 Future Endpoints (Planned)
+### 🚀 Future Endpoints (Planned)
 
 These endpoints may be added later:
 
