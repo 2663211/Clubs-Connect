@@ -3,7 +3,7 @@ import { supabase } from '../index.js'; // server-side supabase
 
 const router = express.Router();
 
-// GET /api/events - fetch upcoming events
+// GET /api/events - fetch upcoming events.
 router.get('/', async (req, res) => {
   try {
     const { data, error } = await supabase
