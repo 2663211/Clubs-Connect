@@ -1,18 +1,16 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/StudentDashboard.css";
-import { handleLogout } from "./Auth";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/StudentDashboard.css';
+import { handleLogout } from './Auth';
 
 // Add active class to navigation links when clicked
-document.querySelectorAll(".nav-links").forEach((link) => {
-  link.addEventListener("click", function () {
+document.querySelectorAll('.nav-links').forEach(link => {
+  link.addEventListener('click', function () {
     // Remove active class from all links
-    document
-      .querySelectorAll(".nav-links")
-      .forEach((l) => l.classList.remove("active"));
+    document.querySelectorAll('.nav-links').forEach(l => l.classList.remove('active'));
 
     // Add active class to clicked link
-    this.classList.add("active");
+    this.classList.add('active');
   });
 });
 export default function StudentHeader() {
@@ -24,12 +22,12 @@ export default function StudentHeader() {
         <ul className="nav-bar">
           <li className="nav-links">
             <button
-              onClick={() => navigate("/dashboard/student")}
+              onClick={() => navigate('/dashboard/student')}
               style={{
-                background: "none",
-                border: "none",
-                color: "inherit",
-                cursor: "pointer",
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
                 padding: 0,
               }}
             >
@@ -38,12 +36,12 @@ export default function StudentHeader() {
           </li>
           <li className="nav-links">
             <button
-              onClick={() => navigate("/search")}
+              onClick={() => navigate('/search')}
               style={{
-                background: "none",
-                border: "none",
-                color: "inherit",
-                cursor: "pointer",
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
                 padding: 0,
               }}
             >
@@ -52,12 +50,12 @@ export default function StudentHeader() {
           </li>
           <li className="nav-links">
             <button
-              onClick={() => navigate("/chat")}
+              onClick={() => navigate('/chat')}
               style={{
-                background: "none",
-                border: "none",
-                color: "inherit",
-                cursor: "pointer",
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
                 padding: 0,
               }}
             >
@@ -66,12 +64,12 @@ export default function StudentHeader() {
           </li>
           <li className="nav-links">
             <button
-              onClick={() => navigate("/profile/student")}
+              onClick={() => navigate('/profile/student')}
               style={{
-                background: "none",
-                border: "none",
-                color: "inherit",
-                cursor: "pointer",
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
                 padding: 0,
               }}
             >
@@ -82,13 +80,13 @@ export default function StudentHeader() {
             <button
               onClick={async () => {
                 await handleLogout();
-                navigate("/auth");
+                navigate('/auth');
               }}
               style={{
-                background: "none",
-                border: "none",
-                color: "inherit",
-                cursor: "pointer",
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
                 padding: 0,
               }}
             >

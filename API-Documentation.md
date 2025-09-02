@@ -6,6 +6,7 @@ Deployed on **Render** and powered by **Supabase**.
 ---
 
 ## 🔗 Base URL
+
 https://clubs-connect-api.onrender.com
 
 ---
@@ -13,10 +14,11 @@ https://clubs-connect-api.onrender.com
 ## ✅ Health Check
 
 ### `GET /`
+
 - **Description**: Confirms that the server is running.
 - **Response Example**:
-```json
 
+```json
 {
   "message": "Server is running!",
   "timestamp": "2025-09-02T22:30:15.123Z"
@@ -29,13 +31,14 @@ https://clubs-connect-api.onrender.com
 
 ### `GET /api/events`
 
-- **Description**: Fetch all upcoming events (only events with a future date).  
-- **Method**: `GET`  
-- **Authentication**: None required (public).  
+- **Description**: Fetch all upcoming events (only events with a future date).
+- **Method**: `GET`
+- **Authentication**: None required (public).
 
 ---
 
 #### ✅ Success Response
+
 ```json
 [
   {
@@ -55,19 +58,18 @@ https://clubs-connect-api.onrender.com
 ]
 ```
 
-
 ### ❌ Error Response
 
 { "error": "Failed to fetch events" }
 
 ### 🛠️ Usage Examples
+
 JavaScript (React / Browser)
 
 fetch("https://clubs-connect-api.onrender.com/api/events")
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
-
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
 
 Python
 
@@ -76,11 +78,9 @@ import requests
 res = requests.get("https://clubs-connect-api.onrender.com/api/events")
 print(res.json())
 
-
 cURL
 
 curl https://clubs-connect-api.onrender.com/api/events
-
 
 ### ⚠️ Notes
 
@@ -103,4 +103,3 @@ GET /api/events/:id → Get event by ID
 PUT /api/events/:id → Update event
 
 DELETE /api/events/:id → Remove event
-

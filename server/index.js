@@ -10,10 +10,7 @@ dotenv.config();
 
 // Debug environment variables
 console.log("🔧 Environment Variables Check:");
-console.log(
-  "SUPABASE_URL:",
-  process.env.SUPABASE_URL ? "✅ Loaded" : "❌ Missing"
-);
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL ? "✅ Loaded" : "❌ Missing");
 console.log(
   "SUPABASE_SERVICE_ROLE_KEY:",
   process.env.SUPABASE_SERVICE_ROLE_KEY ? "✅ Loaded" : "❌ Missing"
@@ -24,7 +21,7 @@ console.log("PORT:", process.env.PORT || "Using default");
 if (!process.env.SUPABASE_URL) {
   console.log(
     "🚨 All env vars:",
-    Object.keys(process.env).filter((key) => key.includes("SUPABASE"))
+    Object.keys(process.env).filter(key => key.includes("SUPABASE"))
   );
 }
 

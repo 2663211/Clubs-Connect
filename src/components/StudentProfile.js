@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import StudentHeader from "./StudentHeader";
-import { useNavigate } from "react-router-dom";
-import coverPhoto from "../images/coverPhoto.jpeg";
-import profilePhoto from "../images/ProfilePhoto.jpeg";
-import coverPhoto2 from "../images/coverPhoto2.png";
-import "../styles/StudentProfile.css";
-import edit from "../images/icons8-edit-50.png";
-import { supabase } from "../supabaseClient";
+import React, { useEffect, useState } from 'react';
+import StudentHeader from './StudentHeader';
+import { useNavigate } from 'react-router-dom';
+import coverPhoto from '../images/coverPhoto.jpeg';
+import profilePhoto from '../images/ProfilePhoto.jpeg';
+import coverPhoto2 from '../images/coverPhoto2.png';
+import '../styles/StudentProfile.css';
+import edit from '../images/icons8-edit-50.png';
+import { supabase } from '../supabaseClient';
 
 export default function StudentProfile() {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({
-    name: "Mmakwena",
-    about: "",
+    name: 'Mmakwena',
+    about: '',
     coverPic: coverPhoto2,
     profilePic: profilePhoto,
   });
@@ -22,15 +22,15 @@ export default function StudentProfile() {
 
   //fetching the necessary data from supabase
   //fetching profile/user data
-  const fetchProfile = async (userId) => {
+  const fetchProfile = async userId => {
     const { data, error } = await supabase
-      .from("profiles")
-      .select("full_name, bio,avatar_url,cover_url")
-      .eq("id", userId)
+      .from('profiles')
+      .select('full_name, bio,avatar_url,cover_url')
+      .eq('id', userId)
       .single();
 
     if (error) {
-      console.error("Error fetching profile:", error);
+      console.error('Error fetching profile:', error);
       return null;
     }
     return data;
@@ -48,14 +48,14 @@ export default function StudentProfile() {
       const profile = await fetchProfile(user.id);
       if (profile) {
         setUserInfo({
-          name: profile.full_name || "Unnamed User",
-          about: profile.bio || "",
+          name: profile.full_name || 'Unnamed User',
+          about: profile.bio || '',
           coverPic: profile.cover_url || coverPhoto2,
           profilePic: profile.avatar_url || profilePhoto,
         });
         setEditData({
-          name: profile.full_name || "Unnamed User",
-          about: profile.bio || "",
+          name: profile.full_name || 'Unnamed User',
+          about: profile.bio || '',
           coverPic: profile.cover_url || coverPhoto2,
           profilePic: profile.avatar_url || profilePhoto,
         });
@@ -67,7 +67,7 @@ export default function StudentProfile() {
   const [editData, setEditData] = useState(userInfo);
 
   // Handle text changes (name, about)
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
     setEditData({
       ...editData,
@@ -77,7 +77,7 @@ export default function StudentProfile() {
 
   // Handle file input changes separately
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = async e => {
     const { name, files } = e.target;
     if (!files || files.length === 0) return;
 
@@ -93,34 +93,32 @@ export default function StudentProfile() {
       if (!user) return;
 
       // 2. Create a unique file path for Supabase Storage
-      const fileExt = file.name.split(".").pop();
+      const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
       // 3. Upload to Supabase Storage bucket "profile_photos"
       const { error: uploadError } = await supabase.storage
-        .from("profile_photos")
+        .from('profile_photos')
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       // 4. Get the public URL
-      const { data } = supabase.storage
-        .from("profile_photos")
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from('profile_photos').getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
 
       // 5. Save that URL in editData (so Save button will persist it)
-      setEditData((prev) => ({
+      setEditData(prev => ({
         ...prev,
         [name]: publicUrl,
       }));
     } catch (err) {
-      console.error("Upload failed:", err.message);
-      alert("Error uploading image: " + err.message);
+      console.error('Upload failed:', err.message);
+      alert('Error uploading image: ' + err.message);
     }
   };
-  const handleCoverFileChange = async (e) => {
+  const handleCoverFileChange = async e => {
     const { name, files } = e.target;
     if (!files || files.length === 0) return;
 
@@ -136,31 +134,29 @@ export default function StudentProfile() {
       if (!user) return;
 
       // 2. Create a unique file path for Supabase Storage
-      const fileExt = file.name.split(".").pop();
+      const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
       // 3. Upload to Supabase Storage bucket "profile_photos"
       const { error: uploadError } = await supabase.storage
-        .from("cover_photos")
+        .from('cover_photos')
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       // 4. Get the public URL
-      const { data } = supabase.storage
-        .from("cover_photos")
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from('cover_photos').getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
 
       // 5. Save that URL in editData (so Save button will persist it)
-      setEditData((prev) => ({
+      setEditData(prev => ({
         ...prev,
         [name]: publicUrl,
       }));
     } catch (err) {
-      console.error("Upload failed:", err.message);
-      alert("Error uploading image: " + err.message);
+      console.error('Upload failed:', err.message);
+      alert('Error uploading image: ' + err.message);
     }
   };
 
@@ -171,14 +167,14 @@ export default function StudentProfile() {
   //updates the profile for when the user edits
   const updateProfile = async (userId, updates) => {
     const { data, error } = await supabase
-      .from("profiles")
+      .from('profiles')
       .update(updates) // object containing fields to update
-      .eq("id", userId)
+      .eq('id', userId)
       .select()
       .single();
 
     if (error) {
-      console.error("Error updating profile:", error.message);
+      console.error('Error updating profile:', error.message);
       return null;
     }
 
@@ -199,11 +195,11 @@ export default function StudentProfile() {
     });
 
     if (updated) {
-      console.log("Profile updated:");
+      console.log('Profile updated:');
     }
   };
 
-  const handleSave = (e) => {
+  const handleSave = e => {
     e.preventDefault(); // stop page reload
     setUserInfo(editData);
     setIsEditing(false);
@@ -224,23 +220,23 @@ export default function StudentProfile() {
 
       // get all CSOs
       const { data: csoData, error: csoError } = await supabase
-        .from("cso")
-        .select("id, name, cluster, logo_url");
+        .from('cso')
+        .select('id, name, cluster, logo_url');
 
       if (csoError) {
-        console.error("Error fetching CSOs:", csoError.message);
+        console.error('Error fetching CSOs:', csoError.message);
         setLoading(false);
         return;
       }
 
       // get which CSOs current user follows
       const { data: followData, error: followError } = await supabase
-        .from("cso_follow")
-        .select("cso_id, follow_status")
-        .eq("student_number", user.id);
+        .from('cso_follow')
+        .select('cso_id, follow_status')
+        .eq('student_number', user.id);
 
       if (followError) {
-        console.error("Error fetching follow data:", followError.message);
+        console.error('Error fetching follow data:', followError.message);
         setLoading(false);
         return;
       }
@@ -253,11 +249,11 @@ export default function StudentProfile() {
 
       // only include CSOs not followed
       const unfollowedCsos = csoData
-        .map((cso) => ({
+        .map(cso => ({
           ...cso,
           isFollowing: followMap[cso.id] || false,
         }))
-        .filter((cso) => !cso.isFollowing);
+        .filter(cso => !cso.isFollowing);
 
       setCsos(unfollowedCsos);
       setLoading(false);
@@ -277,15 +273,15 @@ export default function StudentProfile() {
     if (isFollowing) {
       // unfollow → update or delete
       const { error } = await supabase
-        .from("cso_follow")
+        .from('cso_follow')
         .delete()
-        .eq("cso_id", csoId)
-        .eq("student_number", user.id);
+        .eq('cso_id', csoId)
+        .eq('student_number', user.id);
 
-      if (error) console.error("Error unfollowing:", error.message);
+      if (error) console.error('Error unfollowing:', error.message);
     } else {
       // follow → insert
-      const { error } = await supabase.from("cso_follow").insert([
+      const { error } = await supabase.from('cso_follow').insert([
         {
           cso_id: csoId,
           student_number: user.id,
@@ -293,12 +289,12 @@ export default function StudentProfile() {
         },
       ]);
 
-      if (error) console.error("Error following:", error.message);
+      if (error) console.error('Error following:', error.message);
     }
 
     // refresh list
     // refresh list → remove followed CSO from view
-    setCsos((prev) => prev.filter((cso) => cso.id !== csoId));
+    setCsos(prev => prev.filter(cso => cso.id !== csoId));
   };
 
   const [visibleCount, setVisibleCount] = useState(10); // 👈 show 10 at first
@@ -307,7 +303,7 @@ export default function StudentProfile() {
 
   // Function to show more CSOs
   const handleShowMore = () => {
-    setVisibleCount((prev) => prev + 10);
+    setVisibleCount(prev => prev + 10);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -331,23 +327,13 @@ export default function StudentProfile() {
 
             <label htmlFor="myProfilefile">
               Select a Profile Photo:
-              <input
-                type="file"
-                id="myProfilefile"
-                name="profilePic"
-                onChange={handleFileChange}
-              />
+              <input type="file" id="myProfilefile" name="profilePic" onChange={handleFileChange} />
             </label>
             <br />
 
             <label htmlFor="ProfileName">
               Enter Your Name:
-              <input
-                type="text"
-                name="name"
-                value={editData.name}
-                onChange={handleChange}
-              />
+              <input type="text" name="name" value={editData.name} onChange={handleChange} />
             </label>
             <br />
 
@@ -376,17 +362,8 @@ export default function StudentProfile() {
             <section className="profile-content">
               <section className="ProfilePhotos">
                 <img src={userInfo.coverPic} id="cover" alt="cover photo" />
-                <img
-                  src={userInfo.profilePic}
-                  id="profile"
-                  alt="profile photo"
-                />
-                <img
-                  src={edit}
-                  onClick={handleEdit}
-                  id="editProfile"
-                  alt="edit profile"
-                />
+                <img src={userInfo.profilePic} id="profile" alt="profile photo" />
+                <img src={edit} onClick={handleEdit} id="editProfile" alt="edit profile" />
               </section>
 
               <section className="UserInfo">
@@ -397,13 +374,10 @@ export default function StudentProfile() {
             <aside className="interests">
               {/* //<div className="card"> */}
               <h3>Interests:</h3>
-              {csos.slice(0, visibleCount).map((cso) => (
+              {csos.slice(0, visibleCount).map(cso => (
                 <div className="interest-item" key={cso.id}>
                   <img
-                    src={
-                      cso.logo_url ||
-                      "https://dummyimage.com/40x40/000000/ffffff&text=W"
-                    }
+                    src={cso.logo_url || 'https://dummyimage.com/40x40/000000/ffffff&text=W'}
                     alt={cso.name}
                   />
                   <div>
@@ -415,7 +389,7 @@ export default function StudentProfile() {
                     className="follow-btn"
                     onClick={() => handleFollowToggle(cso.id, cso.isFollowing)}
                   >
-                    {cso.isFollowing ? "Unfollow" : "Follow"}
+                    {cso.isFollowing ? 'Unfollow' : 'Follow'}
                   </button>
                 </div>
               ))}

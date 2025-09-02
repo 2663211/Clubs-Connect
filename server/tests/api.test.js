@@ -21,7 +21,7 @@ describe("Clubs Connect API", () => {
       expect(res.statusCode).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
 
-      res.body.forEach((event) => {
+      res.body.forEach(event => {
         expect(event).toHaveProperty("id");
         expect(event).toHaveProperty("title");
         expect(event).toHaveProperty("date");
@@ -30,9 +30,7 @@ describe("Clubs Connect API", () => {
 
         // Optional: check if event date is in the future
         const eventDate = new Date(event.date);
-        expect(eventDate.getTime()).toBeGreaterThanOrEqual(
-          new Date().getTime()
-        );
+        expect(eventDate.getTime()).toBeGreaterThanOrEqual(new Date().getTime());
       });
     });
 

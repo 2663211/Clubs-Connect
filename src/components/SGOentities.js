@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/SGOentities.css";
-import { handleLogout } from "./Auth";
-import { supabase } from "../supabaseClient";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/SGOentities.css';
+import { handleLogout } from './Auth';
+import { supabase } from '../supabaseClient';
 
 export default function SGODashboard() {
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ export default function SGODashboard() {
   async function fetchEntities() {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("cso").select("*");
+      const { data, error } = await supabase.from('cso').select('*');
       if (error) throw error;
       setEntities(data);
     } catch (err) {
-      console.error("Failed to fetch entities:", err.message);
+      console.error('Failed to fetch entities:', err.message);
     } finally {
       setLoading(false);
     }
@@ -34,12 +34,12 @@ export default function SGODashboard() {
           <ul className="nav-links">
             <li>
               <button
-                onClick={() => navigate("/dashboard/sgo")}
+                onClick={() => navigate('/dashboard/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -48,12 +48,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/entities/sgo")}
+                onClick={() => navigate('/entities/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -62,12 +62,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/profile/sgo")}
+                onClick={() => navigate('/profile/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -78,13 +78,13 @@ export default function SGODashboard() {
               <button
                 onClick={async () => {
                   await handleLogout();
-                  navigate("/auth");
+                  navigate('/auth');
                 }}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -96,10 +96,7 @@ export default function SGODashboard() {
       </header>
 
       <main className="content">
-        <button
-          className="create-entity-btn"
-          onClick={() => navigate("/entities/add")}
-        >
+        <button className="create-entity-btn" onClick={() => navigate('/entities/add')}>
           Create Entity
         </button>
 
@@ -110,7 +107,7 @@ export default function SGODashboard() {
             <p>No entities found.</p>
           ) : (
             <ul>
-              {entities.map((entity) => (
+              {entities.map(entity => (
                 <li key={entity.id}>
                   <strong>{entity.name}</strong> — {entity.cluster}
                 </li>

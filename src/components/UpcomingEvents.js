@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Use environment variable for API URL
-  const API_URL = "https://clubs-connect-api.onrender.com";
+  const API_URL = 'https://clubs-connect-api.onrender.com';
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(`${API_URL}/api/events`);
-        if (!res.ok) throw new Error("Failed to fetch events");
+        if (!res.ok) throw new Error('Failed to fetch events');
         const data = await res.json();
         setEvents(data);
       } catch (err) {
@@ -31,7 +31,7 @@ export default function UpcomingEvents() {
     <div>
       <h2>Upcoming Events</h2>
       <ul>
-        {events.map((event) => (
+        {events.map(event => (
           <li key={event.id}>
             <strong>{event.title}</strong> <br />
             {new Date(event.date).toLocaleString()} <br />
