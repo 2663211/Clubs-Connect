@@ -30,7 +30,7 @@ if (!process.env.SUPABASE_URL) {
 
 const app = express();
 
-// CORS configuration
+// CORS config
 app.use(
   cors({
     origin: ["https://clubs-connect-api.onrender.com"],
