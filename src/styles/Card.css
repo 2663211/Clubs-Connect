@@ -1,0 +1,26 @@
+/* .card {
+  display: flex;
+  flex-direction: row;
+  gap: 24px; /* space between cards 
+  justify-content: center; 
+  border: 1 solid #ddd
+} */
+
+.card {
+  width: 300px;
+  background: #efeded;
+  border-radius: 8px;
+  box-shadow: 40px 40px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 350px;
+}
+
+img {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  border-bottom: 1px solid #ddd;
+}
