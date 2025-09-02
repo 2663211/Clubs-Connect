@@ -20,10 +20,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18  # Use Node 18 LTS for react-scripts compatibility
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # safer and faster for CI
 
       - name: Build project
         run: npm run build
