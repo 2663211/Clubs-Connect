@@ -1,7 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/SGOprofile.css";
-import { handleLogout } from "./Auth";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/SGOprofile.css';
+import { handleLogout } from './Auth';
 
 export default function SGODashboard() {
   const navigate = useNavigate();
@@ -14,12 +14,12 @@ export default function SGODashboard() {
           <ul className="nav-links">
             <li>
               <button
-                onClick={() => navigate("/dashboard/sgo")}
+                onClick={() => navigate('/dashboard/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -28,12 +28,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/entities/sgo")}
+                onClick={() => navigate('/entities/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -42,12 +42,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/profile/sgo")}
+                onClick={() => navigate('/profile/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -58,13 +58,13 @@ export default function SGODashboard() {
               <button
                 onClick={async () => {
                   await handleLogout();
-                  navigate("/auth");
+                  navigate('/auth');
                 }}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >

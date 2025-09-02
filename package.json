@@ -1,13 +1,4 @@
 {
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "src/**/*.{json,css,md}": [
-      "prettier --write"
-    ]
-  },
   "name": "clubs-connect",
   "version": "0.1.0",
   "private": true,
@@ -33,10 +24,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src --fix && prettier --write src",
-    "lint:check": "eslint src && prettier --check src",
-    "format": "prettier --write src",
-    "format:check": "prettier --check src",
+    "lint": "eslint . --fix && prettier --write .",
+    "lint:check": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "fix-all": "npm run lint",
     "prepare": "husky install"
   },
   "browserslist": {
@@ -65,5 +57,14 @@
     "prettier": "^3.6.2",
     "react-test-renderer": "^19.1.1",
     "supertest": "^7.1.4"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,css,md}": [
+      "prettier --write"
+    ]
   }
 }

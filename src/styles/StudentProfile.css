@@ -99,8 +99,8 @@
   color: #043673;
 }
 
-.profile-form .inputs input[type="file"],
-.profile-form .inputs input[type="text"],
+.profile-form .inputs input[type='file'],
+.profile-form .inputs input[type='text'],
 .profile-form .inputs textarea {
   width: 100%;
   padding: 8px;
