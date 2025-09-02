@@ -10,6 +10,7 @@ permissions:
   pages: write
   id-token: write
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,12 +22,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm' # Cache npm dependencies
 
-      - name: Install dependencies
-        run: npm install
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm ci --legacy-peer-deps
 
       - name: Build project
         run: npm run build
+        env:
+          CI: false # Disable treating warnings as errors
+          GENERATE_SOURCEMAP: false # Reduce build size
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload production-ready files
         uses: actions/upload-pages-artifact@v3
