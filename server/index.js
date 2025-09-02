@@ -66,7 +66,13 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/events", eventsRouter);
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-});
+// ✅ Export app for testing
+export default app;
+
+// Only start server if not in test mode
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 5001;
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT}`);
+  });
+}
