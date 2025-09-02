@@ -1,35 +1,30 @@
-
-
-.HomePageHeader{
-    background-color: #043673;
-    padding: 10px 20px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+.HomePageHeader {
+  background-color: #043673;
+  padding: 10px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.HomePageHeader nav ul{
-    display: flex;
-    flex-direction: row;
-
+.HomePageHeader nav ul {
+  display: flex;
+  flex-direction: row;
 }
-.logo{
-    width: 50px;
-    height: 50px;
+.logo {
+  width: 50px;
+  height: 50px;
 }
-li{
-    list-style: none;
-    margin: 0 15px;
+li {
+  list-style: none;
+  margin: 0 15px;
 }
-.HomePageMain{
-    text-align: center;
+.HomePageMain {
+  text-align: center;
 }
 
-
-a{
-    text-decoration: none;
-    color: white;
+a {
+  text-decoration: none;
+  color: white;
 }
 
 .card-container {

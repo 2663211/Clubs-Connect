@@ -1,11 +1,55 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/ExecDashboard.css";
+import { handleLogout } from "./Auth";
 
 export default function ExecDashboard() {
+  const navigate = useNavigate();
+
   return (
-    <main>
-      <h1>Exec Member Dashboard</h1>
-      <p>Welcome, executive member! Here you can oversee operations and review reports.</p>
-    </main>
+    <article className="dashboard">
+      <header className="ExecHeader">
+        <h1>Clubs Connect</h1>
+        <nav>
+          <ul className="nav-links">
+            <li>
+              <button
+                onClick={() => navigate("/profile")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Profile
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={async () => {
+                  await handleLogout();
+                  navigate("/auth");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <h1>EXEC Dashboard</h1>
+      </main>
+    </article>
   );
 }
-
