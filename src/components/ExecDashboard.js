@@ -1,7 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/ExecDashboard.css";
-import { handleLogout } from "./Auth";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/ExecDashboard.css';
+import { handleLogout } from './Auth';
 
 export default function ExecDashboard() {
   const navigate = useNavigate();
@@ -14,12 +14,12 @@ export default function ExecDashboard() {
           <ul className="nav-links">
             <li>
               <button
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate('/profile')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -30,13 +30,13 @@ export default function ExecDashboard() {
               <button
                 onClick={async () => {
                   await handleLogout();
-                  navigate("/auth");
+                  navigate('/auth');
                 }}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >

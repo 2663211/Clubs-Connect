@@ -6,7 +6,7 @@
   background: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .add-cso-container h1 {
@@ -54,8 +54,8 @@
   gap: 8px;
 }
 
-.cso-form input[type="text"],
-.cso-form input[type="file"],
+.cso-form input[type='text'],
+.cso-form input[type='file'],
 .cso-form select,
 .cso-form textarea {
   padding: 10px;
@@ -183,6 +183,6 @@ textarea {
   cursor: pointer;
 }
 
-.cso-form fieldset.subscription input[type="radio"] {
+.cso-form fieldset.subscription input[type='radio'] {
   margin: 0; /* Remove default margin */
 }

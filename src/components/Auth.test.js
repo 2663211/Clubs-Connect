@@ -1,12 +1,6 @@
-import { BrowserRouter } from "react-router-dom";
-import {
-  render,
-  screen,
-  cleanup,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react";
-import Auth from "./Auth.js";
+import { BrowserRouter } from 'react-router-dom';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import Auth from './Auth.js';
 //import { supabase } from '../supabaseClient.js';
 
 // jest.mock('supabase.auth', ()=>({
@@ -24,37 +18,35 @@ afterEach(() => {
   cleanup();
 });
 
-test("basic truthy test", () => {
+test('basic truthy test', () => {
   expect(true).toBe(true);
 });
-test("renders without crashing", () => {
+test('renders without crashing', () => {
   render(
     <BrowserRouter>
       <div>Test</div>
     </BrowserRouter>
   );
 });
-test("userEmail input should be rendered", () => {
+test('userEmail input should be rendered', () => {
   render(
     <BrowserRouter>
       <Auth />
     </BrowserRouter>
   );
-  const emailInputEl = screen.getByPlaceholderText(
-    /12345@students.wits.ac.za/i
-  );
+  const emailInputEl = screen.getByPlaceholderText(/12345@students.wits.ac.za/i);
   expect(emailInputEl).toBeInTheDocument();
 });
-test("userFullName input should be rendered", () => {
+test('userFullName input should be rendered', () => {
   render(
     <BrowserRouter>
       <Auth />
     </BrowserRouter>
   );
-  const nameInputEl = screen.getByTestId("Full-name");
+  const nameInputEl = screen.getByTestId('Full-name');
   expect(nameInputEl).toBeInTheDocument();
 });
-test("password input should be rendered", () => {
+test('password input should be rendered', () => {
   render(
     <BrowserRouter>
       <Auth />
@@ -63,44 +55,42 @@ test("password input should be rendered", () => {
   const passwordInputEl = screen.getByLabelText(/password/i);
   expect(passwordInputEl).toBeInTheDocument();
 });
-test("button input should be rendered", () => {
+test('button input should be rendered', () => {
   render(
     <BrowserRouter>
       <Auth />
     </BrowserRouter>
   );
-  const buttonInputEl = screen.getByTestId("Login-button");
+  const buttonInputEl = screen.getByTestId('Login-button');
   expect(buttonInputEl).toBeInTheDocument();
 });
 
-test("SignUp button input should be rendered", async () => {
+test('SignUp button input should be rendered', async () => {
   render(
     <BrowserRouter>
       <Auth />
     </BrowserRouter>
   );
-  const someButton = screen.getByTestId("SignUp-button");
+  const someButton = screen.getByTestId('SignUp-button');
   fireEvent.click(someButton);
   await waitFor(() => {
     expect(someButton).toBeInTheDocument(); // Only assertions in waitFor
   });
   expect(someButton).toBeInTheDocument();
 });
-test("userEmail input should change", () => {
+test('userEmail input should change', () => {
   render(
     <BrowserRouter>
       <Auth />
     </BrowserRouter>
   );
-  const emailInputEl = screen.getByPlaceholderText(
-    /12345@students.wits.ac.za/i
-  );
-  const testValue = "test";
+  const emailInputEl = screen.getByPlaceholderText(/12345@students.wits.ac.za/i);
+  const testValue = 'test';
 
   fireEvent.change(emailInputEl, { target: { value: testValue } });
   expect(emailInputEl.value).toBe(testValue);
 });
-test("password input should change", () => {
+test('password input should change', () => {
   render(
     <BrowserRouter>
       <Auth />
@@ -108,7 +98,7 @@ test("password input should change", () => {
   );
   const passwordInputEl = screen.getByLabelText(/password/i);
 
-  const testValue = "test";
+  const testValue = 'test';
 
   fireEvent.change(passwordInputEl, { target: { value: testValue } });
   expect(passwordInputEl.value).toBe(testValue);

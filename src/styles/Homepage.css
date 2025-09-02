@@ -20,6 +20,9 @@ li {
 }
 .HomePageMain {
   text-align: center;
+  max-height: 100vh; /* take full viewport height */
+  overflow-y: auto; /* enable vertical scrolling */
+  overflow-x: hidden;
 }
 
 a {

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/SGODashboard.css";
-import { handleLogout } from "./Auth";
-import { supabase } from "../supabaseClient";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/SGODashboard.css';
+import { handleLogout } from './Auth';
+import { supabase } from '../supabaseClient';
 
 export default function SGODashboard() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [_error, _setError] = useState("");
+  const [_error, _setError] = useState('');
   const [activeIndex, setActiveIndex] = useState(null); // which row dropdown is open
   const [roleMenuIndex, setRoleMenuIndex] = useState(null); // which nested role menu is open
   const [deleteModal, setDeleteModal] = useState({
@@ -20,17 +20,17 @@ export default function SGODashboard() {
     const fetchUsers = async () => {
       try {
         const { data, error } = await supabase
-          .from("profiles")
-          .select("id, full_name, role, avatar_url")
-          .order("full_name", { ascending: true });
+          .from('profiles')
+          .select('id, full_name, role, avatar_url')
+          .order('full_name', { ascending: true });
 
         if (error) {
-          console.error("Supabase error:", error.message);
+          console.error('Supabase error:', error.message);
         }
 
         setUsers(data || []);
       } catch (err) {
-        console.error("Error fetching users:", err);
+        console.error('Error fetching users:', err);
       } finally {
         setLoading(false);
       }
@@ -39,24 +39,24 @@ export default function SGODashboard() {
     fetchUsers();
   }, []);
 
-  const toggleMenu = (index) => {
+  const toggleMenu = index => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-  const toggleRoleMenu = (index) => {
+  const toggleRoleMenu = index => {
     setRoleMenuIndex(roleMenuIndex === index ? null : index);
   };
 
   // Close menus when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest(".user-row")) {
+    const handleClickOutside = e => {
+      if (!e.target.closest('.user-row')) {
         setActiveIndex(null);
         setRoleMenuIndex(null);
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
   const handleChangeRole = async (index, newRole) => {
@@ -64,13 +64,10 @@ export default function SGODashboard() {
       const user = users[index];
 
       // Update in Supabase
-      const { error } = await supabase
-        .from("profiles")
-        .update({ role: newRole })
-        .eq("id", user.id); // we need if because it is unique. 2 people can have the same name
+      const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', user.id); // we need if because it is unique. 2 people can have the same name
 
       if (error) {
-        console.error("Error updating role:", error.message);
+        console.error('Error updating role:', error.message);
         return;
       }
 
@@ -83,11 +80,11 @@ export default function SGODashboard() {
       setRoleMenuIndex(null);
       setActiveIndex(null);
     } catch (err) {
-      console.error("Unexpected error updating role:", err);
+      console.error('Unexpected error updating role:', err);
     }
   };
 
-  const handleDelete = async (index) => {
+  const handleDelete = async index => {
     const user = users[index];
 
     if (!user) return;
@@ -100,13 +97,10 @@ export default function SGODashboard() {
 
     try {
       // Delete the profile from Supabase
-      const { error } = await supabase
-        .from("profiles")
-        .delete()
-        .eq("id", user.id);
+      const { error } = await supabase.from('profiles').delete().eq('id', user.id);
 
       if (error) {
-        console.error("Error deleting profile:", error.message);
+        console.error('Error deleting profile:', error.message);
         return;
       }
 
@@ -119,7 +113,7 @@ export default function SGODashboard() {
       setActiveIndex(null);
       setRoleMenuIndex(null);
     } catch (err) {
-      console.error("Unexpected error:", err);
+      console.error('Unexpected error:', err);
     }
   };
 
@@ -131,12 +125,12 @@ export default function SGODashboard() {
           <ul className="nav-links">
             <li>
               <button
-                onClick={() => navigate("/dashboard/sgo")}
+                onClick={() => navigate('/dashboard/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -145,12 +139,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/entities/sgo")}
+                onClick={() => navigate('/entities/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -159,12 +153,12 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate("/profile/sgo")}
+                onClick={() => navigate('/profile/sgo')}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -175,13 +169,13 @@ export default function SGODashboard() {
               <button
                 onClick={async () => {
                   await handleLogout();
-                  navigate("/auth");
+                  navigate('/auth');
                 }}
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "inherit",
-                  cursor: "pointer",
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                   padding: 0,
                 }}
               >
@@ -218,10 +212,7 @@ export default function SGODashboard() {
             {/* User Rows */}
             <ul className="user-list">
               {users.map((user, index) => (
-                <li
-                  key={user.id}
-                  className={`user-row ${activeIndex === index ? "show" : ""}`}
-                >
+                <li key={user.id} className={`user-row ${activeIndex === index ? 'show' : ''}`}>
                   <span>
                     {user.avatar_url ? (
                       <img
@@ -230,9 +221,7 @@ export default function SGODashboard() {
                         className="avatar"
                       />
                     ) : (
-                      <span className="avatar-placeholder">
-                        {user.full_name[0]}
-                      </span>
+                      <span className="avatar-placeholder">{user.full_name[0]}</span>
                     )}
                   </span>
                   <span>{user.full_name}</span>
@@ -249,39 +238,25 @@ export default function SGODashboard() {
                   {activeIndex === index && (
                     <ul className="dropdown-menu">
                       <li>
-                        <button onClick={() => toggleRoleMenu(index)}>
-                          Change Roles
-                        </button>
+                        <button onClick={() => toggleRoleMenu(index)}>Change Roles</button>
 
                         {/* Nested role menu */}
                         {roleMenuIndex === index && (
                           <ul className="nested-menu">
                             <li className="nested-header">Choose Role</li>
                             <li>
-                              <button
-                                onClick={() =>
-                                  handleChangeRole(index, "student")
-                                }
-                              >
+                              <button onClick={() => handleChangeRole(index, 'student')}>
                                 Student
                               </button>
                             </li>
                             <li>
-                              <button
-                                onClick={() => handleChangeRole(index, "exec")}
-                              >
-                                Exec
-                              </button>
+                              <button onClick={() => handleChangeRole(index, 'exec')}>Exec</button>
                             </li>
                           </ul>
                         )}
                       </li>
                       <li>
-                        <button
-                          onClick={() =>
-                            setDeleteModal({ open: true, userIndex: index })
-                          }
-                        >
+                        <button onClick={() => setDeleteModal({ open: true, userIndex: index })}>
                           Delete Profile
                         </button>
                       </li>
@@ -301,18 +276,12 @@ export default function SGODashboard() {
                 <h2>Confirm Deletion</h2>
               </header>
               <p>
-                Are you sure you want to delete{" "}
-                {users[deleteModal.userIndex]?.full_name}&apos;s profile?
+                Are you sure you want to delete {users[deleteModal.userIndex]?.full_name}&apos;s
+                profile?
               </p>
               <footer className="modal-actions">
-                <button onClick={() => handleDelete(deleteModal.userIndex)}>
-                  Yes, Delete
-                </button>
-                <button
-                  onClick={() =>
-                    setDeleteModal({ open: false, userIndex: null })
-                  }
-                >
+                <button onClick={() => handleDelete(deleteModal.userIndex)}>Yes, Delete</button>
+                <button onClick={() => setDeleteModal({ open: false, userIndex: null })}>
                   Cancel
                 </button>
               </footer>

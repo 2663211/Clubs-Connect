@@ -1,13 +1,14 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./components/homepage";
-import Auth from "./components/Auth";
-import SGODashboard from "./components/SGODashboard";
-import StudentDashboard from "./components/StudentDashboard";
-import ExecDashboard from "./components/ExecDashboard";
-import SGOentities from "./components/SGOentities";
-import SGOprofile from "./components/SGOprofile";
-import AddCSO from "./components/addCSO";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import HomePage from './components/homepage';
+import Auth from './components/Auth';
+import SGODashboard from './components/SGODashboard';
+import StudentDashboard from './components/StudentDashboard';
+import ExecDashboard from './components/ExecDashboard';
+import SGOentities from './components/SGOentities';
+import SGOprofile from './components/SGOprofile';
+import StudentProfile from './components/StudentProfile';
+import AddCSO from './components/addCSO';
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/dashboard/exec" element={<ExecDashboard />} />
         <Route path="/entities/sgo" element={<SGOentities />} />
         <Route path="/profile/sgo" element={<SGOprofile />} />
+        <Route path="/profile/student" element={<StudentProfile />} />
+
         <Route path="/entities/add" element={<AddCSO />} />
 
         {/* Redirect unknown routes to homepage */}
