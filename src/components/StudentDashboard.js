@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
-import { handleLogout } from './Auth';
 import StudentHeader from './StudentHeader';
 
 export default function StudentDashboard() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <article className="dashboard">

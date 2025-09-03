@@ -1,0 +1,239 @@
+/* Main container */
+.entity-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+/* Entity header section */
+.entity-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.entity-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: white;
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+
+.entity-info {
+  flex: 1;
+}
+
+.entity-info h1 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 2rem;
+}
+
+.entity-cluster {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.entity-description {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Post creation section */
+.post-creation-section {
+  margin-bottom: 2rem;
+}
+
+/* Posts section */
+.posts-section {
+  margin-bottom: 2rem;
+}
+
+.posts-section h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.no-posts {
+  text-align: center;
+  color: #666;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Posts container */
+.posts-container {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+/* Individual post card */
+.post-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.post-caption {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* Media container */
+.post-media {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Post images - prevent stretching */
+.post-image {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Post videos */
+.post-video {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Post audio */
+.post-audio {
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem 0;
+}
+
+/* Post date */
+.post-date {
+  margin: 1rem 0 0 0;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: right;
+}
+
+/* Back button */
+.back-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Loading and error states */
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .entity-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .entity-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .entity-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .entity-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .post-card {
+    padding: 1rem;
+  }
+
+  .back-button {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 992px) {
+  .posts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .entity-page {
+    max-width: 1400px;
+  }
+
+  .posts-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

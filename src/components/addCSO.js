@@ -83,7 +83,6 @@ function AddCSO() {
   // Load executives on component mount
   useEffect(() => {
     loadExecutives();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Simplified function to load executives
@@ -232,7 +231,7 @@ function AddCSO() {
 
       // Success - redirect
       showMessage('CSO created successfully!', 'success');
-      setTimeout(() => navigate('/CSO'), 2000);
+      setTimeout(() => navigate('/entities/sgo'), 2000);
     } catch (error) {
       showMessage(error.message || 'Failed to create CSO', 'error');
     } finally {
@@ -333,7 +332,11 @@ function AddCSO() {
           <button type="submit" disabled={loading} className="btn btn-primary">
             {loading ? 'Creating CSO...' : 'Add CSO'}
           </button>
-          <button type="button" onClick={() => navigate('/CSO')} className="btn btn-secondary">
+          <button
+            type="button"
+            onClick={() => navigate('/entities/sgo')}
+            className="btn btn-secondary"
+          >
             Cancel
           </button>
         </section>

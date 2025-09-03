@@ -8,13 +8,10 @@ export default function SGODashboard() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [_error, _setError] = useState('');
+  const [error, setError] = useState('');
   const [activeIndex, setActiveIndex] = useState(null); // which row dropdown is open
   const [roleMenuIndex, setRoleMenuIndex] = useState(null); // which nested role menu is open
-  const [deleteModal, setDeleteModal] = useState({
-    open: false,
-    userIndex: null,
-  });
+  const [deleteModal, setDeleteModal] = useState({ open: false, userIndex: null });
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -276,8 +273,7 @@ export default function SGODashboard() {
                 <h2>Confirm Deletion</h2>
               </header>
               <p>
-                Are you sure you want to delete {users[deleteModal.userIndex]?.full_name}&apos;s
-                profile?
+                Are you sure you want to delete {users[deleteModal.userIndex]?.full_name}'s profile?
               </p>
               <footer className="modal-actions">
                 <button onClick={() => handleDelete(deleteModal.userIndex)}>Yes, Delete</button>

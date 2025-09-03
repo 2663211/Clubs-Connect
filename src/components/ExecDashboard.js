@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/ExecDashboard.css';
 import { handleLogout } from './Auth';
 
-export default function ExecDashboard() {
+export default function StudentDashboard() {
   const navigate = useNavigate();
 
   return (

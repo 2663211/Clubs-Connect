@@ -8,6 +8,8 @@ export default function SGODashboard() {
   const navigate = useNavigate();
   const [entities, setEntities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState('success'); // 'success' | 'error' | 'info'
 
   useEffect(() => {
     fetchEntities();
@@ -23,6 +25,38 @@ export default function SGODashboard() {
       console.error('Failed to fetch entities:', err.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  const [deleteModal, setDeleteModal] = useState({
+    open: false,
+    entityId: null,
+  });
+
+  async function handleDelete(entityId) {
+    try {
+      const entityToDelete = entities.find(e => e.id === entityId);
+
+      const { error } = await supabase.from('cso').delete().eq('id', entityId);
+
+      if (error) throw error;
+
+      setEntities(prev => prev.filter(e => e.id !== entityId));
+
+      // Show success message
+      setStatusMessage(`${entityToDelete?.name} has been deleted successfully.`);
+      setStatusType('success');
+
+      // Hide message after 3 seconds
+      setTimeout(() => setStatusMessage(''), 3000);
+    } catch (err) {
+      console.error('Failed to delete entity:', err.message);
+      setStatusMessage('Failed to delete entity. Please try again.');
+      setStatusType('error');
+
+      setTimeout(() => setStatusMessage(''), 3000);
+    } finally {
+      setDeleteModal({ open: false, entityId: null });
     }
   }
 
@@ -106,15 +140,58 @@ export default function SGODashboard() {
           ) : entities.length === 0 ? (
             <p>No entities found.</p>
           ) : (
-            <ul>
-              {entities.map(entity => (
-                <li key={entity.id}>
-                  <strong>{entity.name}</strong> — {entity.cluster}
-                </li>
-              ))}
-            </ul>
+            entities.map((entity, index) => (
+              <article key={entity.id} className="entity-card">
+                {entity.logo_url && (
+                  <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
+                )}
+                <header>
+                  <h2>{entity.name}</h2>
+                  <p className="entity-cluster">{entity.cluster}</p>
+                </header>
+
+                {entity.description && (
+                  <section className="entity-description">
+                    <p>{entity.description}</p>
+                  </section>
+                )}
+
+                <footer>
+                  <button
+                    className="btn-delete"
+                    onClick={() => setDeleteModal({ open: true, entityId: entity.id })}
+                  >
+                    Delete Entity
+                  </button>
+                  &nbsp;&nbsp;
+                  <button className="btn-page" onClick={() => navigate(`/entities/${entity.id}`)}>
+                    Go to page
+                  </button>
+                </footer>
+              </article>
+            ))
           )}
         </section>
+
+        {deleteModal.open && (
+          <aside className="modal-overlay" role="dialog" aria-modal="true">
+            <section className="modal">
+              <header>
+                <h2>Confirm Deletion</h2>
+              </header>
+              <p>
+                Are you sure you want to delete{' '}
+                {entities.find(e => e.id === deleteModal.entityId)?.name}?
+              </p>
+              <footer className="modal-actions">
+                <button onClick={() => handleDelete(deleteModal.entityId)}>Yes, Delete</button>
+                <button onClick={() => setDeleteModal({ open: false, entityId: null })}>
+                  Cancel
+                </button>
+              </footer>
+            </section>
+          </aside>
+        )}
       </main>
     </article>
   );

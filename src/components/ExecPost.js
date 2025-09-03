@@ -1,7 +1,9 @@
+// ExecPost.js
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient.js';
+import { supabase } from '../supabaseClient';
+import '../styles/ExecPost.css';
 
-export default function ExecPost() {
+export default function ExecPost({ entityId }) {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
@@ -50,12 +52,13 @@ export default function ExecPost() {
           ? 'video'
           : 'audio';
 
-      // 2. Insert post (no profile_id)
+      // 2. Insert post with entityId
       const { error: insertError } = await supabase.from('posts').insert([
         {
           caption,
           media_url: mediaUrl,
           media_type: mediaType,
+          cso_id: entityId,
         },
       ]);
 
@@ -64,6 +67,7 @@ export default function ExecPost() {
       alert('Post created successfully!');
       setCaption('');
       setFile(null);
+      window.location.reload(); // Refresh to show new post
     } catch (err) {
       console.error(err);
       alert('Error creating post: ' + err.message);
@@ -73,39 +77,20 @@ export default function ExecPost() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: '600px',
-        margin: '1rem auto',
-        padding: '1rem',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-      }}
-    >
-      <h2>Create Post</h2>
+    <div className="exec-post">
+      <h3>Create Post</h3>
 
       <textarea
         placeholder="Write your caption..."
         value={caption}
         onChange={e => setCaption(e.target.value)}
         rows={4}
-        style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem' }}
+        className="post-caption-input"
       />
 
-      <input type="file" onChange={handleFileChange} style={{ marginBottom: '1rem' }} />
+      <input type="file" onChange={handleFileChange} className="post-file-input" />
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        style={{
-          padding: '0.5rem 1rem',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-      >
+      <button onClick={handleSubmit} disabled={loading} className="post-submit-button">
         {loading ? 'Posting...' : 'Post'}
       </button>
     </div>

@@ -114,7 +114,8 @@ export default function Auth() {
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, []);
+
   // Signup handler
   const handleSignUp = async e => {
     e.preventDefault();
@@ -157,10 +158,7 @@ export default function Auth() {
     setLoading(true);
     setError('');
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setError(error.message);
       setLoading(false);
@@ -254,9 +252,7 @@ export default function Auth() {
                 <fieldset>
                   <legend>Signup</legend>
 
-                  <label htmlFor="name" data-testid="Full-name">
-                    Full Name
-                  </label>
+                  <label htmlFor="name">Full Name</label>
                   <br />
                   <input
                     id="name"
@@ -295,7 +291,7 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  <button type="submit" disabled={loading} data-testid="SignUp-button">
+                  <button type="submit" disabled={loading}>
                     Sign up
                   </button>
                   <br />
@@ -323,12 +319,7 @@ export default function Auth() {
                   <button
                     type="button"
                     onClick={handleRegisterToggle}
-                    style={{
-                      color: 'blue',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                    }}
+                    style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Login here
                   </button>
@@ -365,7 +356,7 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  <button type="submit" disabled={loading} data-testid="Login-button">
+                  <button type="submit" disabled={loading}>
                     Login
                   </button>
                   <br />
@@ -389,17 +380,11 @@ export default function Auth() {
                 </fieldset>
 
                 <p>
-                  {"Don't have an account?"}
-
+                  Don't have an account?{' '}
                   <button
                     type="button"
                     onClick={handleRegisterToggle}
-                    style={{
-                      color: 'blue',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                    }}
+                    style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Sign up here
                   </button>
