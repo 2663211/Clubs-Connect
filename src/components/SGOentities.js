@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SGOentities.css';
 import { handleLogout } from './Auth';
-import { supabase } from '../supabaseClient'; 
+import { supabase } from '../supabaseClient';
 
 export default function SGODashboard() {
   const navigate = useNavigate();
@@ -11,10 +11,8 @@ export default function SGODashboard() {
   const [statusMessage, setStatusMessage] = useState('');
   const [statusType, setStatusType] = useState('success'); // 'success' | 'error' | 'info'
 
-
-
   useEffect(() => {
-  fetchEntities();
+    fetchEntities();
   }, []);
 
   async function fetchEntities() {
@@ -35,65 +33,77 @@ export default function SGODashboard() {
     entityId: null,
   });
 
-async function handleDelete(entityId) {
+  async function handleDelete(entityId) {
+    try {
+      const entityToDelete = entities.find(e => e.id === entityId);
 
-  try {
-    const entityToDelete = entities.find(e => e.id === entityId);
+      const { error } = await supabase.from('cso').delete().eq('id', entityId);
 
-    const { error } = await supabase
-      .from('cso')
-      .delete()
-      .eq('id', entityId);
+      if (error) throw error;
 
-    if (error) throw error;
+      setEntities(prev => prev.filter(e => e.id !== entityId));
 
-    setEntities(prev => prev.filter(e => e.id !== entityId));
+      // Show success message
+      setStatusMessage(`${entityToDelete?.name} has been deleted successfully.`);
+      setStatusType('success');
 
-    // Show success message
-    setStatusMessage(`${entityToDelete?.name} has been deleted successfully.`);
-    setStatusType('success');
+      // Hide message after 3 seconds
+      setTimeout(() => setStatusMessage(''), 3000);
+    } catch (err) {
+      console.error('Failed to delete entity:', err.message);
+      setStatusMessage('Failed to delete entity. Please try again.');
+      setStatusType('error');
 
-    // Hide message after 3 seconds
-    setTimeout(() => setStatusMessage(''), 3000);
-
-  } catch (err) {
-    console.error('Failed to delete entity:', err.message);
-    setStatusMessage('Failed to delete entity. Please try again.');
-    setStatusType('error');
-
-    setTimeout(() => setStatusMessage(''), 3000);
-  } finally {
-    setDeleteModal({ open: false, entityId: null });
+      setTimeout(() => setStatusMessage(''), 3000);
+    } finally {
+      setDeleteModal({ open: false, entityId: null });
+    }
   }
-}
 
-  
   return (
     <article>
       <header className="EntityHeader">
         <h1>Clubs Connect</h1>
         <nav>
           <ul className="nav-links">
-             <li>
+            <li>
               <button
                 onClick={() => navigate('/dashboard/sgo')}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Dashborad
               </button>
             </li>
-             <li>
+            <li>
               <button
                 onClick={() => navigate('/entities/sgo')}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Entities
               </button>
             </li>
-             <li>
+            <li>
               <button
                 onClick={() => navigate('/profile/sgo')}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Profile
               </button>
@@ -102,29 +112,29 @@ async function handleDelete(entityId) {
               <button
                 onClick={async () => {
                   await handleLogout();
-                  navigate('/auth');     
+                  navigate('/auth');
                 }}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
               >
                 Logout
               </button>
             </li>
-      
-            
           </ul>
         </nav>
       </header>
 
       <main className="content">
-
-        <button
-          className="create-entity-btn"
-          onClick={() => navigate('/entities/add')}
-        >
+        <button className="create-entity-btn" onClick={() => navigate('/entities/add')}>
           Create Entity
         </button>
 
-         <section className="entities-list">
+        <section className="entities-list">
           {loading ? (
             <p>Loading entities...</p>
           ) : entities.length === 0 ? (
@@ -133,11 +143,7 @@ async function handleDelete(entityId) {
             entities.map((entity, index) => (
               <article key={entity.id} className="entity-card">
                 {entity.logo_url && (
-                  <img
-                    src={entity.logo_url}
-                    alt={entity.name}
-                    className="entity-logo"
-                  />
+                  <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
                 )}
                 <header>
                   <h2>{entity.name}</h2>
@@ -153,16 +159,12 @@ async function handleDelete(entityId) {
                 <footer>
                   <button
                     className="btn-delete"
-                    onClick={() =>
-                      setDeleteModal({ open: true, entityId: entity.id })
-                    }
+                    onClick={() => setDeleteModal({ open: true, entityId: entity.id })}
                   >
                     Delete Entity
-                  </button>&nbsp;&nbsp;
-                  <button
-                    className="btn-page"
-                    onClick={() => navigate(`/entities/${entity.id}`)}
-                  >
+                  </button>
+                  &nbsp;&nbsp;
+                  <button className="btn-page" onClick={() => navigate(`/entities/${entity.id}`)}>
                     Go to page
                   </button>
                 </footer>
@@ -171,54 +173,26 @@ async function handleDelete(entityId) {
           )}
         </section>
 
-       {deleteModal.open && (
-        <aside className="modal-overlay" role="dialog" aria-modal="true">
-          <section className="modal">
-            <header>
-              <h2>Confirm Deletion</h2>
-            </header>
-            <p>
-              Are you sure you want to delete{' '}
-              {entities.find(e => e.id === deleteModal.entityId)?.name}?
-            </p>
-            <footer className="modal-actions">
-              <button
-                onClick={() => handleDelete(deleteModal.entityId)}
-              >
-                Yes, Delete
-              </button>
-              <button
-                onClick={() =>
-                  setDeleteModal({ open: false, entityId: null })
-                }
-              >
-                Cancel
-              </button>
-            </footer>
-          </section>
-        </aside>
-      )}
-    
-
+        {deleteModal.open && (
+          <aside className="modal-overlay" role="dialog" aria-modal="true">
+            <section className="modal">
+              <header>
+                <h2>Confirm Deletion</h2>
+              </header>
+              <p>
+                Are you sure you want to delete{' '}
+                {entities.find(e => e.id === deleteModal.entityId)?.name}?
+              </p>
+              <footer className="modal-actions">
+                <button onClick={() => handleDelete(deleteModal.entityId)}>Yes, Delete</button>
+                <button onClick={() => setDeleteModal({ open: false, entityId: null })}>
+                  Cancel
+                </button>
+              </footer>
+            </section>
+          </aside>
+        )}
       </main>
-
     </article>
   );
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

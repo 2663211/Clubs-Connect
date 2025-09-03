@@ -1,21 +1,18 @@
-.ProfilePhotos{
+.ProfilePhotos {
   position: relative;
   width: 60%;
   height: 200px;
   overflow: visible;
-  transform:translateX(5%);
+  transform: translateX(5%);
   margin-top: 25px;
-  
 }
 
-#editProfile{
-    position: absolute;
-    width:25px;
-    height: 25px;
-    bottom: -40px;
-    left:95%;
-    
-    
+#editProfile {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  bottom: -40px;
+  left: 95%;
 }
 #cover {
   width: 100%;
@@ -26,23 +23,20 @@
 
 #profile {
   position: absolute;
-  bottom: -50px;   /* pushes it down to overlap cover */
-  left: 20%;       /* center horizontally */
+  bottom: -50px; /* pushes it down to overlap cover */
+  left: 20%; /* center horizontally */
   transform: translateX(-50%); /* correct centering */
-  width: 120px;    /* profile size */
+  width: 120px; /* profile size */
   height: 120px;
   border-radius: 50%; /* make it a circle */
-  z-index: 10;  
+  z-index: 10;
 }
 
-
-
-.Name{
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 5px;
+.Name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
-
 
 .UserInfo {
   width: 40%;
@@ -60,7 +54,6 @@
   white-space: normal; /* allow wrapping */
   line-height: 1.5; /* improve readability */
 }
-
 
 /* <section className='profile-form'>
             <form className='inputs'>
@@ -81,7 +74,7 @@
     ) */
 
 .profile-form {
-  background-color: #5F7C9F; /* Blue background */
+  background-color: #5f7c9f; /* Blue background */
   padding: 30px;
   display: flex;
   justify-content: center; /* Center the form */
@@ -95,7 +88,7 @@
   border-radius: 10px; /* Smooth corners */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
   width: 100%;
-  height:auto;
+  height: auto;
   max-width: 800px; /* Prevent form from being too wide */
 }
 
@@ -106,8 +99,8 @@
   color: #043673;
 }
 
-.profile-form .inputs input[type="file"],
-.profile-form .inputs input[type="text"],
+.profile-form .inputs input[type='file'],
+.profile-form .inputs input[type='text'],
 .profile-form .inputs textarea {
   width: 100%;
   padding: 8px;
@@ -116,17 +109,14 @@
   border-radius: 6px;
 }
 
-.profile-form .inputs button{
-    width:100px;
-    height: 30px;
-    border-radius: 8px;
-    background-color: #043673;
-    color: white;
-    margin-left: 80%;
+.profile-form .inputs button {
+  width: 100px;
+  height: 30px;
+  border-radius: 8px;
+  background-color: #043673;
+  color: white;
+  margin-left: 80%;
 }
-
-
-
 
 /* aside css */
 
@@ -141,7 +131,7 @@
 }
 
 /* Left side (photos + info stacked) */
-.profile-content{
+.profile-content {
   flex: 1; /* let them take available space */
 }
 
@@ -157,7 +147,7 @@
   padding: 16px;
   margin: -380px 30px 20px auto; /* pushes it to the right side */
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Heading */
@@ -206,7 +196,7 @@
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  display: block;      /* ensures it sits alone */
+  display: block; /* ensures it sits alone */
 }
 
 .follow-btn:hover {
@@ -225,7 +215,6 @@
   border: none;
   cursor: pointer;
 }
-
 
 @media (max-width: 1024px) {
   .profile-page {
@@ -277,6 +266,5 @@
 
   .follow-btn {
     margin-top: 8px;
-    
   }
 }

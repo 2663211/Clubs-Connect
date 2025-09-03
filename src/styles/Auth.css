@@ -1,6 +1,6 @@
 .auth-container {
   height: 100vh; /* full viewport height */
-  background-image: url("../images/loginClubs.png");
+  background-image: url('../images/loginClubs.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

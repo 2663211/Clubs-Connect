@@ -1,4 +1,3 @@
-
 .EntityHeader {
   background-color: #043673; /* blue */
   height: 10%; /* 10% of viewport height */
@@ -27,7 +26,6 @@
   font-weight: bold;
 }
 
-
 .create-entity-btn {
   background-color: #043673; /* Blue color */
   color: white; /* White text */
@@ -44,7 +42,6 @@
   background-color: #043673; /* Darker blue on hover */
 }
 
-
 /* Grid container */
 /* changed grid to list so that the cards are in the grid form also to avoid changing the js file */
 .entities-list {
@@ -59,14 +56,16 @@
   background: #fff;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .entity-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Logo */
@@ -91,9 +90,8 @@
   color: #444;
 }
 
-
 .btn-delete {
-  background: #5F7C9F; /* red */
+  background: #5f7c9f; /* red */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -105,11 +103,11 @@
 }
 
 .btn-delete:hover {
-  background: #5F7C9F;
+  background: #5f7c9f;
 }
 
 .btn-page {
-  background: #5F7C9F; /* red */
+  background: #5f7c9f; /* red */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -121,5 +119,5 @@
 }
 
 .btn-page:hover {
-  background: #5F7C9F;
+  background: #5f7c9f;
 }

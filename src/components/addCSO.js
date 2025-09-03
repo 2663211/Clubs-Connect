@@ -9,17 +9,13 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Filter out already selected executives
-  const availableExecutives = executives.filter((exec) => {
-    const matchesSearch = exec.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const notSelected = !selectedExecutives.find(
-      (selected) => selected.id === exec.id
-    );
+  const availableExecutives = executives.filter(exec => {
+    const matchesSearch = exec.name.toLowerCase().includes(search.toLowerCase());
+    const notSelected = !selectedExecutives.find(selected => selected.id === exec.id);
     return matchesSearch && notSelected;
   });
 
-  const selectExecutive = (executive) => {
+  const selectExecutive = executive => {
     onAdd(executive);
     setSearch('');
     setShowSuggestions(false);
@@ -31,14 +27,14 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
         type="search"
         placeholder="Type to search executives..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={e => setSearch(e.target.value)}
         onFocus={() => setShowSuggestions(true)}
       />
 
       {/* Show suggestions dropdown */}
       {showSuggestions && search && availableExecutives.length > 0 && (
         <ul className="suggestions-dropdown">
-          {availableExecutives.map((exec) => (
+          {availableExecutives.map(exec => (
             <li key={exec.id} onClick={() => selectExecutive(exec)}>
               {exec.name}
             </li>
@@ -51,7 +47,7 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
         <section>
           <strong>Selected executives:</strong>
           <ul className="executive-chips">
-            {selectedExecutives.map((exec) => (
+            {selectedExecutives.map(exec => (
               <li key={exec.id} className="chip">
                 {exec.name}
                 <button onClick={() => onRemove(exec.id)}>×</button>
@@ -100,9 +96,7 @@ function AddCSO() {
       if (!execData || execData.length === 0) return;
 
       // Get profile names
-      const studentNumbers = execData
-        .map((e) => e['student/staff_number'])
-        .filter(Boolean);
+      const studentNumbers = execData.map(e => e['student/staff_number']).filter(Boolean);
 
       const { data: profiles } = await supabase
         .from('profiles')
@@ -110,12 +104,10 @@ function AddCSO() {
         .in('id', studentNumbers);
 
       // Combine data
-      const executivesWithNames = execData.map((exec) => ({
+      const executivesWithNames = execData.map(exec => ({
         id: exec.id,
         student_staff_number: exec['student/staff_number'],
-        name:
-          profiles?.find((p) => p.id === exec['student/staff_number'])
-            ?.full_name || 'Unknown',
+        name: profiles?.find(p => p.id === exec['student/staff_number'])?.full_name || 'Unknown',
       }));
 
       setExecutives(executivesWithNames);
@@ -132,13 +124,13 @@ function AddCSO() {
 
   // Handle form field changes
   function updateField(fieldName, value) {
-    setFormData((prev) => ({ ...prev, [fieldName]: value }));
+    setFormData(prev => ({ ...prev, [fieldName]: value }));
   }
 
   // Handle executive selection
   function addExecutive(executive) {
     setSelectedExecutives([...selectedExecutives, executive]);
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       executives: [...prev.executives, executive.id],
     }));
@@ -146,10 +138,10 @@ function AddCSO() {
 
   // Handle executive removal
   function removeExecutive(executiveId) {
-    setSelectedExecutives((prev) => prev.filter((e) => e.id !== executiveId));
-    setFormData((prev) => ({
+    setSelectedExecutives(prev => prev.filter(e => e.id !== executiveId));
+    setFormData(prev => ({
       ...prev,
-      executives: prev.executives.filter((id) => id !== executiveId),
+      executives: prev.executives.filter(id => id !== executiveId),
     }));
   }
 
@@ -177,9 +169,7 @@ function AddCSO() {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
 
-    const { error } = await supabase.storage
-      .from('cso-logos')
-      .upload(fileName, file);
+    const { error } = await supabase.storage.from('cso-logos').upload(fileName, file);
 
     if (error) throw error;
 
@@ -226,7 +216,7 @@ function AddCSO() {
 
       // Link executives if any selected
       if (formData.executives.length > 0) {
-        const links = formData.executives.map((execId) => ({
+        const links = formData.executives.map(execId => ({
           cso_id: cso.id,
           exec_id: execId,
           portfolio: 'Member',
@@ -234,9 +224,7 @@ function AddCSO() {
           start_date: new Date().toISOString().split('T')[0],
         }));
 
-        const { error: linkError } = await supabase
-          .from('cso_exec')
-          .insert(links);
+        const { error: linkError } = await supabase.from('cso_exec').insert(links);
 
         if (linkError) throw linkError;
       }
@@ -271,7 +259,7 @@ function AddCSO() {
           <input
             type="text"
             value={formData.name}
-            onChange={(e) => updateField('name', e.target.value)}
+            onChange={e => updateField('name', e.target.value)}
             required
           />
         </label>
@@ -281,7 +269,7 @@ function AddCSO() {
           Description
           <textarea
             value={formData.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={e => updateField('description', e.target.value)}
             rows="3"
           />
         </label>
@@ -291,7 +279,7 @@ function AddCSO() {
           Cluster *
           <select
             value={formData.cluster}
-            onChange={(e) => updateField('cluster', e.target.value)}
+            onChange={e => updateField('cluster', e.target.value)}
             required
           >
             <option value="">Select a cluster...</option>
@@ -313,7 +301,7 @@ function AddCSO() {
               type="radio"
               value="no"
               checked={formData.subscription === 'no'}
-              onChange={(e) => updateField('subscription', e.target.value)}
+              onChange={e => updateField('subscription', e.target.value)}
             />
             No
           </label>
@@ -322,7 +310,7 @@ function AddCSO() {
               type="radio"
               value="yes"
               checked={formData.subscription === 'yes'}
-              onChange={(e) => updateField('subscription', e.target.value)}
+              onChange={e => updateField('subscription', e.target.value)}
             />
             Yes
           </label>
