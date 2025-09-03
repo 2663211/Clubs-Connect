@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - mmakwena-branch
       - feature/*
   pull_request:
 
