@@ -27,15 +27,10 @@
   font-weight: bold;
 }
 
-.nav-links:hover{
-  color: #FBBA23;
+.nav-links:hover {
+  color: #fbba23;
 }
 
-.nav-links.active{
-  color: #FBBA23;
+.nav-links.active {
+  color: #fbba23;
 }
-
-
-
-
-

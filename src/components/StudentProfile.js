@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import StudentHeader from './StudentHeader'
-import { useNavigate } from 'react-router-dom'
-import coverPhoto from "../images/coverPhoto.jpeg"
-import profilePhoto from "../images/ProfilePhoto.jpeg"
-import coverPhoto2 from "../images/coverPhoto2.png"
-import "../styles/StudentProfile.css"
-import edit from "../images/icons8-edit-50.png"
-import { supabase } from '../supabaseClient';
+import React, { useEffect, useState } from "react";
+import StudentHeader from "./StudentHeader";
+import { useNavigate } from "react-router-dom";
+import coverPhoto from "../images/coverPhoto.jpeg";
+import profilePhoto from "../images/ProfilePhoto.jpeg";
+import coverPhoto2 from "../images/coverPhoto2.png";
+import "../styles/StudentProfile.css";
+import edit from "../images/icons8-edit-50.png";
+import { supabase } from "../supabaseClient";
 
 export default function StudentProfile() {
   const navigate = useNavigate();
@@ -27,42 +27,42 @@ export default function StudentProfile() {
       .from("profiles")
       .select("full_name, bio,avatar_url,cover_url")
       .eq("id", userId)
-      .single()
+      .single();
 
     if (error) {
-      console.error("Error fetching profile:", error)
-      return null
+      console.error("Error fetching profile:", error);
+      return null;
     }
-    return data
-  }
+    return data;
+  };
 
   //setting what is in the database to the profile
   useEffect(() => {
     const loadProfile = async () => {
       const {
         data: { user },
-      } = await supabase.auth.getUser() // 👈 get logged-in user
-      if (!user) return
+      } = await supabase.auth.getUser(); // 👈 get logged-in user
+      if (!user) return;
 
       setUser(user);
-      const profile = await fetchProfile(user.id)
+      const profile = await fetchProfile(user.id);
       if (profile) {
         setUserInfo({
           name: profile.full_name || "Unnamed User",
           about: profile.bio || "",
-          coverPic: profile.cover_url|| coverPhoto2, 
+          coverPic: profile.cover_url || coverPhoto2,
           profilePic: profile.avatar_url || profilePhoto,
-        })
+        });
         setEditData({
           name: profile.full_name || "Unnamed User",
           about: profile.bio || "",
-          coverPic: profile.cover_url|| coverPhoto2,
+          coverPic: profile.cover_url || coverPhoto2,
           profilePic: profile.avatar_url || profilePhoto,
-        })
+        });
       }
-    }
-    loadProfile()
-  }, [])
+    };
+    loadProfile();
+  }, []);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState(userInfo);
 
@@ -76,97 +76,93 @@ export default function StudentProfile() {
   };
 
   // Handle file input changes separately
-  
-const handleFileChange = async (e) => {
-  const { name, files } = e.target;
-  if (!files || files.length === 0) return;
 
-  const file = files[0];
+  const handleFileChange = async (e) => {
+    const { name, files } = e.target;
+    if (!files || files.length === 0) return;
 
-  // 1. Local preview
-  setEditData({
-    ...editData,
-    [name]: URL.createObjectURL(file),
-  });
+    const file = files[0];
 
-  try {
-    if (!user) return;
+    // 1. Local preview
+    setEditData({
+      ...editData,
+      [name]: URL.createObjectURL(file),
+    });
 
-    // 2. Create a unique file path for Supabase Storage
-    const fileExt = file.name.split(".").pop();
-    const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+    try {
+      if (!user) return;
 
-    // 3. Upload to Supabase Storage bucket "profile_photos"
-    const { error: uploadError } = await supabase.storage
-      .from("profile_photos")
-      .upload(filePath, file, { upsert: true });
+      // 2. Create a unique file path for Supabase Storage
+      const fileExt = file.name.split(".").pop();
+      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
-    if (uploadError) throw uploadError;
+      // 3. Upload to Supabase Storage bucket "profile_photos"
+      const { error: uploadError } = await supabase.storage
+        .from("profile_photos")
+        .upload(filePath, file, { upsert: true });
 
-    // 4. Get the public URL
-    const { data } = supabase.storage
-      .from("profile_photos")
-      .getPublicUrl(filePath);
+      if (uploadError) throw uploadError;
 
-    const publicUrl = data.publicUrl;
+      // 4. Get the public URL
+      const { data } = supabase.storage
+        .from("profile_photos")
+        .getPublicUrl(filePath);
 
-    // 5. Save that URL in editData (so Save button will persist it)
-    setEditData((prev) => ({
-      ...prev,
-      [name]: publicUrl,
-    }));
-  } catch (err) {
-    console.error("Upload failed:", err.message);
-    alert("Error uploading image: " + err.message);
-  }
-};
-const handleCoverFileChange = async (e) => {
-  const { name, files } = e.target;
-  if (!files || files.length === 0) return;
+      const publicUrl = data.publicUrl;
 
-  const file = files[0];
+      // 5. Save that URL in editData (so Save button will persist it)
+      setEditData((prev) => ({
+        ...prev,
+        [name]: publicUrl,
+      }));
+    } catch (err) {
+      console.error("Upload failed:", err.message);
+      alert("Error uploading image: " + err.message);
+    }
+  };
+  const handleCoverFileChange = async (e) => {
+    const { name, files } = e.target;
+    if (!files || files.length === 0) return;
 
-  // 1. Local preview
-  setEditData({
-    ...editData,
-    [name]: URL.createObjectURL(file),
-  });
+    const file = files[0];
 
-  try {
-    if (!user) return;
+    // 1. Local preview
+    setEditData({
+      ...editData,
+      [name]: URL.createObjectURL(file),
+    });
 
-    // 2. Create a unique file path for Supabase Storage
-    const fileExt = file.name.split(".").pop();
-    const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+    try {
+      if (!user) return;
 
-    // 3. Upload to Supabase Storage bucket "profile_photos"
-    const { error: uploadError } = await supabase.storage
-      .from("cover_photos")
-      .upload(filePath, file, { upsert: true });
+      // 2. Create a unique file path for Supabase Storage
+      const fileExt = file.name.split(".").pop();
+      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
-    if (uploadError) throw uploadError;
+      // 3. Upload to Supabase Storage bucket "profile_photos"
+      const { error: uploadError } = await supabase.storage
+        .from("cover_photos")
+        .upload(filePath, file, { upsert: true });
 
-    // 4. Get the public URL
-    const { data } = supabase.storage
-      .from("cover_photos")
-      .getPublicUrl(filePath);
+      if (uploadError) throw uploadError;
 
-    const publicUrl = data.publicUrl;
+      // 4. Get the public URL
+      const { data } = supabase.storage
+        .from("cover_photos")
+        .getPublicUrl(filePath);
 
-    // 5. Save that URL in editData (so Save button will persist it)
-    setEditData((prev) => ({
-      ...prev,
-      [name]: publicUrl,
-    }));
-  } catch (err) {
-    console.error("Upload failed:", err.message);
-    alert("Error uploading image: " + err.message);
-  }
-};
+      const publicUrl = data.publicUrl;
 
-
-
-
+      // 5. Save that URL in editData (so Save button will persist it)
+      setEditData((prev) => ({
+        ...prev,
+        [name]: publicUrl,
+      }));
+    } catch (err) {
+      console.error("Upload failed:", err.message);
+      alert("Error uploading image: " + err.message);
+    }
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -174,40 +170,38 @@ const handleCoverFileChange = async (e) => {
 
   //updates the profile for when the user edits
   const updateProfile = async (userId, updates) => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .update(updates) // object containing fields to update
-    .eq('id', userId)
-    .select()
-    .single()
+    const { data, error } = await supabase
+      .from("profiles")
+      .update(updates) // object containing fields to update
+      .eq("id", userId)
+      .select()
+      .single();
 
-  if (error) {
-    console.error('Error updating profile:', error.message)
-    return null
-  }
-  
-  return data
-}
+    if (error) {
+      console.error("Error updating profile:", error.message);
+      return null;
+    }
 
-// hsndles updates
-const handleUpdate = async () => {
-    const {data: { user },
-      } = await supabase.auth.getUser() // 👈 get logged-in user
-      if (!user) return
-  const updated = await updateProfile(user.id, {
-    full_name: editData.name,
-    bio: editData.about,
-    avatar_url: editData.profilePic,
-    cover_url:editData.coverPic,
-    
-  })
-  
-  if (updated) {
-    console.log("Profile updated:")
-  }
-}
+    return data;
+  };
 
+  // hsndles updates
+  const handleUpdate = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser(); // 👈 get logged-in user
+    if (!user) return;
+    const updated = await updateProfile(user.id, {
+      full_name: editData.name,
+      bio: editData.about,
+      avatar_url: editData.profilePic,
+      cover_url: editData.coverPic,
+    });
 
+    if (updated) {
+      console.log("Profile updated:");
+    }
+  };
 
   const handleSave = (e) => {
     e.preventDefault(); // stop page reload
@@ -215,7 +209,6 @@ const handleUpdate = async () => {
     setIsEditing(false);
     handleUpdate();
   };
-
 
   const [csos, setCsos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -226,8 +219,8 @@ const handleUpdate = async () => {
       setLoading(true);
       const {
         data: { user },
-      } = await supabase.auth.getUser() // 👈 get logged-in user
-      if (!user) return
+      } = await supabase.auth.getUser(); // 👈 get logged-in user
+      if (!user) return;
 
       // get all CSOs
       const { data: csoData, error: csoError } = await supabase
@@ -239,8 +232,6 @@ const handleUpdate = async () => {
         setLoading(false);
         return;
       }
-      
-
 
       // get which CSOs current user follows
       const { data: followData, error: followError } = await supabase
@@ -261,29 +252,26 @@ const handleUpdate = async () => {
       }, {});
 
       // only include CSOs not followed
-        const unfollowedCsos = csoData
+      const unfollowedCsos = csoData
         .map((cso) => ({
-            ...cso,
-            isFollowing: followMap[cso.id] || false,
+          ...cso,
+          isFollowing: followMap[cso.id] || false,
         }))
         .filter((cso) => !cso.isFollowing);
 
-        setCsos(unfollowedCsos);
-        setLoading(false);
+      setCsos(unfollowedCsos);
+      setLoading(false);
     };
 
-     
-
-    
-      fetchCsos();
+    fetchCsos();
   }, [user]);
 
   // Toggle follow / unfollow
   const handleFollowToggle = async (csoId, isFollowing) => {
     const {
-        data: { user },
-      } = await supabase.auth.getUser() // 👈 get logged-in user
-      if (!user) return
+      data: { user },
+    } = await supabase.auth.getUser(); // 👈 get logged-in user
+    if (!user) return;
     if (!user.id) return;
 
     if (isFollowing) {
@@ -309,7 +297,7 @@ const handleUpdate = async () => {
     }
 
     // refresh list
-     // refresh list → remove followed CSO from view
+    // refresh list → remove followed CSO from view
     setCsos((prev) => prev.filter((cso) => cso.id !== csoId));
   };
 
@@ -326,8 +314,6 @@ const handleUpdate = async () => {
 
   return (
     <>
-      
-
       {isEditing ? (
         // --- EDIT MODE ---
         <section className="profile-form">
@@ -385,44 +371,56 @@ const handleUpdate = async () => {
       ) : (
         // --- VIEW MODE ---
         <>
-            <StudentHeader />
-        <section className="profie-page">
+          <StudentHeader />
+          <section className="profie-page">
             <section className="profile-content">
-          <section className="ProfilePhotos">
-            <img src={userInfo.coverPic} id="cover" alt="cover photo" />
-            <img src={userInfo.profilePic} id="profile" alt="profile photo" />
-            <img
-              src={edit}
-              onClick={handleEdit}
-              id="editProfile"
-              alt="edit profile"
-            />
-          </section>
+              <section className="ProfilePhotos">
+                <img src={userInfo.coverPic} id="cover" alt="cover photo" />
+                <img
+                  src={userInfo.profilePic}
+                  id="profile"
+                  alt="profile photo"
+                />
+                <img
+                  src={edit}
+                  onClick={handleEdit}
+                  id="editProfile"
+                  alt="edit profile"
+                />
+              </section>
 
-          <section className="UserInfo">
-            <h2 className="Name">{userInfo.name}</h2>
-            <p className="about">{userInfo.about}</p>
-          </section>
-          </section>
-          <aside className="interests">
-            {/* //<div className="card"> */}
-            <h3>Interests:</h3>
-            {csos.slice(0,visibleCount).map((cso) =>(
+              <section className="UserInfo">
+                <h2 className="Name">{userInfo.name}</h2>
+                <p className="about">{userInfo.about}</p>
+              </section>
+            </section>
+            <aside className="interests">
+              {/* //<div className="card"> */}
+              <h3>Interests:</h3>
+              {csos.slice(0, visibleCount).map((cso) => (
                 <div className="interest-item" key={cso.id}>
-                <img src={cso.logo_url ||"https://dummyimage.com/40x40/000000/ffffff&text=W"} alt={cso.name}/>
-                <div>
-                <p className="title">{cso.name}</p>
-                <p className="subtitle">{cso.cluster}</p>
-                <p className="subtitle">Number of followers</p>
+                  <img
+                    src={
+                      cso.logo_url ||
+                      "https://dummyimage.com/40x40/000000/ffffff&text=W"
+                    }
+                    alt={cso.name}
+                  />
+                  <div>
+                    <p className="title">{cso.name}</p>
+                    <p className="subtitle">{cso.cluster}</p>
+                    <p className="subtitle">Number of followers</p>
+                  </div>
+                  <button
+                    className="follow-btn"
+                    onClick={() => handleFollowToggle(cso.id, cso.isFollowing)}
+                  >
+                    {cso.isFollowing ? "Unfollow" : "Follow"}
+                  </button>
                 </div>
-                <button className="follow-btn" onClick={()=>handleFollowToggle(cso.id, cso.isFollowing)}
-                    >{cso.isFollowing?"Unfollow":"Follow"}</button>
-            </div>
+              ))}
 
-
-            ))}
-
-            {/* <div className="interest-item">
+              {/* <div className="interest-item">
                 <img src="https://dummyimage.com/40x40/000000/ffffff&text=W" alt="Entity name"/>
                 <div>
                 <p className="title">Wits DevSoc</p>
@@ -432,13 +430,15 @@ const handleUpdate = async () => {
                     <button className="follow-btn">Follow</button>
             </div> 
             <button className="show-more">Show more suggestions</button>
-            {/* </div> */} 
+            {/* </div> */}
 
-            {visibleCount<csos.length&&(
-                <button className="show-more" onClick={handleShowMore}>Show more suggestions</button>
-            )}
-        </aside>
-        </section>
+              {visibleCount < csos.length && (
+                <button className="show-more" onClick={handleShowMore}>
+                  Show more suggestions
+                </button>
+              )}
+            </aside>
+          </section>
         </>
       )}
     </>

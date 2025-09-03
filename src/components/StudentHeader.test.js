@@ -1,5 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
-import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
 import StudentHeader from "./StudentHeader";
 
 import { handleLogout } from "./Auth";
@@ -46,17 +52,17 @@ describe("StudentHeader Component", () => {
     expect(mockedNavigate).toHaveBeenCalledWith("/dashboard/student");
   });
 
-//   test("navigates to Search on click", () => {
-//     renderWithRouter(<StudentHeader />);
-//     fireEvent.click(screen.getByText(/Search/i));
-//     expect(mockedNavigate).toHaveBeenCalledWith("/search");
-//   });
+  //   test("navigates to Search on click", () => {
+  //     renderWithRouter(<StudentHeader />);
+  //     fireEvent.click(screen.getByText(/Search/i));
+  //     expect(mockedNavigate).toHaveBeenCalledWith("/search");
+  //   });
 
-//   test("navigates to Chat on click", () => {
-//     renderWithRouter(<StudentHeader />);
-//     fireEvent.click(screen.getByText(/Chat/i));
-//     expect(mockedNavigate).toHaveBeenCalledWith("/chat");
-//   });
+  //   test("navigates to Chat on click", () => {
+  //     renderWithRouter(<StudentHeader />);
+  //     fireEvent.click(screen.getByText(/Chat/i));
+  //     expect(mockedNavigate).toHaveBeenCalledWith("/chat");
+  //   });
 
   test("navigates to Profile on click", () => {
     renderWithRouter(<StudentHeader />);
@@ -64,13 +70,13 @@ describe("StudentHeader Component", () => {
     expect(mockedNavigate).toHaveBeenCalledWith("/profile/student");
   });
 
-//   test("calls handleLogout and navigates on logout", async () => {
-//     renderWithRouter(<StudentHeader />);
-//     fireEvent.click(screen.getByText(/Logout/i));
+  //   test("calls handleLogout and navigates on logout", async () => {
+  //     renderWithRouter(<StudentHeader />);
+  //     fireEvent.click(screen.getByText(/Logout/i));
 
-//     expect(handleLogout).toHaveBeenCalled();
-//     // since handleLogout is async, simulate await resolution
-//     await Promise.resolve();
-//     expect(mockedNavigate).toHaveBeenCalledWith("/auth");
-//   });
+  //     expect(handleLogout).toHaveBeenCalled();
+  //     // since handleLogout is async, simulate await resolution
+  //     await Promise.resolve();
+  //     expect(mockedNavigate).toHaveBeenCalledWith("/auth");
+  //   });
 });
