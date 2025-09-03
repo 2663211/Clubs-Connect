@@ -375,17 +375,13 @@ export default function StudentProfile() {
           <section className="profie-page">
             <section className="profile-content">
               <section className="ProfilePhotos">
-                <img src={userInfo.coverPic} id="cover" alt="cover photo" />
-                <img
-                  src={userInfo.profilePic}
-                  id="profile"
-                  alt="profile photo"
-                />
+                <img src={userInfo.coverPic} id="cover" alt="cover" />
+                <img src={userInfo.profilePic} id="profile" alt="profile" />
                 <img
                   src={edit}
                   onClick={handleEdit}
                   id="editProfile"
-                  alt="edit profile"
+                  alt="edit"
                 />
               </section>
 
