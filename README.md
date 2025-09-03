@@ -1,11 +1,12 @@
 # 🌱 Git Workflow Guide (Keep `main` Clean)
 
-To make sure our `main` branch always works and stays clean, please follow these steps when contributing.  
+To make sure our `main` branch always works and stays clean, please follow these steps when contributing.
 
 ---
 
 ## 1. Get the latest code
-Always start by syncing your local repo with GitHub.  
+
+Always start by syncing your local repo with GitHub.
 
 ```bash
 git checkout main
@@ -59,6 +60,3 @@ Go to GitHub.
 Open a Pull Request from your branch → main.
 
 Wait for teammate responsible for main to review and merge it.
-
-
-
