@@ -79,7 +79,7 @@ export default function Auth() {
 
             if (profile?.role === 'student') navigate('/dashboard/student');
             else if (profile?.role === 'sgo') navigate('/dashboard/sgo');
-            else if (profile?.role === 'exec') navigate('/dashboard/exec');
+            else if (profile?.role === 'exec') navigate('/dashboard/student');
           });
         }
       }
@@ -101,7 +101,7 @@ export default function Auth() {
 
             if (profile?.role === 'student') navigate('/dashboard/student');
             else if (profile?.role === 'sgo') navigate('/dashboard/sgo');
-            else if (profile?.role === 'exec') navigate('/dashboard/exec');
+            else if (profile?.role === 'exec') navigate('/dashboard/student');
           });
         }
       } else {
@@ -158,7 +158,10 @@ export default function Auth() {
     setLoading(true);
     setError('');
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
       setError(error.message);
       setLoading(false);
@@ -173,7 +176,7 @@ export default function Auth() {
 
     if (profile?.role === 'student') navigate('/dashboard/student');
     else if (profile?.role === 'sgo') navigate('/dashboard/sgo');
-    else if (profile?.role === 'exec') navigate('/dashboard/exec');
+    else if (profile?.role === 'exec') navigate('/dashboard/student');
   };
 
   // Google OAuth Sign in
@@ -319,7 +322,12 @@ export default function Auth() {
                   <button
                     type="button"
                     onClick={handleRegisterToggle}
-                    style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}
+                    style={{
+                      color: 'blue',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
                   >
                     Login here
                   </button>
@@ -384,7 +392,12 @@ export default function Auth() {
                   <button
                     type="button"
                     onClick={handleRegisterToggle}
-                    style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}
+                    style={{
+                      color: 'blue',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
                   >
                     Sign up here
                   </button>
