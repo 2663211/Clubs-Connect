@@ -55,8 +55,11 @@ export default defineConfig({
 				{
 					label: 'Development',
 					items: [
+						{ label: 'Git/GitHub Methodology', slug: 'development/git_methodology' },
 						{ label: 'Development Guides', slug: 'development/dev_guides' },
-						{ label: 'Code Structure', slug: 'development/code_structure' }
+						{ label: 'Code Structure', slug: 'development/code_structure' },
+						{ label: 'API', slug: 'development/api' },
+						{ label: 'Third-Party Code', slug: 'development/3rd_party' }
 					]
 				},
 				{
