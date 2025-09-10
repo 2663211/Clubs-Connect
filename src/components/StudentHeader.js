@@ -21,22 +21,17 @@ export default function StudentHeader() {
       <nav>
         <ul className="nav-bar">
           <li className="nav-links">
-            <button
-              onClick={() => navigate('/dashboard/student')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              NewsFeed
-            </button>
+            <button onClick={() => navigate('/dashboard/student')}>NewsFeed</button>
+          </li>
+          <li className="nav-links">
+            <button onClick={() => navigate('/search')}>Search</button>
+          </li>
+          <li className="nav-links">
+            <button onClick={() => navigate('/chat')}>Chat</button>
           </li>
           <li className="nav-links">
             <button
-              onClick={() => navigate('/search')}
+              onClick={() => navigate('/events')}
               style={{
                 background: 'none',
                 border: 'none',
@@ -45,21 +40,7 @@ export default function StudentHeader() {
                 padding: 0,
               }}
             >
-              Search
-            </button>
-          </li>
-          <li className="nav-links">
-            <button
-              onClick={() => navigate('/chat')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Chat
+              Events
             </button>
           </li>
           <li className="nav-links">
