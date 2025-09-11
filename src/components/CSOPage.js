@@ -1,3 +1,4 @@
+//Mukondi version
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
@@ -11,6 +12,7 @@ export default function EntityPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [exec, setExec] = useState(null);
   const [canPost, setCanPost] = useState(false);
 
   // Fetch logged-in user and check permissions
@@ -22,12 +24,11 @@ export default function EntityPage() {
       setUser(user);
 
       if (user && entityId) {
-        // Check if user has posting rights for this entity
+        // Fetch exec ID from the CSO exec table
         const { data: execData } = await supabase
           .from('cso_exec')
-          .select('can_post')
+          .select('exec_id')
           .eq('cso_id', entityId)
-          .eq('exec_id', user.id)
           .single();
 
         // Also check if user is SGO
@@ -37,7 +38,22 @@ export default function EntityPage() {
           .eq('id', user.id)
           .single();
 
-        setCanPost(execData?.can_post || profileData?.role === 'sgo');
+        if (profileData.role === 'sgo') {
+          setCanPost(true);
+        } else {
+          if (execData != null) {
+            const { data: execS_N } = await supabase
+              .from('executive')
+              .select('student_number')
+              .eq('id', execData.exec_id)
+              .single();
+
+            const s_n = execS_N.student_number;
+            if (s_n === user.id) {
+              setCanPost(true);
+            }
+          }
+        }
       }
     };
 
