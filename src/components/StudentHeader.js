@@ -23,52 +23,23 @@ export default function StudentHeader() {
           <li className="nav-links">
             <button onClick={() => navigate('/dashboard/student')}>NewsFeed</button>
           </li>
-          <li className="nav-links">
+          {/* <li className="nav-links">
             <button onClick={() => navigate('/search')}>Search</button>
-          </li>
+          </li> */}
           <li className="nav-links">
             <button onClick={() => navigate('/chat')}>Chat</button>
           </li>
           <li className="nav-links">
-            <button
-              onClick={() => navigate('/events')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Events
-            </button>
+            <button onClick={() => navigate('/events')}>Events</button>
           </li>
           <li className="nav-links">
-            <button
-              onClick={() => navigate('/profile/student')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Profile
-            </button>
+            <button onClick={() => navigate('/profile/student')}>Profile</button>
           </li>
           <li className="nav-links">
             <button
               onClick={async () => {
                 await handleLogout();
                 navigate('/auth');
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
               }}
             >
               Logout

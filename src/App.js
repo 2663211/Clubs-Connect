@@ -27,7 +27,6 @@ export default function App() {
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
-        <Route path="/search" element={<Search />} />
 
         <Route path="/entities/page" element={<CSOPage />} />
         <Route path="/entities/:entityId" element={<EntityPage />} />

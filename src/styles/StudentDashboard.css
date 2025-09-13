@@ -21,16 +21,23 @@
   padding: 0;
 }
 
-.nav-bar a {
+/* .nav-bar a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+} */
+.nav-links button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
 }
 
 .nav-links:hover {
   color: #fbba23;
 }
 
-.nav-links.active {
+.nav-links button.active {
   color: #fbba23;
 }

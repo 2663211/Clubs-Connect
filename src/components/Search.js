@@ -4,6 +4,7 @@ import searchIcon from '../images/icons8-search.gif';
 import '../styles/Search.css';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router';
+import FollowButton from './FollowButton';
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -57,7 +58,11 @@ export default function Search() {
         <ul className="search-list">
           {filteredCSOs.length > 0 ? (
             filteredCSOs.map(cso => (
-              <li key={cso.id} className="search-item" onClick={() => navigate('/entities/page')}>
+              <li
+                key={cso.id}
+                className="search-item"
+                onClick={() => navigate(`/entities/${cso.id}`)}
+              >
                 <img src={searchIcon} alt="search-gif" id="search-icon" />
                 <img src={cso.logo_url} alt="cso logo" id="cso-logo" />
                 <article className="csoContent">
