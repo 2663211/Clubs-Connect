@@ -3,13 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
 import StudentHeader from './StudentHeader';
 
+// Always use production API
+const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
+
+console.log('Using API URL:', API_BASE_URL);
+
 export default function StudentDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch events from your API
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -19,24 +23,45 @@ export default function StudentDashboard() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('https://clubs-connect-api.onrender.com/api/events', {
+      console.log('Fetching from:', `${API_BASE_URL}/api/events`);
+
+      const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Received data:', data);
+      console.log('Data type:', typeof data);
+      console.log('Is array:', Array.isArray(data));
+      console.log('Data length:', data?.length);
 
-      // Your API already returns an array
+      // Check each event's date
+      if (Array.isArray(data)) {
+        data.forEach((event, index) => {
+          console.log(`Event ${index}:`, {
+            id: event.id,
+            title: event.title,
+            date: event.date,
+            parsedDate: new Date(event.date),
+            isValidDate: !isNaN(new Date(event.date)),
+          });
+        });
+      }
+
       setEvents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching events:', error);
-      setError('Failed to load events. Please check your connection and try again.');
+      setError(`Failed to load events: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -45,10 +70,10 @@ export default function StudentDashboard() {
   // Filter events based on search term
   const filteredEvents = events.filter(
     event =>
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (event.location && event.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (event.cso_exec?.cso_name &&
+      event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (event?.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (event?.location && event.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (event?.cso_exec?.cso_name &&
         event.cso_exec.cso_name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
@@ -61,11 +86,28 @@ export default function StudentDashboard() {
   };
 
   return (
-    <article className="dashboard">
+    <div className="dashboard">
       <StudentHeader />
 
       <main>
-        <h2>Events</h2>
+        <h1 style={{ textAlign: 'center', color: '#043673', fontFamily: 'Kavoon', fontSize: 64 }}>
+          Upcoming Events
+        </h1>
+
+        {/* Debug Info - Remove in production */}
+        <div
+          style={{
+            background: '#f0f0f0',
+            padding: '10px',
+            margin: '10px 0',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontFamily: 'monospace',
+          }}
+        >
+          Debug: API URL = {API_BASE_URL} | Events Count = {events.length} | Loading ={' '}
+          {loading.toString()}
+        </div>
 
         {/* Enhanced Search Bar */}
         <div className="search-container">
@@ -121,7 +163,7 @@ export default function StudentDashboard() {
           {loading ? (
             <div className="loading">
               <div className="loading-spinner"></div>
-              Loading events...
+              Loading events from {API_BASE_URL}...
             </div>
           ) : error ? (
             <div className="error-message">
@@ -143,9 +185,9 @@ export default function StudentDashboard() {
               </button>
             </div>
           ) : filteredEvents.length > 0 ? (
-            filteredEvents.map(event => (
-              <div key={event.id} className="event-card">
-                <h3>{event.title}</h3>
+            filteredEvents.map((event, index) => (
+              <div key={event.id || index} className="event-card">
+                <h3>{event.title || 'Untitled Event'}</h3>
                 <p className="event-date">
                   <svg
                     width="16"
@@ -160,14 +202,16 @@ export default function StudentDashboard() {
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                   </svg>
-                  {new Date(event.date).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
+                  {event.date
+                    ? new Date(event.date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Date TBD'}
                 </p>
                 {event.location && (
                   <p className="event-location">
@@ -366,19 +410,6 @@ export default function StudentDashboard() {
           line-height: 1.5;
         }
 
-        .event-organization {
-          background: #4f46e5;
-          color: white;
-          padding: 4px 12px;
-          border-radius: 16px;
-          font-size: 12px;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          display: inline-block;
-          margin-top: 12px;
-        }
-
         .no-events {
           text-align: center;
           padding: 40px 20px;
@@ -399,7 +430,7 @@ export default function StudentDashboard() {
           }
 
           .search-input {
-            font-size: 16px; /* Prevents zoom on iOS */
+            font-size: 16px;
           }
 
           .events-container {
@@ -407,6 +438,6 @@ export default function StudentDashboard() {
           }
         }
       `}</style>
-    </article>
+    </div>
   );
 }

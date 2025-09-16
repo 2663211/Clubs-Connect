@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const { data, error } = await supabase
       .from('events')
       .select('*')
-      .gte('date', new Date().toISOString()) // only future events
+      //.gte('date', new Date().toISOString()) // only future events
       .order('date', { ascending: true });
 
     if (error) throw error;
