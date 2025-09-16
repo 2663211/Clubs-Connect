@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
 import StudentHeader from './StudentHeader';
+import { supabase } from '../supabaseClient';
 
 // Always use production API
 const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
@@ -13,6 +14,7 @@ export default function StudentDashboard() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     fetchEvents();
