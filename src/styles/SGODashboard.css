@@ -253,6 +253,7 @@
   background-color: #ccc;
 }
 
+
 .notification-box {
   position: fixed;
   top: 20px;
@@ -279,4 +280,3 @@
     opacity: 1;
     transform: translateY(0);
   }
-}

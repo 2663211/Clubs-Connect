@@ -11,8 +11,11 @@ export default function SGODashboard() {
   const [error, setError] = useState('');
   const [activeIndex, setActiveIndex] = useState(null); // which row dropdown is open
   const [roleMenuIndex, setRoleMenuIndex] = useState(null); // which nested role menu is open
+
   const [deleteModal, setDeleteModal] = useState({ open: false, userId: null });
   const [notification, setNotification] = useState({ message: '', visible: false });
+
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -207,10 +210,13 @@ export default function SGODashboard() {
             <p>{notification.message}</p>
           </aside>
         )}
+
         {loading ? (
           <p>Loading users...</p>
         ) : users.length === 0 ? (
-          <p>No users found.</p>
+          <p>No users found in the database.</p>
+        ) : filteredUsers.length === 0 ? (
+          <p>No users match your search.</p>
         ) : (
           <section className="user-container">
             {/* Header Row */}
@@ -229,7 +235,7 @@ export default function SGODashboard() {
 
             {/* User Rows */}
             <ul className="user-list">
-              {users.map((user, index) => (
+              {filteredUsers.map((user, index) => (
                 <li key={user.id} className={`user-row ${activeIndex === index ? 'show' : ''}`}>
                   <span>
                     {user.avatar_url ? (
