@@ -23,8 +23,6 @@ export default function StudentDashboard() {
       setLoading(true);
       setError(null);
 
-      console.log('Fetching from:', `${API_BASE_URL}/api/events`);
-
       const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'GET',
         headers: {
@@ -32,32 +30,11 @@ export default function StudentDashboard() {
         },
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Received data:', data);
-      console.log('Data type:', typeof data);
-      console.log('Is array:', Array.isArray(data));
-      console.log('Data length:', data?.length);
-
-      // Check each event's date
-      if (Array.isArray(data)) {
-        data.forEach((event, index) => {
-          console.log(`Event ${index}:`, {
-            id: event.id,
-            title: event.title,
-            date: event.date,
-            parsedDate: new Date(event.date),
-            isValidDate: !isNaN(new Date(event.date)),
-          });
-        });
-      }
-
       setEvents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -93,21 +70,6 @@ export default function StudentDashboard() {
         <h1 style={{ textAlign: 'center', color: '#043673', fontFamily: 'Kavoon', fontSize: 64 }}>
           Upcoming Events
         </h1>
-
-        {/* Debug Info - Remove in production */}
-        <div
-          style={{
-            background: '#f0f0f0',
-            padding: '10px',
-            margin: '10px 0',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontFamily: 'monospace',
-          }}
-        >
-          Debug: API URL = {API_BASE_URL} | Events Count = {events.length} | Loading ={' '}
-          {loading.toString()}
-        </div>
 
         {/* Enhanced Search Bar */}
         <div className="search-container">
@@ -188,13 +150,13 @@ export default function StudentDashboard() {
             filteredEvents.map((event, index) => (
               <div key={event.id || index} className="event-card">
                 <h3>{event.title || 'Untitled Event'}</h3>
-                <p className="event-date">
+                <p className="event-date" style={{ color: 'white' }}>
                   <svg
                     width="16"
                     height="16"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
+                    stroke="white"
                     strokeWidth="2"
                   >
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -214,13 +176,13 @@ export default function StudentDashboard() {
                     : 'Date TBD'}
                 </p>
                 {event.location && (
-                  <p className="event-location">
+                  <p className="event-location" style={{ color: 'white' }}>
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="currentColor"
+                      stroke="white"
                       strokeWidth="2"
                     >
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -229,7 +191,11 @@ export default function StudentDashboard() {
                     {event.location}
                   </p>
                 )}
-                {event.description && <p className="event-description">{event.description}</p>}
+                {event.description && (
+                  <p className="event-description" style={{ color: 'white' }}>
+                    {event.description}
+                  </p>
+                )}
               </div>
             ))
           ) : (
@@ -242,11 +208,12 @@ export default function StudentDashboard() {
 
       <style jsx>{`
         .search-container {
-          margin: 20px 0;
+          margin: 20px auto;
           max-width: 600px;
         }
 
         .search-box {
+          width: 100%;
           position: relative;
           display: flex;
           align-items: center;
@@ -309,15 +276,18 @@ export default function StudentDashboard() {
 
         .events-container {
           margin-top: 30px;
-          display: grid;
-          gap: 16px;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
         }
 
         .loading {
           text-align: center;
           padding: 40px 20px;
-          color: #6b7280;
+          color: #6f92d9ff;
           font-size: 16px;
           display: flex;
           flex-direction: column;
@@ -373,24 +343,115 @@ export default function StudentDashboard() {
         }
 
         .event-card {
-          background: white;
+          background: #5f7c9f;
           border: 1px solid #e5e7eb;
-          border-radius: 8px;
-          padding: 20px;
+          border-radius: 12px;
+          padding: 24px;
           transition: all 0.2s ease;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .event-card:hover {
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
           transform: translateY(-2px);
         }
 
+        .event-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 16px;
+          gap: 16px;
+        }
+
         .event-card h3 {
-          margin: 0 0 12px 0;
+          margin: 0;
           color: #111827;
-          font-size: 18px;
+          font-size: 20px;
           font-weight: 600;
+          flex: 1;
+        }
+
+        .calendar-dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        .add-to-calendar-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: #4f46e5;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .add-to-calendar-btn:hover {
+          background: #4338ca;
+          transform: translateY(-1px);
+        }
+
+        .calendar-options {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px);
+          transition: all 0.2s ease;
+          z-index: 1000;
+          min-width: 180px;
+          margin-top: 4px;
+        }
+
+        .calendar-dropdown:hover .calendar-options {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .calendar-options button {
+          width: 100%;
+          padding: 12px 16px;
+          border: none;
+          background: none;
+          text-align: left;
+          cursor: pointer;
+          font-size: 14px;
+          color: #374151;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          transition: background-color 0.2s ease;
+        }
+
+        .calendar-options button:hover {
+          background: #f9fafb;
+        }
+
+        .calendar-options button:first-child {
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+        }
+
+        .calendar-options button:last-child {
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+
+        .calendar-options svg {
+          flex-shrink: 0;
         }
 
         .event-date,
@@ -434,7 +495,32 @@ export default function StudentDashboard() {
           }
 
           .events-container {
-            grid-template-columns: 1fr;
+            margin-top: 20px;
+          }
+
+          .event-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          .add-to-calendar-btn {
+            align-self: flex-end;
+            font-size: 13px;
+            padding: 6px 12px;
+          }
+
+          .calendar-options {
+            right: 0;
+            left: auto;
+          }
+
+          .event-card {
+            padding: 20px;
+          }
+
+          .event-card h3 {
+            font-size: 18px;
           }
         }
       `}</style>
