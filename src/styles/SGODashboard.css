@@ -13,7 +13,7 @@
   font-size: 1.5rem;
 }
 
-.nav-links {
+.sgo-nav-links {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -21,10 +21,14 @@
   padding: 0;
 }
 
-.nav-links a {
+.sgo-nav-links a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+.DashboardHeader .sgo-nav-links button:hover {
+  color: #fbba23 !important;
 }
 
 .user-header,
@@ -247,4 +251,32 @@
 
 .modal-actions button:last-child {
   background-color: #ccc;
+}
+
+.notification-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* green */
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-box p {
+  margin: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

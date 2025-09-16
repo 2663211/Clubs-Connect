@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { MoreVertical } from 'lucide-react'; // clean icon for 3 dots (install lucide-react if not yet)
 import { useNavigate } from 'react-router-dom';
 import '../styles/SGOentities.css';
 import { handleLogout } from './Auth';
@@ -7,9 +8,13 @@ import { supabase } from '../supabaseClient';
 export default function SGODashboard() {
   const navigate = useNavigate();
   const [entities, setEntities] = useState([]);
+  const [openMenu, setOpenMenu] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('');
-  const [statusType, setStatusType] = useState('success'); // 'success' | 'error' | 'info'
+  const [notification, setNotification] = useState({
+    message: '',
+    type: 'success',
+    visible: false,
+  });
 
   useEffect(() => {
     fetchEntities();
@@ -18,7 +23,20 @@ export default function SGODashboard() {
   async function fetchEntities() {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('cso').select('*');
+      const { data, error } = await supabase.from('cso').select(`
+        id,
+        name,
+        description,
+        cluster,
+        logo_url,
+        cso_exec (
+          exec_id,
+          executive:exec_id (
+            student_number,
+            profile:student_number (full_name)
+          )
+        )
+      `);
       if (error) throw error;
       setEntities(data);
     } catch (err) {
@@ -38,25 +56,30 @@ export default function SGODashboard() {
       const entityToDelete = entities.find(e => e.id === entityId);
 
       const { error } = await supabase.from('cso').delete().eq('id', entityId);
-
       if (error) throw error;
 
       setEntities(prev => prev.filter(e => e.id !== entityId));
+      setDeleteModal({ open: false, entityId: null });
 
-      // Show success message
-      setStatusMessage(`${entityToDelete?.name} has been deleted successfully.`);
-      setStatusType('success');
+      // Show success notification
+      setNotification({
+        message: `${entityToDelete?.name} has been deleted successfully.`,
+        type: 'success',
+        visible: true,
+      });
 
-      // Hide message after 3 seconds
-      setTimeout(() => setStatusMessage(''), 3000);
+      // Hide after 3 seconds
+      setTimeout(() => setNotification({ message: '', type: 'success', visible: false }), 3000);
     } catch (err) {
       console.error('Failed to delete entity:', err.message);
-      setStatusMessage('Failed to delete entity. Please try again.');
-      setStatusType('error');
 
-      setTimeout(() => setStatusMessage(''), 3000);
-    } finally {
-      setDeleteModal({ open: false, entityId: null });
+      setNotification({
+        message: 'Failed to delete entity. Please try again.',
+        type: 'error',
+        visible: true,
+      });
+
+      setTimeout(() => setNotification({ message: '', type: 'success', visible: false }), 3000);
     }
   }
 
@@ -65,7 +88,7 @@ export default function SGODashboard() {
       <header className="EntityHeader">
         <h1>Clubs Connect</h1>
         <nav>
-          <ul className="nav-links">
+          <ul className="ent-nav-links">
             <li>
               <button
                 onClick={() => navigate('/dashboard/sgo')}
@@ -77,7 +100,7 @@ export default function SGODashboard() {
                   padding: 0,
                 }}
               >
-                Dashborad
+                Dashboard
               </button>
             </li>
             <li>
@@ -134,13 +157,23 @@ export default function SGODashboard() {
           Create Entity
         </button>
 
+        {notification.visible && (
+          <aside
+            className={`notification-box ${notification.type}`}
+            role="status"
+            aria-live="polite"
+          >
+            <p>{notification.message}</p>
+          </aside>
+        )}
+
         <section className="entities-list">
           {loading ? (
             <p>Loading entities...</p>
           ) : entities.length === 0 ? (
             <p>No entities found.</p>
           ) : (
-            entities.map((entity, index) => (
+            entities.map(entity => (
               <article key={entity.id} className="entity-card">
                 {entity.logo_url && (
                   <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
@@ -153,6 +186,19 @@ export default function SGODashboard() {
                 {entity.description && (
                   <section className="entity-description">
                     <p>{entity.description}</p>
+                  </section>
+                )}
+
+                {/* 👇 Executives rendering */}
+                {entity.cso_exec && entity.cso_exec.length > 0 && (
+                  <section className="entity-executives">
+                    <ul>
+                      {entity.cso_exec.map(exec => (
+                        <li key={exec.exec_id}>
+                          Executive: {exec.executive?.profile?.full_name || 'Unknown'}
+                        </li>
+                      ))}
+                    </ul>
                   </section>
                 )}
 

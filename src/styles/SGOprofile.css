@@ -12,7 +12,7 @@
   font-size: 1.5rem;
 }
 
-.nav-links {
+.pro-nav-links {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -20,8 +20,12 @@
   padding: 0;
 }
 
-.nav-links a {
+.pro-nav-links a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+.ProfileHeader .pro-nav-links button:hover {
+  color: #fbba23 !important;
 }

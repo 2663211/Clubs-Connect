@@ -12,7 +12,7 @@
   font-size: 1.5rem;
 }
 
-.nav-links {
+.ent-nav-links {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -20,10 +20,14 @@
   padding: 0;
 }
 
-.nav-links a {
+.ent-nav-links a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+.EntityHeader .ent-nav-links button:hover {
+  color: #fbba23 !important;
 }
 
 .create-entity-btn {
@@ -120,4 +124,66 @@
 
 .btn-page:hover {
   background: #5f7c9f;
+}
+
+.notification-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-box.success {
+  background-color: #4caf50; /* green */
+}
+
+.notification-box.error {
+  background-color: #f44336; /* red */
+  max-width: 100px; /* narrower box for error */
+  max-height: 40px; /* limit height */
+  overflow-y: auto; /* scroll if error is too long */
+  word-wrap: break-word; /* wrap long words */
+}
+
+.notification-box p {
+  margin: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Executives section */
+.entity-executives {
+  margin-top: 12px;
+  text-align: left; /* align text to left for readability */
+}
+
+.entity-executives ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entity-executives li {
+  font-size: 0.85rem;
+  color: #333;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.entity-executives li:last-child {
+  border-bottom: none;
 }
