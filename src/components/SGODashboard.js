@@ -12,6 +12,14 @@ export default function SGODashboard() {
   const [activeIndex, setActiveIndex] = useState(null); // which row dropdown is open
   const [roleMenuIndex, setRoleMenuIndex] = useState(null); // which nested role menu is open
   const [deleteModal, setDeleteModal] = useState({ open: false, userIndex: null });
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter users based on search query
+  const filteredUsers = users.filter(
+    user =>
+      user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -186,10 +194,23 @@ export default function SGODashboard() {
       <main className="content">
         <h1>User Management</h1>
 
+        <section className="search-header">
+          <input
+            type="search"
+            id="Clubsearch"
+            placeholder="Search User"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+          <img src={require('../images/icons8-search.gif')} id="search-icon" alt="search" />
+        </section>
+
         {loading ? (
           <p>Loading users...</p>
         ) : users.length === 0 ? (
-          <p>No users found.</p>
+          <p>No users found in the database.</p>
+        ) : filteredUsers.length === 0 ? (
+          <p>No users match your search.</p>
         ) : (
           <section className="user-container">
             {/* Header Row */}
@@ -208,7 +229,7 @@ export default function SGODashboard() {
 
             {/* User Rows */}
             <ul className="user-list">
-              {users.map((user, index) => (
+              {filteredUsers.map((user, index) => (
                 <li key={user.id} className={`user-row ${activeIndex === index ? 'show' : ''}`}>
                   <span>
                     {user.avatar_url ? (
