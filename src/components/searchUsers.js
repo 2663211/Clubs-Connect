@@ -52,7 +52,7 @@ export default function Search() {
         <img src={searchIcon} id="search-icon" alt="search-gif" />
       </section>
 
-      {searchQuery == '' ? (
+      {searchQuery === '' ? (
         ' '
       ) : (
         <ul className="search-list">
