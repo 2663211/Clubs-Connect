@@ -11,15 +11,11 @@ export default function SGODashboard() {
   const [error, setError] = useState('');
   const [activeIndex, setActiveIndex] = useState(null); // which row dropdown is open
   const [roleMenuIndex, setRoleMenuIndex] = useState(null); // which nested role menu is open
-  const [deleteModal, setDeleteModal] = useState({ open: false, userIndex: null });
-  const [searchQuery, setSearchQuery] = useState('');
 
-  // Filter users based on search query
-  const filteredUsers = users.filter(
-    user =>
-      user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [deleteModal, setDeleteModal] = useState({ open: false, userId: null });
+  const [notification, setNotification] = useState({ message: '', visible: false });
+
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,10 +50,9 @@ export default function SGODashboard() {
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = e => {
-      if (!e.target.closest('.user-row')) {
-        setActiveIndex(null);
-        setRoleMenuIndex(null);
-      }
+      if (e.target.closest('.user-row') || e.target.closest('.modal')) return;
+      setActiveIndex(null);
+      setRoleMenuIndex(null);
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -68,15 +63,39 @@ export default function SGODashboard() {
     try {
       const user = users[index];
 
-      // Update in Supabase
-      const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', user.id); // we need if because it is unique. 2 people can have the same name
+      // 1️⃣ Update role in profiles
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ role: newRole })
+        .eq('id', user.id);
 
-      if (error) {
-        console.error('Error updating role:', error.message);
+      if (updateError) {
+        console.error('Error updating role:', updateError.message);
         return;
       }
 
-      // Update local state
+      // 2️⃣ If new role is 'exec', add to executives table
+      if (newRole === 'exec') {
+        const { error: insertExecError } = await supabase
+          .from('executive')
+          .insert({ student_number: user.id });
+
+        if (insertExecError) {
+          console.error('Error adding to executives table:', insertExecError.message);
+        }
+      } else {
+        // Optional: remove from executives if demoted
+        const { error: deleteExecError } = await supabase
+          .from('executive')
+          .delete()
+          .eq('student_number', user.id);
+
+        if (deleteExecError) {
+          console.error('Error removing from executives table:', deleteExecError.message);
+        }
+      }
+
+      // 3️⃣ Update local state
       const updatedUsers = [...users];
       updatedUsers[index].role = newRole;
       setUsers(updatedUsers);
@@ -89,34 +108,26 @@ export default function SGODashboard() {
     }
   };
 
-  const handleDelete = async index => {
-    const user = users[index];
-
-    if (!user) return;
-
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${user.full_name}'s profile?`
-    );
-
-    if (!confirmDelete) return;
-
+  const handleDelete = async userId => {
     try {
-      // Delete the profile from Supabase
-      const { error } = await supabase.from('profiles').delete().eq('id', user.id);
+      const { data, error } = await supabase.from('profiles').delete().eq('id', userId);
 
       if (error) {
-        console.error('Error deleting profile:', error.message);
+        console.error('Supabase delete error:', error.message);
         return;
       }
 
-      // Remove the user from local state so UI updates instantly
-      const updatedUsers = [...users];
-      updatedUsers.splice(index, 1);
-      setUsers(updatedUsers);
+      const deletedUser = users.find(u => u.id === userId);
 
-      // Close dropdown
-      setActiveIndex(null);
-      setRoleMenuIndex(null);
+      setUsers(users.filter(u => u.id !== userId));
+      setDeleteModal({ open: false, userId: null });
+
+      setNotification({
+        message: `${deletedUser.full_name}'s profile has successfully been deleted.`,
+        visible: true,
+      });
+
+      setTimeout(() => setNotification({ message: '', visible: false }), 3000);
     } catch (err) {
       console.error('Unexpected error:', err);
     }
@@ -127,7 +138,7 @@ export default function SGODashboard() {
       <header className="DashboardHeader">
         <h1>Clubs Connect</h1>
         <nav>
-          <ul className="nav-links">
+          <ul className="sgo-nav-links">
             <li>
               <button
                 onClick={() => navigate('/dashboard/sgo')}
@@ -194,16 +205,11 @@ export default function SGODashboard() {
       <main className="content">
         <h1>User Management</h1>
 
-        <section className="search-header">
-          <input
-            type="search"
-            id="Clubsearch"
-            placeholder="Search User"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-          <img src={require('../images/icons8-search.gif')} id="search-icon" alt="search" />
-        </section>
+        {notification.visible && (
+          <aside className="notification-box" role="status" aria-live="polite">
+            <p>{notification.message}</p>
+          </aside>
+        )}
 
         {loading ? (
           <p>Loading users...</p>
@@ -274,7 +280,7 @@ export default function SGODashboard() {
                         )}
                       </li>
                       <li>
-                        <button onClick={() => setDeleteModal({ open: true, userIndex: index })}>
+                        <button onClick={() => setDeleteModal({ open: true, userId: user.id })}>
                           Delete Profile
                         </button>
                       </li>
@@ -294,11 +300,13 @@ export default function SGODashboard() {
                 <h2>Confirm Deletion</h2>
               </header>
               <p>
-                Are you sure you want to delete {users[deleteModal.userIndex]?.full_name}'s profile?
+                Are you sure you want to delete{' '}
+                {users.find(u => u.id === deleteModal.userId)?.full_name}'s profile?
               </p>
+
               <footer className="modal-actions">
-                <button onClick={() => handleDelete(deleteModal.userIndex)}>Yes, Delete</button>
-                <button onClick={() => setDeleteModal({ open: false, userIndex: null })}>
+                <button onClick={() => handleDelete(deleteModal.userId)}>Yes, Delete</button>
+                <button onClick={() => setDeleteModal({ open: false, userId: null })}>
                   Cancel
                 </button>
               </footer>

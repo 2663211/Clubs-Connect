@@ -11,7 +11,7 @@ export default function SGODashboard() {
       <header className="ProfileHeader">
         <h1>Clubs Connect</h1>
         <nav>
-          <ul className="nav-links">
+          <ul className="pro-nav-links">
             <li>
               <button
                 onClick={() => navigate('/dashboard/sgo')}
@@ -23,7 +23,7 @@ export default function SGODashboard() {
                   padding: 0,
                 }}
               >
-                Dashborad
+                Dashboard
               </button>
             </li>
             <li>
