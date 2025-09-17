@@ -9,6 +9,7 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
+import Search from './components/Search';
 
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
