@@ -14,8 +14,11 @@ export default function SGODashboard() {
 
   const [deleteModal, setDeleteModal] = useState({ open: false, userId: null });
   const [notification, setNotification] = useState({ message: '', visible: false });
+  const [searchQuery, setSearchQuery] = useState('');
 
-
+  const filteredUsers = users.filter(user =>
+    user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -210,6 +213,17 @@ export default function SGODashboard() {
             <p>{notification.message}</p>
           </aside>
         )}
+
+        <section className="search-header">
+          <input
+            type="search"
+            id="Clubsearch"
+            placeholder="Search User"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />{' '}
+          <img src={require('../images/icons8-search.gif')} id="search-icon" alt="search" />
+        </section>
 
         {loading ? (
           <p>Loading users...</p>
