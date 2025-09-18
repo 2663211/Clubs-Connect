@@ -7,6 +7,7 @@ import coverPhoto2 from '../images/coverPhoto2.png';
 import '../styles/StudentProfile.css';
 import edit from '../images/icons8-edit-50.png';
 import { supabase } from '../supabaseClient';
+import FollowButton from './FollowButton';
 
 export default function StudentProfile() {
   const navigate = useNavigate();
@@ -256,6 +257,7 @@ export default function StudentProfile() {
         .filter(cso => !cso.isFollowing);
 
       setCsos(unfollowedCsos);
+
       setLoading(false);
     };
 
@@ -297,13 +299,13 @@ export default function StudentProfile() {
     setCsos(prev => prev.filter(cso => cso.id !== csoId));
   };
 
-  const [visibleCount, setVisibleCount] = useState(10); // 👈 show 10 at first
+  const [visibleCount, setVisibleCount] = useState(5); // 👈 show 5 at first
 
   // ... your existing fetchCsos useEffect and handleFollowToggle code ...
 
   // Function to show more CSOs
   const handleShowMore = () => {
-    setVisibleCount(prev => prev + 10);
+    setVisibleCount(prev => prev + 5);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -375,7 +377,11 @@ export default function StudentProfile() {
               {/* //<div className="card"> */}
               <h3>Interests:</h3>
               {csos.slice(0, visibleCount).map(cso => (
-                <div className="interest-item" key={cso.id}>
+                <div
+                  className="interest-item"
+                  key={cso.id}
+                  onClick={() => navigate(`/entities/${cso.id}`)}
+                >
                   <img
                     src={cso.logo_url || 'https://dummyimage.com/40x40/000000/ffffff&text=W'}
                     alt={cso.name}
@@ -385,12 +391,13 @@ export default function StudentProfile() {
                     <p className="subtitle">{cso.cluster}</p>
                     <p className="subtitle">Number of followers</p>
                   </div>
-                  <button
+                  {/* <button
                     className="follow-btn"
                     onClick={() => handleFollowToggle(cso.id, cso.isFollowing)}
                   >
-                    {cso.isFollowing ? 'Unfollow' : 'Follow'}
-                  </button>
+                    {cso.isFollowing ? 'unfollow' : 'Follow'}
+                  </button> */}
+                  <FollowButton csoId={cso.id} initialIsFollowing={cso.isFollowing} />
                 </div>
               ))}
 

@@ -32,10 +32,10 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
       />
 
       {/* Show suggestions dropdown */}
-      {showSuggestions && search && availableExecutives.length > 0 && (
+      {showSuggestions && availableExecutives.length > 0 && (
         <ul className="suggestions-dropdown">
           {availableExecutives.map(exec => (
-            <li key={exec.id} onClick={() => selectExecutive(exec)}>
+            <li key={exec.id} onMouseDown={() => selectExecutive(exec)}>
               {exec.name}
             </li>
           ))}
@@ -89,14 +89,12 @@ function AddCSO() {
   async function loadExecutives() {
     try {
       // Get executive records
-      const { data: execData } = await supabase
-        .from('executive')
-        .select('id, "student/staff_number"');
+      const { data: execData } = await supabase.from('executive').select('id, "student_number"');
 
       if (!execData || execData.length === 0) return;
 
       // Get profile names
-      const studentNumbers = execData.map(e => e['student/staff_number']).filter(Boolean);
+      const studentNumbers = execData.map(e => e['student_number']).filter(Boolean);
 
       const { data: profiles } = await supabase
         .from('profiles')
@@ -106,8 +104,8 @@ function AddCSO() {
       // Combine data
       const executivesWithNames = execData.map(exec => ({
         id: exec.id,
-        student_staff_number: exec['student/staff_number'],
-        name: profiles?.find(p => p.id === exec['student/staff_number'])?.full_name || 'Unknown',
+        student_number: exec['student_number'],
+        name: profiles?.find(p => p.id === exec['student_number'])?.full_name || 'Unknown',
       }));
 
       setExecutives(executivesWithNames);
