@@ -27,7 +27,36 @@ export default function StudentHeader() {
             <button onClick={() => navigate('/search')}>Search</button>
           </li> */}
           <li className="nav-links">
+
+            <button
+              onClick={() => navigate('/events')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              Events
+            </button>
+          </li>
+          <li className="nav-links">
+            <button
+              onClick={() => navigate('/search')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              Search
+            </button>
+
             <button onClick={() => navigate('/chat')}>Chat</button>
+
           </li>
           <li className="nav-links">
             <button onClick={() => navigate('/events')}>Events</button>

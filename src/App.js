@@ -9,7 +9,11 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
+
+import ExecEvents from './components/ExecEvents';
+
 import Search from './components/Search';
+
 
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
@@ -27,6 +31,8 @@ export default function App() {
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
+
+        <Route path="/events" element={<ExecEvents />} />
 
         <Route path="/entities/page" element={<CSOPage />} />
         <Route path="/entities/:entityId" element={<EntityPage />} />
