@@ -1,9 +1,36 @@
 // FollowButton.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 
-export default function FollowButton({ csoId, initialIsFollowing }) {
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
+export default function FollowButton({ csoId }) {
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const checkFollowStatus = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: followData, error } = await supabase
+        .from('cso_follow')
+        .select('cso_id, follow_status')
+        .eq('cso_id', csoId)
+        .eq('student_number', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching follow status:', error.message);
+        return;
+      }
+
+      if (followData) {
+        setIsFollowing(true);
+      }
+    };
+
+    checkFollowStatus();
+  }, [csoId]);
 
   const handleFollowToggle = async () => {
     const {
