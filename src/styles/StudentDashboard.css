@@ -41,3 +41,98 @@
 .nav-links button.active {
   color: #fbba23;
 }
+.posts {
+  /* posts the entire posts*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.post-section {
+  /* one post*/
+  width: 60%;
+  margin: 10px;
+  padding: 10px;
+  background: #5f7c9f;
+  border-radius: 10px;
+}
+
+.cso-details {
+  /*name and date*/
+  margin-left: 5px;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  margin-right: 300px;
+  cursor: pointer;
+}
+.CSOInfo {
+  /*cso logo and name and date*/
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.CSOname {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.cso-logo {
+  /*cso logo*/
+  width: 55px;
+  height: 55px;
+  border-radius: 5px;
+}
+.postCaption {
+  color: white;
+  margin-left: 20px;
+  font-size: 1.1rem;
+}
+.followerCount {
+  color: white;
+}
+
+/* Media container */
+.postMedia {
+  /*pictures and videos and audio*/
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  background-color: #5f7c9f;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Post images - prevent stretching */
+.postImage {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Post videos */
+.postVideo {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Post audio */
+.postAudio {
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem 0;
+}
+
+/* Post date */
+.postDate {
+  margin: 1rem 0 0 0;
+  font-size: 0.9rem;
+  color: #e2e0e0;
+  text-align: right;
+}
