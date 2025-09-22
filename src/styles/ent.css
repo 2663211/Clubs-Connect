@@ -126,38 +126,6 @@
   background: #5f7c9f;
 }
 
-.btn-add-member {
-  background: #5f7c9f;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  transition: background 0.2s;
-}
-
-.btn-add-member:hover {
-  background: #4a6480; /* slightly darker shade for hover */
-}
-
-.btn-update-cso {
-  background: #5f7c9f;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  transition: background 0.2s;
-}
-
-.btn-update-cso {
-  background: #4a6480; /* slightly darker shade for hover */
-}
-
 .notification-box {
   position: fixed;
   top: 20px;

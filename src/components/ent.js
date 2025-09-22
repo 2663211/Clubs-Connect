@@ -5,7 +5,7 @@ import '../styles/SGOentities.css';
 import { handleLogout } from './Auth';
 import { supabase } from '../supabaseClient';
 
-export default function SGOentities() {
+export default function SGODashboard() {
   const navigate = useNavigate();
   const [entities, setEntities] = useState([]);
   const [openMenu, setOpenMenu] = useState(null);
@@ -212,20 +212,6 @@ export default function SGOentities() {
                   &nbsp;&nbsp;
                   <button className="btn-page" onClick={() => navigate(`/entities/${entity.id}`)}>
                     Go to page
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    className="btn-add-member"
-                    onClick={() => navigate(`/entities/${entity.id}/members/add`)}
-                  >
-                    Add Members
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    className="btn-update-cso"
-                    onClick={() => navigate(`/entities/${entity.id}/members/add`)}
-                  >
-                    Update CSO
                   </button>
                 </footer>
               </article>

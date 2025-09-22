@@ -1,5 +1,5 @@
-import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom';
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter, MemoryRouter, Link, Routes, Route } from 'react-router-dom';
+import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SGODashboard from './SGODashboard.js';
 import SGOEntities from './SGOentities.js';
@@ -46,7 +46,6 @@ test('Logout button navigates to Auth page', async () => {
       </Routes>
     </MemoryRouter>
   );
-
   //to locate button with this text
   const logoutButton = screen.getByText('Logout');
   await userEvent.click(logoutButton);
@@ -56,24 +55,40 @@ test('Logout button navigates to Auth page', async () => {
   expect(loginButton).toBeInTheDocument();
 });
 
-test('Entities button navigates to SGOEntities page', async () => {
+test('Dashboard button navigates to SGODashboard page', async () => {
   render(
-    <MemoryRouter initialEntries={['/dashboard']}>
+    <MemoryRouter initialEntries={['/entities/sgo']}>
       <Routes>
-        <Route path="/dashboard" element={<SGODashboard />} />
-        <Route path="/entities" element={<SGOEntities />} />
+        <Route path="/entities/sgo" element={<SGOEntities />} />
+        <Route path="/dashboard/sgo" element={<SGODashboard />} />
       </Routes>
     </MemoryRouter>
   );
 
   const user = userEvent.setup();
+  // Click the Dashboard button
+  const dashboardButton = screen.getByRole('button', { name: /dashboard/i });
+  await user.click(dashboardButton);
+  // Assert that SGODashboard page loaded by checking "User Management" heading
+  const userManagementHeading = await screen.findByRole('heading', { name: /user management/i });
+  expect(userManagementHeading).toBeInTheDocument();
+});
 
-  // Find the Entities button and click it
+test('Entities button navigates to SGOEntities page', async () => {
+  render(
+    <MemoryRouter initialEntries={['/dashboard']}>
+      <Routes>
+        <Route path="/dashboard" element={<SGODashboard />} />
+        {/* match the actual path here */}
+        <Route path="/entities/sgo" element={<SGOEntities />} />
+      </Routes>
+    </MemoryRouter>
+  );
+  const user = userEvent.setup();
+
   const entitiesButton = screen.getByText('Entities');
   await user.click(entitiesButton);
-
-  // Check that SGOEntities page loaded
-  // Replace /entities page heading with something unique from your SGOEntities page
-  const entitiesHeading = screen.getByRole('heading', { name: /entities/i });
-  expect(entitiesHeading).toBeInTheDocument();
+  // Look for "Create Entity" button in SGOEntities page
+  const createEntityButton = await screen.findByRole('button', { name: /create entity/i });
+  expect(createEntityButton).toBeInTheDocument();
 });

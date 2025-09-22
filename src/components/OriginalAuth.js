@@ -247,7 +247,7 @@ export default function Auth() {
         <section className="auth-container" aria-label="Authentication Forms">
           <main>
             <header>
-              <h1 className="auth-header">Clubs Connect</h1>
+              <h1>Clubs Connect</h1>
             </header>
 
             {isRegistering ? (
@@ -255,12 +255,12 @@ export default function Auth() {
                 <fieldset>
                   <legend>Signup</legend>
 
-                  {/*<label htmlFor="name">Full Name</label>*/}
+                  <label htmlFor="name">Full Name</label>
                   <br />
                   <input
                     id="name"
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="Your full name"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     required
@@ -268,12 +268,12 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="email">Email</label>*/}
+                  <label htmlFor="email">Email</label>
                   <br />
                   <input
                     id="email"
                     type="email"
-                    placeholder="Email"
+                    placeholder="12345@students.wits.ac.za"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
@@ -281,12 +281,12 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="password">Password</label>*/}
+                  <label htmlFor="password">Password</label>
                   <br />
                   <input
                     id="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="••••••••"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
@@ -294,7 +294,7 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  <button type="submit" disabled={loading} className="btn-auth">
+                  <button type="submit" disabled={loading}>
                     Sign up
                   </button>
                   <br />
@@ -304,15 +304,31 @@ export default function Auth() {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    className="btn-google"
+                    style={{
+                      backgroundColor: '#4285F4',
+                      color: 'white',
+                      border: 'none',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                    }}
                   >
                     Sign up with Google
                   </button>
                 </fieldset>
 
-                <p className="toggle-text">
+                <p>
                   Already have an account?{' '}
-                  <button type="button" onClick={handleRegisterToggle}>
+                  <button
+                    type="button"
+                    onClick={handleRegisterToggle}
+                    style={{
+                      color: 'blue',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
                     Login here
                   </button>
                 </p>
@@ -322,12 +338,12 @@ export default function Auth() {
                 <fieldset>
                   <legend>Login</legend>
 
-                  {/*<label htmlFor="email">Email</label>*/}
+                  <label htmlFor="email">Email</label>
                   <br />
                   <input
                     id="email"
                     type="email"
-                    placeholder="Email"
+                    placeholder="12345@students.wits.ac.za"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
@@ -335,12 +351,12 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="password">Password</label>*/}
+                  <label htmlFor="password">Password</label>
                   <br />
                   <input
                     id="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="••••••••"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
@@ -348,7 +364,7 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  <button type="submit" disabled={loading} className="btn-auth">
+                  <button type="submit" disabled={loading}>
                     Login
                   </button>
                   <br />
@@ -358,16 +374,32 @@ export default function Auth() {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    className="btn-google"
+                    style={{
+                      backgroundColor: '#4285F4',
+                      color: 'white',
+                      border: 'none',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                    }}
                   >
                     Sign in with Google
                   </button>
                 </fieldset>
 
-                <p className="toggle-text">
+                <p>
                   Don't have an account?{' '}
-                  <button type="button" onClick={handleRegisterToggle}>
-                    Signup here
+                  <button
+                    type="button"
+                    onClick={handleRegisterToggle}
+                    style={{
+                      color: 'blue',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Sign up here
                   </button>
                 </p>
               </form>
