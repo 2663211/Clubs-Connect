@@ -9,7 +9,7 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
-
+import Announcements from './components/announcements';
 import ExecEvents from './components/ExecEvents';
 
 import Search from './components/Search';
@@ -30,6 +30,7 @@ export default function App() {
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
+        <Route path="/announcements/sgo" element={<Announcements />} />
 
         <Route path="/events" element={<ExecEvents />} />
 

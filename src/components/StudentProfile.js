@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import coverPhoto from '../images/coverPhoto.jpeg';
 import profilePhoto from '../images/ProfilePhoto.jpeg';
 import coverPhoto2 from '../images/coverPhoto2.png';
-import '../styles/StudentProfile.css';
 import edit from '../images/icons8-edit-50.png';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
