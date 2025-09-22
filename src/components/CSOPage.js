@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import ExecPost from './ExecPost';
 import '../styles/CSOPage.css';
+import FollowButton from './FollowButton';
 
 export default function EntityPage() {
   const { entityId } = useParams();
@@ -104,6 +105,7 @@ export default function EntityPage() {
           <h1>{entity.name}</h1>
           <p className="entity-cluster">{entity.cluster}</p>
           <p className="entity-description">{entity.description}</p>
+          <FollowButton csoId={entity.id} />
         </div>
       </header>
 
