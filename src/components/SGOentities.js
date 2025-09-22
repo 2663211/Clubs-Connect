@@ -20,6 +20,17 @@ export default function SGOentities() {
     fetchEntities();
   }, []);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!event.target.closest('.entity-menu-container')) {
+        setOpenMenu(null);
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
   async function fetchEntities() {
     setLoading(true);
     try {
@@ -82,6 +93,10 @@ export default function SGOentities() {
       setTimeout(() => setNotification({ message: '', type: 'success', visible: false }), 3000);
     }
   }
+
+  const toggleMenu = entityId => {
+    setOpenMenu(openMenu === entityId ? null : entityId);
+  };
 
   return (
     <article>
@@ -175,6 +190,73 @@ export default function SGOentities() {
           ) : (
             entities.map(entity => (
               <article key={entity.id} className="entity-card">
+                <div className="entity-menu-container">
+                  <button
+                    className="entity-menu-trigger"
+                    onClick={() => toggleMenu(entity.id)}
+                    aria-label="Entity options"
+                    aria-haspopup="true"
+                    aria-expanded={openMenu === entity.id}
+                  >
+                    <MoreVertical size={20} />
+                  </button>
+
+                  {openMenu === entity.id && (
+                    <nav className="entity-dropdown-menu" role="menu">
+                      <ul>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
+                              navigate(`/entities/${entity.id}`);
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item"
+                          >
+                            Go to page
+                          </button>
+                        </li>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
+                              navigate(`/entities/${entity.id}/members/add`);
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item"
+                          >
+                            Add Members
+                          </button>
+                        </li>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
+                              navigate(`/entities/${entity.id}/members/add`);
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item"
+                          >
+                            Update CSO
+                          </button>
+                        </li>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
+                              setDeleteModal({ open: true, entityId: entity.id });
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item dropdown-item-danger"
+                          >
+                            Delete Entity
+                          </button>
+                        </li>
+                      </ul>
+                    </nav>
+                  )}
+                </div>
+
                 {entity.logo_url && (
                   <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
                 )}
@@ -189,7 +271,7 @@ export default function SGOentities() {
                   </section>
                 )}
 
-                {/* 👇 Executives rendering */}
+                {/* Executives rendering */}
                 {entity.cso_exec && entity.cso_exec.length > 0 && (
                   <section className="entity-executives">
                     <ul>
@@ -201,33 +283,6 @@ export default function SGOentities() {
                     </ul>
                   </section>
                 )}
-
-                <footer>
-                  <button
-                    className="btn-delete"
-                    onClick={() => setDeleteModal({ open: true, entityId: entity.id })}
-                  >
-                    Delete Entity
-                  </button>
-                  &nbsp;&nbsp;
-                  <button className="btn-page" onClick={() => navigate(`/entities/${entity.id}`)}>
-                    Go to page
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    className="btn-add-member"
-                    onClick={() => navigate(`/entities/${entity.id}/members/add`)}
-                  >
-                    Add Members
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    className="btn-update-cso"
-                    onClick={() => navigate(`/entities/${entity.id}/members/add`)}
-                  >
-                    Update CSO
-                  </button>
-                </footer>
               </article>
             ))
           )}

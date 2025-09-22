@@ -21,8 +21,14 @@ export default function StudentHeader() {
       <nav>
         <ul className="nav-bar">
           <li className="nav-links">
+            <button onClick={() => navigate('/dashboard/student')}>NewsFeed</button>
+          </li>
+          {/* <li className="nav-links">
+            <button onClick={() => navigate('/search')}>Search</button>
+          </li> */}
+          <li className="nav-links">
             <button
-              onClick={() => navigate('/dashboard/student')}
+              onClick={() => navigate('/events')}
               style={{
                 background: 'none',
                 border: 'none',
@@ -31,7 +37,7 @@ export default function StudentHeader() {
                 padding: 0,
               }}
             >
-              NewsFeed
+              Events
             </button>
           </li>
           <li className="nav-links">
@@ -47,47 +53,20 @@ export default function StudentHeader() {
             >
               Search
             </button>
+
+            <button onClick={() => navigate('/chat')}>Chat</button>
           </li>
           <li className="nav-links">
-            <button
-              onClick={() => navigate('/chat')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Chat
-            </button>
+            <button onClick={() => navigate('/events')}>Events</button>
           </li>
           <li className="nav-links">
-            <button
-              onClick={() => navigate('/profile/student')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Profile
-            </button>
+            <button onClick={() => navigate('/profile/student')}>Profile</button>
           </li>
           <li className="nav-links">
             <button
               onClick={async () => {
                 await handleLogout();
                 navigate('/auth');
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-                padding: 0,
               }}
             >
               Logout

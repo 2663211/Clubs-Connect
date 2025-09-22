@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
 import StudentHeader from './StudentHeader';
+import Search from './Search';
 
 export default function StudentDashboard() {
   // const navigate = useNavigate();
@@ -9,12 +10,7 @@ export default function StudentDashboard() {
   return (
     <article className="dashboard">
       <StudentHeader />
-
-      <main>
-        <h1>Student Dashboard</h1>
-
-        <p>Welcome, student! Here you can view your clubs, events, and updates.</p>
-      </main>
+      <Search />
     </article>
   );
 }
