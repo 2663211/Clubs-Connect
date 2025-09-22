@@ -37,6 +37,13 @@ export default function Search() {
     setFilteredCSOs(results);
   }, [searchQuery, csos]);
 
+  function SearchButton(csoName) {
+    const cso = csos.find(c => c.name.toLowerCase() === csoName.toLowerCase());
+    if (cso) {
+      navigate(`/entities/${cso.id}`);
+    }
+  }
+
   return (
     <>
       {/* <StudentHeader /> */}
@@ -49,7 +56,12 @@ export default function Search() {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
-        <img src={searchIcon} id="search-icon" alt="search-gif" />
+        <img
+          src={searchIcon}
+          id="search-icon"
+          alt="search-gif"
+          onClick={() => SearchButton(searchQuery)}
+        />
       </section>
 
       {searchQuery == '' ? (

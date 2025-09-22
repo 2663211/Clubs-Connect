@@ -6,6 +6,26 @@ import Search from './Search';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
 
+function timeSince(date) {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  let interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) return interval === 1 ? '1 year ago' : `${interval} years ago`;
+
+  interval = Math.floor(seconds / 2592000);
+  if (interval >= 1) return interval === 1 ? '1 month ago' : `${interval} months ago`;
+
+  interval = Math.floor(seconds / 86400);
+  if (interval >= 1) return interval === 1 ? '1 day ago' : `${interval} days ago`;
+
+  interval = Math.floor(seconds / 3600);
+  if (interval >= 1) return interval === 1 ? '1 hour ago' : `${interval} hours ago`;
+
+  interval = Math.floor(seconds / 60);
+  if (interval >= 1) return interval === 1 ? '1 minute ago' : `${interval} minutes ago`;
+
+  return 'Just now';
+}
+
 export default function StudentDashboard() {
   const navigate = useNavigate();
   const { entityId } = useParams();
@@ -133,7 +153,7 @@ export default function StudentDashboard() {
                           {followers[cso.id] || 0}{' '}
                           {followers[cso.id] === 1 ? 'follower' : 'followers'}
                         </p>
-                        <p className="postDate">{new Date(post.created_at).toLocaleString()}</p>
+                        <p className="postDate">{timeSince(post.created_at)}</p>
                       </section>
                       <FollowButton csoId={cso.id} />
                     </header>
