@@ -14,7 +14,6 @@ import ExecEvents from './components/ExecEvents';
 
 import Search from './components/Search';
 
-
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
 
