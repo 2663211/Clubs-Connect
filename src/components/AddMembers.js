@@ -121,7 +121,7 @@ export default function AddMembersPage() {
         </header>
 
         {members.length === 0 ? (
-          <p>No members yet.</p>
+          <p className="addmembers-empty">No members yet.</p>
         ) : (
           members.map(m => (
             <article key={m.student_number} className="addmembers-user-row">

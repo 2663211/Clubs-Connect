@@ -40,13 +40,16 @@
 /* User Header (column names) */
 .addmembers-user-header {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   padding: 8px 12px;
   background-color: #5f7c9f; /* blue-ish header */
   color: black;
   font-weight: bold;
   border-radius: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px; /* space between header and first row */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Header Column Text */
@@ -81,7 +84,10 @@
   padding: 6px 12px;
   background-color: #f0f4ff; /* light blue row */
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px; /* space between header and first row */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Avatar Image */
@@ -180,4 +186,26 @@
 
 .am-modal-actions button:last-child:hover {
   background-color: #aaa;
+}
+
+.addmembers-section h2 {
+  font-size: 1.9rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center; /* can be left | center | right */
+}
+
+/* Empty State Row */
+.addmembers-empty {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: #f9f9f9; /* subtle gray instead of blue */
+  border-radius: 8px;
+  margin-bottom: 10px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+  color: #555;
 }

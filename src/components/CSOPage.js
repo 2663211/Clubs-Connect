@@ -120,7 +120,7 @@ export default function EntityPage() {
         {entity.logo_url && (
           <figure>
             <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
-            <figcaption className="visually-hidden">{entity.name} logo</figcaption>
+            <figcaption className="visually-hidden">{entity.name} Logo</figcaption>
           </figure>
         )}
         <section className="entity-info">

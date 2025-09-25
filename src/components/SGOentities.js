@@ -120,6 +120,20 @@ export default function SGOentities() {
             </li>
             <li>
               <button
+                onClick={() => navigate('/announcements/sgo')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
+              >
+                Announcements
+              </button>
+            </li>
+            <li>
+              <button
                 onClick={() => navigate('/entities/sgo')}
                 style={{
                   background: 'none',
@@ -232,7 +246,7 @@ export default function SGOentities() {
                           <button
                             role="menuitem"
                             onClick={() => {
-                              navigate(`/entities/${entity.id}/members/add`);
+                              navigate(`/entities/:csoId/update`);
                               setOpenMenu(null);
                             }}
                             className="dropdown-item"

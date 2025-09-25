@@ -255,10 +255,11 @@ export default function Auth() {
                 <fieldset>
                   <legend>Signup</legend>
 
-                  {/*<label htmlFor="name">Full Name</label>*/}
+                  {/*<label htmlFor="signup-name">Full Name</label>*/}
                   <br />
                   <input
-                    id="name"
+                    id="signup-name"
+                    className="auth-input"
                     type="text"
                     placeholder="Full Name"
                     value={name}
@@ -268,10 +269,11 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="email">Email</label>*/}
+                  {/*<label htmlFor="signup-email">Email</label>*/}
                   <br />
                   <input
-                    id="email"
+                    id="signup-email"
+                    className="auth-input"
                     type="email"
                     placeholder="Email"
                     value={email}
@@ -281,10 +283,11 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="password">Password</label>*/}
+                  {/*<label htmlFor="signup-password">Password</label>*/}
                   <br />
                   <input
-                    id="password"
+                    id="signup-password"
+                    className="auth-input"
                     type="password"
                     placeholder="Password"
                     value={password}
@@ -322,10 +325,11 @@ export default function Auth() {
                 <fieldset>
                   <legend>Login</legend>
 
-                  {/*<label htmlFor="email">Email</label>*/}
+                  {/*<label htmlFor="login-email">Email</label>*/}
                   <br />
                   <input
-                    id="email"
+                    id="login-email"
+                    className="auth-input"
                     type="email"
                     placeholder="Email"
                     value={email}
@@ -335,10 +339,11 @@ export default function Auth() {
                   <br />
                   <br />
 
-                  {/*<label htmlFor="password">Password</label>*/}
+                  {/*<label htmlFor="login-password">Password</label>*/}
                   <br />
                   <input
-                    id="password"
+                    id="login-password"
+                    className="auth-input"
                     type="password"
                     placeholder="Password"
                     value={password}
