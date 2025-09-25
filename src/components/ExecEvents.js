@@ -127,7 +127,7 @@ export default function StudentDashboard() {
           {loading ? (
             <div className="loading">
               <div className="loading-spinner"></div>
-              Loading events from {API_BASE_URL}...
+              Loading events...
             </div>
           ) : error ? (
             <div className="error-message">

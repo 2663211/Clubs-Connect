@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import ExecPost from './ExecPost';
 import '../styles/CSOPage.css';
+import FollowButton from './FollowButton';
 
 export default function EntityPage() {
   const { entityId } = useParams();
@@ -12,27 +13,6 @@ export default function EntityPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [canPost, setCanPost] = useState(false);
-  const [banner, setBanner] = useState(null); // ✅ Success/Error confirmation banner
-
-  // Fetch posts (wrapped in useCallback so we can call it from ExecPost too)
-  const fetchPosts = useCallback(async () => {
-    if (!entityId) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('cso_id', entityId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setPosts(data || []);
-    } catch (err) {
-      console.error('Failed to fetch posts:', err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [entityId]);
 
   // Fetch logged-in user and check permissions
   useEffect(() => {
@@ -89,75 +69,66 @@ export default function EntityPage() {
     fetchEntity();
   }, [entityId]);
 
-  // Fetch posts on mount
+  // Fetch posts for this entity
   useEffect(() => {
+    const fetchPosts = async () => {
+      if (!entityId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('cso_id', entityId)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setPosts(data || []);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchPosts();
-  }, [fetchPosts]);
+  }, [entityId]);
 
-  // ✅ Function to show confirmation banner
-  const showBanner = (message, type = 'success') => {
-    setBanner({ message, type });
-    setTimeout(() => setBanner(null), 3000); // Auto-hide after 3s
-  };
-
-  if (loading) return <p className="loading">Loading...</p>;
-  if (!entity) return <p className="error">Entity not found</p>;
+  if (loading) return <div className="loading">Loading...</div>;
+  if (!entity) return <div className="error">Entity not found</div>;
 
   return (
-    <main className="entity-page">
-      {/* ✅ Banner for confirmation */}
-      {banner && (
-        <section
-          className={`banner ${banner.type}`}
-          role={banner.type === 'error' ? 'alert' : 'status'}
-        >
-          {banner.message}
-        </section>
-      )}
-
+    <div className="entity-page">
       {/* Entity Header */}
       <header className="entity-header">
-        {entity.logo_url && (
-          <figure>
-            <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
-            <figcaption className="visually-hidden">{entity.name} Logo</figcaption>
-          </figure>
-        )}
-        <section className="entity-info">
+        {entity.logo_url && <img src={entity.logo_url} alt={entity.name} className="entity-logo" />}
+        <div className="entity-info">
           <h1>{entity.name}</h1>
           <p className="entity-cluster">{entity.cluster}</p>
           <p className="entity-description">{entity.description}</p>
-        </section>
+          <FollowButton csoId={entity.id} />
+        </div>
       </header>
 
       {/* Post Creation (if user has permission) */}
       {canPost && (
-        <section className="post-creation-section" aria-label="Create a new post">
-          {/* ✅ Pass callback to ExecPost to refresh + show confirmation */}
-          <ExecPost
-            entityId={entityId}
-            onPostCreated={() => {
-              fetchPosts();
-              showBanner('✅ Post created successfully!');
-            }}
-            onPostError={() => showBanner('❌ Failed to create post.', 'error')}
-          />
+        <section className="post-creation-section">
+          <ExecPost entityId={entityId} />
         </section>
       )}
 
       {/* Posts Display */}
-      <section className="posts-section" aria-label="Posts">
+      <section className="posts-section">
         <h2>Posts</h2>
         {posts.length === 0 ? (
           <p className="no-posts">No posts yet.</p>
         ) : (
-          <section className="posts-container">
+          <div className="posts-container">
             {posts.map(post => (
               <article key={post.id} className="post-card">
                 {post.caption && <p className="post-caption">{post.caption}</p>}
 
                 {post.media_url && (
-                  <figure className="post-media">
+                  <div className="post-media">
                     {post.media_type === 'image' && (
                       <img src={post.media_url} alt="Post media" className="post-image" />
                     )}
@@ -173,26 +144,20 @@ export default function EntityPage() {
                         Your browser does not support the audio element.
                       </audio>
                     )}
-                  </figure>
+                  </div>
                 )}
 
-                <footer>
-                  <time dateTime={post.created_at}>
-                    {new Date(post.created_at).toLocaleString()}
-                  </time>
-                </footer>
+                <p className="post-date">{new Date(post.created_at).toLocaleString()}</p>
               </article>
             ))}
-          </section>
+          </div>
         )}
       </section>
 
       {/* Back Button */}
-      <nav aria-label="Back navigation">
-        <button onClick={() => navigate(-1)} className="back-button">
-          Back
-        </button>
-      </nav>
-    </main>
+      <button onClick={() => navigate(-1)} className="back-button">
+        Back
+      </button>
+    </div>
   );
 }
