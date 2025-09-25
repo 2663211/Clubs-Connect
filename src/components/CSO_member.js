@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/CSO_Member.css';
+
 import { supabase } from '../supabaseClient';
 
 export default function CSO_member() {
@@ -78,7 +79,7 @@ export default function CSO_member() {
         //     csoID: csoDetails.id, csoName: csoDetails.name, csoDescription: csoDetails.description,
         //     csoCluster: csoDetails.cluster, csoLogo: csoDetails.logo_url
         // }]);
-        console.log(csoDetails.name);
+        //console.log(csoDetails.name);
         //setEntities([...entities, csoDetails]);
         setEntities(entities => [...entities, csoDetails]);
       }
@@ -116,13 +117,12 @@ export default function CSO_member() {
               <header>
                 <h2>{entity.name}</h2>
                 <p className="entity-cluster">{entity.cluster}</p>
+                {entity.description && (
+                  <section className="entity-description">
+                    <p>{entity.description}</p>
+                  </section>
+                )}
               </header>
-
-              {entity.description && (
-                <section className="entity-description">
-                  <p>{entity.description}</p>
-                </section>
-              )}
             </article>
           ))
         )}{' '}

@@ -376,14 +376,14 @@ export default function StudentProfile() {
               <button
                 onClick={() => navigate('/cso/member')}
                 style={{
-                  background: 'none',
+                  background: '#0069d9',
                   border: 'none',
                   color: 'inherit',
                   cursor: 'pointer',
-                  padding: 0,
+                  padding: 10,
                 }}
               >
-                Entities
+                Memberships
               </button>
             </section>
 

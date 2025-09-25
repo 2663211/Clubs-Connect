@@ -1,6 +1,7 @@
 // ExecPost.js
 //Mukondi changes
 import React, { useState, useEffect } from 'react';
+import mail_icon from '../images/mail_icon.jpg';
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
 
@@ -108,11 +109,14 @@ export default function ExecPost({ entityId }) {
       <button onClick={handleSubmit} disabled={loading} className="post-submit-button">
         {loading ? 'Posting...' : 'Post'}
       </button>
-      <form>
-        <label for="post_restriction">Post for: </label>
+      <form className="post-restriction-input">
+        <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
+        <label for="post_restriction_label">Post for: </label>
         <select name="post_restriction" id="p_r" defaultValue={''}>
           <option value="">Please choose who should see this post</option>
-          <option value="Members_only">Members_only</option>
+          <option value="Members_only" style={{ background: 'blue' }}>
+            Members_only
+          </option>
           <option value="Everyone">Everyone</option>
         </select>
       </form>
