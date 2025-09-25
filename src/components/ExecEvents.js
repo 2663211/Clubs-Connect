@@ -4,7 +4,6 @@ import '../styles/StudentDashboard.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
-// Always use production API
 const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
 
 console.log('Using API URL:', API_BASE_URL);
@@ -46,7 +45,6 @@ export default function StudentDashboard() {
     }
   };
 
-  // Filter events based on search term
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,14 +62,95 @@ export default function StudentDashboard() {
     setSearchTerm('');
   };
 
+  async function createCalendarEvent(event) {
+    const token = sessionStorage.getItem('provider_token');
+
+    if (!token) {
+      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
+        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
+        const redirectUri = window.location.origin + window.location.pathname;
+        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
+
+        window.location.href = authUrl;
+      }
+      return;
+    }
+
+    const calendarEvent = {
+      summary: event.title || 'Untitled Event',
+      description: event.description,
+      start: {
+        dateTime: new Date(event.date).toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      },
+      end: {
+        dateTime: new Date(new Date(event.date).getTime() + 60 * 60 * 1000).toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      },
+    };
+
+    try {
+      const response = await fetch(
+        'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(calendarEvent),
+        }
+      );
+
+      const data = await response.json();
+      console.log('Google Calendar API response:', data);
+
+      if (response.ok) {
+        alert('Event created! Check your Google Calendar.');
+      } else {
+        alert('Failed to create event: ' + (data.error?.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Calendar error:', err);
+      alert('Something went wrong adding to calendar.');
+    }
+  }
+
+  useEffect(() => {
+    if (window.location.hash.includes('access_token')) {
+      const params = new URLSearchParams(window.location.hash.substring(1));
+      const token = params.get('access_token');
+      if (token) sessionStorage.setItem('provider_token', token);
+      window.location.hash = '';
+    }
+  }, []);
+
   return (
     <div className="dashboard">
       <StudentHeader />
 
       <main>
-        <h1 style={{ textAlign: 'center', color: '#043673', fontFamily: 'Kavoon', fontSize: 64 }}>
-          Upcoming Events
-        </h1>
+        <div class="page-content">
+          <h1 style={{ textAlign: 'center', color: '#043673', fontFamily: 'Kavoon', fontSize: 64 }}>
+            Upcoming Events
+          </h1>
+
+          <button className="CreateEvent">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create New Event
+          </button>
+        </div>
 
         {/* Enhanced Search Bar */}
         <div className="search-container">
@@ -120,65 +199,38 @@ export default function StudentDashboard() {
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
-        </div>
 
-        {/* Events Display */}
-        <div className="events-container">
-          {loading ? (
-            <div className="loading">
-              <div className="loading-spinner"></div>
-              Loading events from {API_BASE_URL}...
-            </div>
-          ) : error ? (
-            <div className="error-message">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-              </svg>
-              {error}
-              <button onClick={fetchEvents} className="retry-button">
-                Try Again
-              </button>
-            </div>
-          ) : filteredEvents.length > 0 ? (
-            filteredEvents.map((event, index) => (
-              <div key={event.id || index} className="event-card">
-                <h3>{event.title || 'Untitled Event'}</h3>
-                <p className="event-date" style={{ color: 'white' }}>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg>
-                  {event.date
-                    ? new Date(event.date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
-                    : 'Date TBD'}
-                </p>
-                {event.location && (
-                  <p className="event-location" style={{ color: 'white' }}>
+          {/* Events Display */}
+          <div className="events-container">
+            {loading ? (
+              <div className="loading">
+                <div className="loading-spinner"></div>
+                Loading events from {API_BASE_URL}...
+              </div>
+            ) : error ? (
+              <div className="error-message">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                {error}
+                <button onClick={fetchEvents} className="retry-button">
+                  Try Again
+                </button>
+              </div>
+            ) : filteredEvents.length > 0 ? (
+              filteredEvents.map((event, index) => (
+                <div key={event.id || index} className="event-card">
+                  <h3>{event.title || 'Untitled Event'}</h3>
+                  <p className="event-date" style={{ color: 'white' }}>
                     <svg
                       width="16"
                       height="16"
@@ -187,24 +239,59 @@ export default function StudentDashboard() {
                       stroke="white"
                       strokeWidth="2"
                     >
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                      <circle cx="12" cy="10" r="3"></circle>
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    {event.location}
+                    {event.date
+                      ? new Date(event.date).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+                      : 'Date TBD'}
                   </p>
-                )}
-                {event.description && (
-                  <p className="event-description" style={{ color: 'white' }}>
-                    {event.description}
-                  </p>
-                )}
+                  {event.location && (
+                    <p className="event-location" style={{ color: 'white' }}>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                      >
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      {event.location}
+                    </p>
+                  )}
+                  {event.description && (
+                    <div>
+                      <p className="event-description" style={{ color: 'white' }}>
+                        {event.description}
+                      </p>
+                      <button
+                        className="add-to-calendar-btn"
+                        onClick={() => createCalendarEvent(event)}
+                      >
+                        Add to Calendar
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="no-events">
+                {searchTerm ? `No events found matching "${searchTerm}"` : 'No events available'}
               </div>
-            ))
-          ) : (
-            <div className="no-events">
-              {searchTerm ? `No events found matching "${searchTerm}"` : 'No events available'}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
 
@@ -282,6 +369,16 @@ export default function StudentDashboard() {
           flex-direction: column;
           gap: 20px;
           max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .CreateEvent {
+          float: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          max-width: 900px;
           margin-left: auto;
           margin-right: auto;
         }
@@ -380,6 +477,22 @@ export default function StudentDashboard() {
         }
 
         .add-to-calendar-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: #4f46e5;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .CreateEvent {
           display: flex;
           align-items: center;
           gap: 6px;
