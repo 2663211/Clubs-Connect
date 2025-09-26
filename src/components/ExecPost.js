@@ -1,9 +1,11 @@
-// ExecPost.js
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
+import Attachments from '../images/paperclip.png';
+import Mail from '../images/mail.png';
+import Avatar from '../images/avatar.png';
 
-export default function ExecPost({ entityId }) {
+export default function ExecPost({ entityId, onPostCreated }) {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
@@ -28,46 +30,55 @@ export default function ExecPost({ entityId }) {
 
   const handleFileChange = e => setFile(e.target.files[0]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     if (!user) return alert('You must be logged in to post.');
-    if (!file) return alert('Please select a file.');
+    if (!caption.trim() && !file) return alert('Please enter text or select a file.');
 
     setLoading(true);
 
     try {
-      // 1. Upload file to Supabase Storage
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+      let mediaUrl = null;
+      let mediaType = null;
 
-      const { error: uploadError } = await supabase.storage.from('media').upload(filePath, file);
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
-      if (uploadError) throw uploadError;
+        const { error: uploadError } = await supabase.storage.from('media').upload(filePath, file);
 
-      const { data } = supabase.storage.from('media').getPublicUrl(filePath);
-      const mediaUrl = data.publicUrl;
+        if (uploadError) throw uploadError;
 
-      const mediaType = file.type.startsWith('image')
-        ? 'image'
-        : file.type.startsWith('video')
-          ? 'video'
-          : 'audio';
+        const { data } = supabase.storage.from('media').getPublicUrl(filePath);
+        mediaUrl = data.publicUrl;
 
-      // 2. Insert post with entityId
+        mediaType = file.type.startsWith('image')
+          ? 'image'
+          : file.type.startsWith('video')
+            ? 'video'
+            : 'audio';
+      }
+
+      // Insert post with user_id field (matching your table schema)
       const { error: insertError } = await supabase.from('posts').insert([
         {
           caption,
           media_url: mediaUrl,
           media_type: mediaType,
           cso_id: entityId,
+          user_id: user.id, // Changed from exec_id to user_id
         },
       ]);
 
       if (insertError) throw insertError;
 
-      alert('Post created successfully!');
       setCaption('');
       setFile(null);
-      window.location.reload(); // Refresh to show new post
+
+      // Call the callback if provided
+      if (onPostCreated) {
+        onPostCreated();
+      }
     } catch (err) {
       console.error(err);
       alert('Error creating post: ' + err.message);
@@ -78,21 +89,38 @@ export default function ExecPost({ entityId }) {
 
   return (
     <div className="exec-post">
-      <h3>Create Post</h3>
-
       <textarea
-        placeholder="Write your caption..."
+        placeholder="Create a post"
         value={caption}
         onChange={e => setCaption(e.target.value)}
-        rows={4}
+        rows={3}
         className="post-caption-input"
       />
 
-      <input type="file" onChange={handleFileChange} className="post-file-input" />
+      {/* Show file name if attached */}
+      {file && <p className="file-name">📎 {file.name}</p>}
 
-      <button onClick={handleSubmit} disabled={loading} className="post-submit-button">
-        {loading ? 'Posting...' : 'Post'}
-      </button>
+      <div className="post-controls">
+        <button onClick={handleSubmit} disabled={loading} className="post-submit-button">
+          {loading ? 'Posting...' : 'Post'}
+        </button>
+
+        <label className="images-label">
+          <img src={Attachments} alt="Attach" className="paperclip-icon" />
+          Images
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="file-input"
+            accept="image/*,video/*,audio/*"
+          />
+        </label>
+
+        <button className="post-for-button">
+          <img src={Mail} alt="Post For" className="mail-icon" />
+          POST FOR
+        </button>
+      </div>
     </div>
   );
 }
