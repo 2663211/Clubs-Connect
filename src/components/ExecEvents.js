@@ -237,65 +237,38 @@ export default function StudentDashboard() {
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
-          
-        {/* Events Display */}
-        <div className="events-container">
-          {loading ? (
-            <div className="loading">
-              <div className="loading-spinner"></div>
-              Loading events...
-            </div>
-          ) : error ? (
-            <div className="error-message">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-              </svg>
-              {error}
-              <button onClick={fetchEvents} className="retry-button">
-                Try Again
-              </button>
-            </div>
-          ) : filteredEvents.length > 0 ? (
-            filteredEvents.map((event, index) => (
-              <div key={event.id || index} className="event-card">
-                <h3>{event.title || 'Untitled Event'}</h3>
-                <p className="event-date" style={{ color: 'white' }}>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg>
-                  {event.date
-                    ? new Date(event.date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
-                    : 'Date TBD'}
-                </p>
-                {event.location && (
-                  <p className="event-location" style={{ color: 'white' }}>
 
+          {/* Events Display */}
+          <div className="events-container">
+            {loading ? (
+              <div className="loading">
+                <div className="loading-spinner"></div>
+                Loading events...
+              </div>
+            ) : error ? (
+              <div className="error-message">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                {error}
+                <button onClick={fetchEvents} className="retry-button">
+                  Try Again
+                </button>
+              </div>
+            ) : filteredEvents.length > 0 ? (
+              filteredEvents.map((event, index) => (
+                <div key={event.id || index} className="event-card">
+                  <h3>{event.title || 'Untitled Event'}</h3>
+                  <p className="event-date" style={{ color: 'white' }}>
                     <svg
                       width="16"
                       height="16"
