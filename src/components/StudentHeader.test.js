@@ -11,11 +11,6 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedNavigate,
 }));
 
-// Mock handleLogout
-// jest.mock("./Auth", () => ({
-//   handleLogout: jest.fn(),
-// }));
-
 const renderWithRouter = ui => {
   return render(<BrowserRouter>{ui}</BrowserRouter>);
 };
@@ -23,7 +18,6 @@ const renderWithRouter = ui => {
 describe('StudentHeader Component', () => {
   beforeEach(() => {
     mockedNavigate.mockReset();
-    handleLogout.mockReset();
   });
 
   test('renders header title', () => {
@@ -34,9 +28,9 @@ describe('StudentHeader Component', () => {
   test('renders all navigation buttons', () => {
     renderWithRouter(<StudentHeader />);
     expect(screen.getByText(/NewsFeed/i)).toBeInTheDocument();
-    expect(screen.getByText(/Search/i)).toBeInTheDocument();
     expect(screen.getByText(/Chat/i)).toBeInTheDocument();
     expect(screen.getByText(/Profile/i)).toBeInTheDocument();
+    expect(screen.getByText(/Events/i)).toBeInTheDocument();
     expect(screen.getByText(/Logout/i)).toBeInTheDocument();
   });
 
@@ -46,17 +40,16 @@ describe('StudentHeader Component', () => {
     expect(mockedNavigate).toHaveBeenCalledWith('/dashboard/student');
   });
 
-  //   test("navigates to Search on click", () => {
-  //     renderWithRouter(<StudentHeader />);
-  //     fireEvent.click(screen.getByText(/Search/i));
-  //     expect(mockedNavigate).toHaveBeenCalledWith("/search");
-  //   });
-
-  //   test("navigates to Chat on click", () => {
-  //     renderWithRouter(<StudentHeader />);
-  //     fireEvent.click(screen.getByText(/Chat/i));
-  //     expect(mockedNavigate).toHaveBeenCalledWith("/chat");
-  //   });
+  test('navigates to Chat on click', () => {
+    renderWithRouter(<StudentHeader />);
+    fireEvent.click(screen.getByText(/Chat/i));
+    expect(mockedNavigate).toHaveBeenCalledWith('/chat');
+  });
+  test('navigates to Events on click', () => {
+    renderWithRouter(<StudentHeader />);
+    fireEvent.click(screen.getByText(/Events/i));
+    expect(mockedNavigate).toHaveBeenCalledWith('/events');
+  });
 
   test('navigates to Profile on click', () => {
     renderWithRouter(<StudentHeader />);

@@ -186,3 +186,11 @@ textarea {
 .cso-form fieldset.subscription input[type='radio'] {
   margin: 0; /* Remove default margin */
 }
+
+/* Page background */
+.add-cso-page {
+  min-height: 100vh;
+  background-color: #5f7c9f; /* only this page */
+  padding: 40px 20px; /* spacing around the container */
+  box-sizing: border-box; /* prevent container stretching */
+}

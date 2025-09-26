@@ -70,6 +70,7 @@
     ],
     "**/*.{json,css,md}": [
       "prettier --write"
-    ]
+    ],
+    "!node_modules": "true"
   }
 }

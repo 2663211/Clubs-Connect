@@ -34,7 +34,7 @@ test('userEmail input should be rendered', () => {
       <Auth />
     </BrowserRouter>
   );
-  const emailInputEl = screen.getByPlaceholderText(/12345@students.wits.ac.za/i);
+  const emailInputEl = screen.getByPlaceholderText(/Email/i);
   expect(emailInputEl).toBeInTheDocument();
 });
 test('userFullName input should be rendered', () => {
@@ -84,7 +84,7 @@ test('userEmail input should change', () => {
       <Auth />
     </BrowserRouter>
   );
-  const emailInputEl = screen.getByPlaceholderText(/12345@students.wits.ac.za/i);
+  const emailInputEl = screen.getByPlaceholderText(/Email/i);
   const testValue = 'test';
 
   fireEvent.change(emailInputEl, { target: { value: testValue } });

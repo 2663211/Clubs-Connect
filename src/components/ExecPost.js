@@ -1,13 +1,14 @@
-// ExecPost.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
 
-export default function ExecPost({ entityId }) {
+export default function ExecPost({ entityId, onPostCreated, onPostError }) {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const fileInputRef = useRef(null); // ✅ ref for file input
 
   // Fetch logged-in user
   useEffect(() => {
@@ -28,9 +29,17 @@ export default function ExecPost({ entityId }) {
 
   const handleFileChange = e => setFile(e.target.files[0]);
 
-  const handleSubmit = async () => {
-    if (!user) return alert('You must be logged in to post.');
-    if (!file) return alert('Please select a file.');
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    if (!user) {
+      onPostError?.('You must be logged in to post.');
+      return;
+    }
+    if (!file) {
+      onPostError?.('Please select a file.');
+      return;
+    }
 
     setLoading(true);
 
@@ -52,7 +61,7 @@ export default function ExecPost({ entityId }) {
           ? 'video'
           : 'audio';
 
-      // 2. Insert post with entityId
+      // 2. Insert post
       const { error: insertError } = await supabase.from('posts').insert([
         {
           caption,
@@ -64,20 +73,22 @@ export default function ExecPost({ entityId }) {
 
       if (insertError) throw insertError;
 
-      alert('Post created successfully!');
+      // ✅ Reset form
       setCaption('');
       setFile(null);
-      window.location.reload(); // Refresh to show new post
+      if (fileInputRef.current) fileInputRef.current.value = ''; // clears file input
+
+      onPostCreated?.();
     } catch (err) {
       console.error(err);
-      alert('Error creating post: ' + err.message);
+      onPostError?.(`Error creating post: ${err.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="exec-post">
+    <form className="exec-post" onSubmit={handleSubmit}>
       <h3>Create Post</h3>
 
       <textarea
@@ -88,11 +99,16 @@ export default function ExecPost({ entityId }) {
         className="post-caption-input"
       />
 
-      <input type="file" onChange={handleFileChange} className="post-file-input" />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="post-file-input"
+        ref={fileInputRef} // ✅ attach ref
+      />
 
-      <button onClick={handleSubmit} disabled={loading} className="post-submit-button">
+      <button type="submit" disabled={loading} className="post-submit-button">
         {loading ? 'Posting...' : 'Post'}
       </button>
-    </div>
+    </form>
   );
 }
