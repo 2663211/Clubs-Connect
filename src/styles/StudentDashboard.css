@@ -41,3 +41,103 @@
 .nav-links button.active {
   color: #fbba23;
 }
+.posts {
+  /* posts the entire posts*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.post-section {
+  /* one post*/
+  width: 60%;
+  margin: 10px auto;
+  padding: 10px;
+  background: #5f7c9f;
+  border-radius: 10px;
+}
+
+.cso-details {
+  /*name, follower count and date*/
+  flex: 1;
+  min-width: 150px;
+  margin-left: 5px;
+  cursor: pointer;
+  padding: 5px;
+  color: white;
+}
+.CSOInfo {
+  /*cso logo and name and date*/
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 10px;
+  box-sizing: border-box;
+}
+.CSOname {
+  color: white;
+  font-weight: bold;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.cso-logo {
+  /*cso logo*/
+  width: 55px;
+  height: 55px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.postCaption {
+  color: white;
+  margin-left: 20px;
+  font-size: 1.1rem;
+}
+
+/* Media container */
+.postMedia {
+  /*pictures and videos and audio*/
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  background-color: #5f7c9f;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Post images - prevent stretching */
+.postImage {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Post videos */
+.postVideo {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Post audio */
+.postAudio {
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem 0;
+}
+
+/* Post date */
+.followerCount,
+.postDate {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e2e0e0;
+}

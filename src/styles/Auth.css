@@ -15,7 +15,122 @@
 .auth-container main {
   background-color: rgba(255, 255, 255, 0.6);
   padding: 2rem;
-  max-width: 700px;
+  width: 80%; /* ✅ makes it take 80% of container */
+  max-width: 400px; /* ✅ caps it on large screens */
+  min-height: 50px; /* ✅ ensures taller block */
   margin: auto;
   border-radius: 10px;
+}
+
+.auth-header {
+  text-align: center; /* centers the text */
+  font-size: 2.5rem; /* adjust size as needed */
+  font-weight: 700; /* bold */
+  margin-bottom: 0.5rem; /* space below the heading */
+  color: #222; /* dark color */
+  letter-spacing: 1px; /* optional: spacing between letters */
+}
+
+.auth-container form input {
+  width: 90%;
+  max-width: 500px;
+  padding: 0.7rem;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: -1.2rem auto;
+  display: block;
+
+  background-color: rgba(255, 255, 255, 0.7); /* ✅ transparent white */
+  backdrop-filter: blur(4px); /* ✅ optional: adds glass effect */
+}
+
+.auth-container form fieldset {
+  border: none; /* removes the lining */
+  padding: 0; /* optional: tighten spacing */
+  margin: 0; /* optional: reset margin */
+}
+
+.auth-container form legend {
+  font-size: 2rem; /* larger */
+  font-weight: 700; /* bold */
+  text-align: center; /* centered */
+  margin-bottom: 1.5rem; /* spacing below */
+  color: #222; /* strong dark text */
+  letter-spacing: 1px; /* a little breathing room */
+}
+
+/* Login / Signup buttons */
+.auth-container .btn-auth {
+  width: 90%; /* match input width */
+  max-width: 500px; /* cap on large screens */
+  padding: 0.7rem; /* taller button */
+  font-size: 1.2rem; /* bigger text */
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  margin: 0rem auto; /* spacing above/below */
+  display: block;
+  background-color: #4a90e2; /* blue color */
+  color: white;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    transform 0.2s;
+}
+
+.auth-container .btn-auth:hover:not(:disabled) {
+  background-color: #357ab8; /* darker blue on hover */
+  transform: translateY(-2px); /* subtle lift */
+}
+
+.auth-container .btn-auth:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Google button matching .btn-auth style */
+.auth-container .btn-google {
+  width: 90%; /* match input and auth button width */
+  max-width: 500px;
+  padding: 0.7rem; /* same height as login/signup button */
+  font-size: 1.2rem; /* same text size */
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  margin: -1.2rem auto; /* spacing like .btn-auth */
+  display: block;
+  background-color: #4a90e2; /* Google blue */
+  color: white;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    transform 0.2s;
+}
+
+.auth-container .btn-google:hover:not(:disabled) {
+  background-color: #357ab8; /* darker blue on hover */
+  transform: translateY(-2px); /* subtle lift effect */
+}
+
+.auth-container .btn-google:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-container .toggle-text {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.auth-container .toggle-text button {
+  color: black; /* blue */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600; /* optional: make it stand out */
+}
+
+.auth-container .toggle-text button:hover {
+  text-decoration: underline;
 }
