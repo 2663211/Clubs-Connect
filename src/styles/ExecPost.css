@@ -1,61 +1,120 @@
 .exec-post {
-  padding: 1rem;
-  border: 1px solid #ddd;
+  background: white;
   border-radius: 8px;
-  background-color: #fff;
-  margin-bottom: 1.5rem;
-}
-
-.exec-post h3 {
-  margin-top: 0;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .post-caption-input {
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
   font-family: inherit;
-  font-size: 1rem;
-  resize: vertical;
-  min-height: 100px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  min-height: 80px;
+}
+
+.post-caption-input::placeholder {
+  color: #666;
 }
 
 .post-caption-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  background: #f0f0f0;
 }
 
-.post-file-input {
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f9f9f9;
+/* Post controls */
+.post-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .post-submit-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #043673;
+  background: #1a73e8;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 30px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background 0.2s;
 }
 
 .post-submit-button:hover:not(:disabled) {
-  background-color: #043673;
+  background: #1557b0;
 }
 
 .post-submit-button:disabled {
-  background-color: #6c757d;
+  background: #ccc;
   cursor: not-allowed;
+}
+
+.images-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 1px white;
+  border-radius: 8px;
+  background: white;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.images-label:hover {
+  background: #f5f5f5;
+}
+
+.paperclip-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.file-input {
+  display: none;
+}
+
+.post-for-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid white;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.post-for-button:hover {
+  background: #f5f5f5;
+}
+
+.mail-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exec-post {
+    padding: 15px;
+  }
+
+  .post-controls {
+    flex-wrap: wrap;
+  }
+
+  .post-profile-icon {
+    display: none;
+  }
 }

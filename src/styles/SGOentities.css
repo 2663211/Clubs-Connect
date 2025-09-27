@@ -36,7 +36,7 @@
   font-size: 1.2rem; /* Bigger text */
   padding: 12px 24px; /* Bigger button */
   border: none; /* Remove default border */
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 80px; /* Rounded corners */
   cursor: pointer;
   margin-top: 20px; /* Some spacing from heading */
   transition: background-color 0.3s ease;

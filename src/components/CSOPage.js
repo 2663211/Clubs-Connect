@@ -3,161 +3,239 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import ExecPost from './ExecPost';
 import '../styles/CSOPage.css';
+import Back from '../images/back.png';
+import Avatar from '../images/avatar.png';
 import FollowButton from './FollowButton';
+
+function timeSince(date) {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  let interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) return interval === 1 ? '1 year ago' : `${interval} years ago`;
+  interval = Math.floor(seconds / 2592000);
+  if (interval >= 1) return interval === 1 ? '1 month ago' : `${interval} months ago`;
+  interval = Math.floor(seconds / 86400);
+  if (interval >= 1) return interval === 1 ? '1 day ago' : `${interval} days ago`;
+  interval = Math.floor(seconds / 3600);
+  if (interval >= 1) return interval === 1 ? '1 hour ago' : `${interval} hours ago`;
+  interval = Math.floor(seconds / 60);
+  if (interval >= 1) return interval === 1 ? '1 minute ago' : `${interval} minutes ago`;
+  return 'Just now';
+}
 
 export default function EntityPage() {
   const { entityId } = useParams();
   const navigate = useNavigate();
   const [entity, setEntity] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [entityLoading, setEntityLoading] = useState(true);
+  const [postsLoading, setPostsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [canPost, setCanPost] = useState(false);
 
-  // Fetch logged-in user and check permissions
+  // edit states
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editCaption, setEditCaption] = useState('');
+
+  // Fetch user
   useEffect(() => {
     const fetchUser = async () => {
       const {
         data: { user },
+        error,
       } = await supabase.auth.getUser();
+      if (error) return console.error('Auth error:', error.message);
       setUser(user);
-
       if (user && entityId) {
-        // Check if user has posting rights for this entity
-        const { data: execData } = await supabase
-          .from('cso_exec')
-          .select('can_post')
-          .eq('cso_id', entityId)
-          .eq('exec_id', user.id)
-          .single();
-
-        // Also check if user is SGO
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single();
-
-        setCanPost(execData?.can_post || profileData?.role === 'sgo');
+        const [execRes, profileRes] = await Promise.all([
+          supabase
+            .from('cso_exec')
+            .select('can_post')
+            .eq('cso_id', entityId)
+            .eq('exec_id', user.id)
+            .single(),
+          supabase.from('profiles').select('role').eq('id', user.id).single(),
+        ]);
+        setCanPost(execRes.data?.can_post || profileRes.data?.role === 'sgo');
       }
     };
-
     fetchUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => listener.subscription.unsubscribe();
   }, [entityId]);
 
-  // Fetch entity details
+  // Fetch entity
   useEffect(() => {
     const fetchEntity = async () => {
-      if (!entityId) return;
-
       try {
-        const { data, error } = await supabase.from('cso').select('*').eq('id', entityId).single();
-
+        const { data, error } = await supabase
+          .from('cso')
+          .select('id,name,logo_url,cluster')
+          .eq('id', entityId)
+          .single();
         if (error) throw error;
         setEntity(data);
       } catch (err) {
-        console.error('Failed to fetch entity:', err.message);
+        console.error(err.message);
+      } finally {
+        setEntityLoading(false);
       }
     };
-
     fetchEntity();
   }, [entityId]);
 
-  // Fetch posts for this entity
+  // Fetch posts
+  const fetchPosts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select(
+          'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
+        )
+        .eq('cso_id', entityId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setPosts(data || []);
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setPostsLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchPosts = async () => {
-      if (!entityId) return;
-
-      try {
-        const { data, error } = await supabase
-          .from('posts')
-          .select('*')
-          .eq('cso_id', entityId)
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        setPosts(data || []);
-      } catch (err) {
-        console.error('Failed to fetch posts:', err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPosts();
   }, [entityId]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  // Save Edit
+  const handleEditSubmit = async id => {
+    if (!editCaption.trim()) return alert('Caption cannot be empty');
+    try {
+      await supabase.from('posts').update({ caption: editCaption }).eq('id', id);
+      setEditingPostId(null);
+      setEditCaption('');
+      fetchPosts();
+    } catch (err) {
+      console.error('Edit error:', err.message);
+    }
+  };
+
+  // Delete Post
+  const handleDeletePost = async id => {
+    if (!window.confirm('Are you sure you want to delete this post?')) return;
+    await supabase.from('posts').delete().eq('id', id);
+    setPosts(posts.filter(p => p.id !== id));
+  };
+
+  if (entityLoading || postsLoading) return <div className="loading">Loading...</div>;
   if (!entity) return <div className="error">Entity not found</div>;
 
   return (
-    <div className="entity-page">
-      {/* Entity Header */}
-      <header className="entity-header">
-        {entity.logo_url && <img src={entity.logo_url} alt={entity.name} className="entity-logo" />}
-        <div className="entity-info">
-          <h1>{entity.name}</h1>
-          <p className="entity-cluster">{entity.cluster}</p>
-          <p className="entity-description">{entity.description}</p>
-          <FollowButton csoId={entity.id} />
-        </div>
-      </header>
-
-      {/* Post Creation (if user has permission) */}
-      {canPost && (
-        <section className="post-creation-section">
-          <ExecPost entityId={entityId} />
-        </section>
-      )}
-
-      {/* Posts Display */}
-      <section className="posts-section">
-        <h2>Posts</h2>
-        {posts.length === 0 ? (
-          <p className="no-posts">No posts yet.</p>
-        ) : (
-          <div className="posts-container">
-            {posts.map(post => (
-              <article key={post.id} className="post-card">
-                {post.caption && <p className="post-caption">{post.caption}</p>}
-
-                {post.media_url && (
-                  <div className="post-media">
-                    {post.media_type === 'image' && (
-                      <img src={post.media_url} alt="Post media" className="post-image" />
-                    )}
-                    {post.media_type === 'video' && (
-                      <video controls className="post-video">
-                        <source src={post.media_url} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
-                    {post.media_type === 'audio' && (
-                      <audio controls className="post-audio">
-                        <source src={post.media_url} type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                      </audio>
-                    )}
-                  </div>
-                )}
-
-                <p className="post-date">{new Date(post.created_at).toLocaleString()}</p>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Back Button */}
-      <button onClick={() => navigate(-1)} className="back-button">
+    <article className="entity-dashboard">
+      <button onClick={() => navigate('/entities/sgo')} className="back-link">
+        <img src={Back} alt="Back" className="back-icon" />
         Back
       </button>
-    </div>
+
+      <div className="page-layout">
+        <div className="main-container">
+          <header className="entity-header">
+            <img src={entity.logo_url || Avatar} alt={entity.name} className="entity-logo" />
+            <h1 className="entity-name">{entity.name}</h1>
+            <FollowButton csoId={entity.id} className="followBtn" />
+          </header>
+
+          {canPost && <ExecPost entityId={entityId} onPostCreated={fetchPosts} />}
+
+          <section className="posts">
+            {posts.length === 0 ? (
+              <p className="no-posts">No posts yet.</p>
+            ) : (
+              <div className="post-container">
+                {posts.map(post => {
+                  const author = post.user_id || {};
+                  return (
+                    <article key={post.id} className="post-section">
+                      <header className="post-header">
+                        <div className="author-info">
+                          <img
+                            src={author.avatar_url || Avatar}
+                            alt="Author"
+                            className="author-avatar"
+                          />
+                          <section className="author-details">
+                            <p className="author-name">{author.full_name || 'Unknown User'}</p>
+                            <p className="post-time">{timeSince(post.created_at)}</p>
+                          </section>
+                        </div>
+
+                        {canPost && (
+                          <div className="dropdown">
+                            <button className="dropdown-toggle">⋮</button>
+                            <div className="dropdown-menu">
+                              <button className="dropdown-item">Edit</button>
+                              <button className="dropdown-item delete">Delete</button>
+                            </div>
+                          </div>
+                        )}
+                      </header>
+
+                      {editingPostId === post.id ? (
+                        <div className="edit-box">
+                          <textarea
+                            value={editCaption}
+                            onChange={e => setEditCaption(e.target.value)}
+                            rows={3}
+                            className="announcement-input"
+                          />
+                          <div className="edit-actions">
+                            <button className="btn-save" onClick={() => handleEditSubmit(post.id)}>
+                              Save
+                            </button>
+                            <button className="btn-cancel" onClick={() => setEditingPostId(null)}>
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="post-message">{post.caption}</p>
+                      )}
+
+                      {post.media_url && (
+                        <div className="post-media">
+                          {post.media_type === 'image' && (
+                            <img src={post.media_url} alt="media" className="post-image" />
+                          )}
+                          {post.media_type === 'video' && (
+                            <video controls className="post-video">
+                              <source src={post.media_url} type="video/mp4" />
+                            </video>
+                          )}
+                          {post.media_type === 'audio' && (
+                            <audio controls className="post-audio">
+                              <source src={post.media_url} type="audio/mpeg" />
+                            </audio>
+                          )}
+                        </div>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        </div>
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <div className="groups-joined">
+            <h2>Groups Joined:</h2>
+            <div className="group-item">
+              <img src={entity.logo_url || Avatar} alt={entity.name} className="group-logo" />
+              <div className="group-info">
+                <p className="group-name">{entity.name}</p>
+                <p className="group-category">{entity.cluster || 'General'}</p>
+                <p className="group-followers">Active community</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </article>
   );
 }
