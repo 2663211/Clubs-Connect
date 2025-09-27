@@ -37,7 +37,10 @@ export default function StudentDashboard() {
       }
 
       const data = await response.json();
-      setEvents(Array.isArray(data) ? data : []);
+      const now = new Date();
+      const upcoming = Array.isArray(data) ? data.filter(event => new Date(event.date) >= now) : [];
+
+      setEvents(upcoming);
     } catch (error) {
       console.error('Error fetching events:', error);
       setError(`Failed to load events: ${error.message}`);
@@ -75,8 +78,7 @@ export default function StudentDashboard() {
     };
 
     fetchUserAndRole();
-  }, [events, searchTerm]); // Add dependencies if needed
-
+  }, [events, searchTerm]);
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
