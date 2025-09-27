@@ -26,9 +26,9 @@ export default function StudentHeader() {
           {/* <li className="nav-links">
             <button onClick={() => navigate('/search')}>Search</button>
           </li> */}
-          <li className="nav-links">
+          {/* <li className="nav-links">
             <button onClick={() => navigate('/chat')}>Chat</button>
-          </li>
+          </li> */}
           <li className="nav-links">
             <button onClick={() => navigate('/events')}>Events</button>
           </li>

@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
 import StudentHeader from './StudentHeader';
 import Search from './Search';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
+import { LikeButton } from './LikeButton';
+import sendButton from '../images/send.png';
+import waitingSend from '../images/waitingForSend.png';
+import CommentSection from './CommentSection';
 
 function timeSince(date) {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -29,10 +33,12 @@ function timeSince(date) {
 export default function StudentDashboard() {
   const navigate = useNavigate();
   const { entityId } = useParams();
+  const [user, setUser] = useState(null);
   const [entity, setEntity] = useState([]);
   const [posts, setPosts] = useState([]);
   const [followers, setFollowers] = useState({});
   const [loading, setLoading] = useState(true);
+  const [activeCommentBox, setActiveCommentBox] = useState(null);
 
   useEffect(() => {
     const fetchFollowPost = async () => {
@@ -44,6 +50,7 @@ export default function StudentDashboard() {
         setLoading(false);
         return;
       }
+      setUser(user);
 
       try {
         // get CSOs user follows
@@ -124,6 +131,10 @@ export default function StudentDashboard() {
     fetchFollowPost();
   }, [entityId]);
 
+  const toggleCommentBox = postId => {
+    setActiveCommentBox(prev => (prev === postId ? null : postId));
+  };
+
   if (loading) return <div className="loading">Loading...</div>;
   return (
     <article className="dashboard">
@@ -179,6 +190,24 @@ export default function StudentDashboard() {
                         </audio>
                       )}
                     </div>
+                  )}
+
+                  <section className="engagement">
+                    {/* <button className="like-btn">Like</button> */}
+                    <LikeButton postId={post.id} />
+                    <button
+                      className={`comment-btn ${activeCommentBox === post.id ? 'active' : ''}`}
+                      onClick={() => {
+                        toggleCommentBox(post.id);
+                      }}
+                    >
+                      Comment
+                    </button>
+                  </section>
+                  {activeCommentBox === post.id && (
+                    <section className="comment-section">
+                      <CommentSection postId={post.id} studentNumber={user.id} />
+                    </section>
                   )}
                 </article>
               );

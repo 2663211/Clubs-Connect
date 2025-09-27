@@ -28,7 +28,6 @@ describe('StudentHeader Component', () => {
   test('renders all navigation buttons', () => {
     renderWithRouter(<StudentHeader />);
     expect(screen.getByText(/NewsFeed/i)).toBeInTheDocument();
-    expect(screen.getByText(/Chat/i)).toBeInTheDocument();
     expect(screen.getByText(/Profile/i)).toBeInTheDocument();
     expect(screen.getByText(/Events/i)).toBeInTheDocument();
     expect(screen.getByText(/Logout/i)).toBeInTheDocument();
@@ -40,11 +39,6 @@ describe('StudentHeader Component', () => {
     expect(mockedNavigate).toHaveBeenCalledWith('/dashboard/student');
   });
 
-  test('navigates to Chat on click', () => {
-    renderWithRouter(<StudentHeader />);
-    fireEvent.click(screen.getByText(/Chat/i));
-    expect(mockedNavigate).toHaveBeenCalledWith('/chat');
-  });
   test('navigates to Events on click', () => {
     renderWithRouter(<StudentHeader />);
     fireEvent.click(screen.getByText(/Events/i));

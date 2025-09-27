@@ -141,3 +141,51 @@
   font-size: 0.9rem;
   color: #e2e0e0;
 }
+/* <section className="engagement">
+  <button className="like-btn">Like</button>
+   <button className="comment-btn">comment</button>
+  </section> */
+
+.engagement {
+  border-top: 1px solid white;
+  gap: 10px;
+  margin: 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.like-btn,
+.comment-btn {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 5px auto;
+  width: 100%;
+  height: 100%;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid #043673;
+  border-radius: 10px;
+}
+
+.like-btn:hover,
+.comment-btn:hover {
+  background: #043673;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.like-btn.liked {
+  background: #043673;
+}
+.comment-btn.active {
+  background: #043673;
+}
+
+.send-btn {
+  width: 15px;
+  height: 15px;
+  margin-top: 5px;
+}
