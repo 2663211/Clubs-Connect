@@ -373,20 +373,11 @@ export default function StudentProfile() {
                 <h2 className="Name">{userInfo.name}</h2>
                 <p className="about">{userInfo.about}</p>
               </section>
-              <button
-                onClick={() => navigate('/cso/member')}
-                style={{
-                  background: '#0069d9',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  padding: 10,
-                }}
-              >
-                Memberships
-              </button>
             </section>
-
+            <aside className="CSO_membership">
+              <h3>Groups Joined</h3>
+              <CSO_member />
+            </aside>
             <aside className="interests">
               {/* //<div className="card"> */}
               <h3>Interests:</h3>

@@ -67,7 +67,15 @@
 }
 .post-restriction {
   background-color: #f4f7fa;
+  appearance: none;
+  -moz-appearance: none;
 }
 .post-restriction-input {
   display: flex;
+}
+.post_restriction_label {
+  display: inline-block;
+  text-align: right; /* or left, or right */
+  line-height: 150px;
+  width: 200px;
 }

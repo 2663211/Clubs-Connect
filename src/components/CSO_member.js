@@ -31,7 +31,7 @@ export default function CSO_member() {
     } = await supabase.auth.getUser();
 
     setUser(user);
-    console.log(user.id);
+    // console.log(user.id);
 
     if (user) {
       const { data: csoData } = await supabase //fetch CSO's of which I am a member of
@@ -54,7 +54,7 @@ export default function CSO_member() {
       }
     }
   }
-  console.log(memberships);
+  //console.log(memberships);
   async function fetchCSO(cso) {
     try {
       const { data: csoDetails, error } = await supabase //fetch CSO's of which I am a member of
@@ -89,16 +89,13 @@ export default function CSO_member() {
     }
   }
 
-  console.log(entities);
+  // console.log(entities);
   const uniqueArray = entities.filter(
     (obj, index, self) => index === self.findIndex(t => t.id === obj.id)
   );
 
   return (
     <article>
-      <section className="CSO_member">
-        <h2>This is where group memberships will go</h2>
-      </section>
       <section className="entities-list">
         {loading ? (
           <p>Loading entities...</p>
@@ -108,29 +105,19 @@ export default function CSO_member() {
           uniqueArray.map(entity => (
             <article
               key={entity.id}
-              className="entity-card"
+              className="entity-card-cso"
               onClick={() => navigate(`/entities/${entity.id}`)}
             >
-              {entity.logo_url && (
-                <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
-              )}
+              <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
               <header>
-                <h2>{entity.name}</h2>
+                <p className="entity-name">{entity.name} </p>
                 <p className="entity-cluster">{entity.cluster}</p>
-                {entity.description && (
-                  <section className="entity-description">
-                    <p>{entity.description}</p>
-                  </section>
-                )}
+                <p className="entity-description">{entity.description}</p>
               </header>
             </article>
           ))
         )}{' '}
       </section>
-      {/* Back Button */}
-      <button onClick={() => navigate(-1)} className="back-button">
-        Back
-      </button>
     </article>
   );
 }

@@ -110,15 +110,15 @@ export default function ExecPost({ entityId }) {
         {loading ? 'Posting...' : 'Post'}
       </button>
       <form className="post-restriction-input">
-        <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
-        <label for="post_restriction_label">Post for: </label>
-        <select name="post_restriction" id="p_r" defaultValue={''}>
-          <option value="">Please choose who should see this post</option>
-          <option value="Members_only" style={{ background: 'blue' }}>
-            Members_only
-          </option>
-          <option value="Everyone">Everyone</option>
-        </select>
+        <label for="p_r" className="post-restriction-label">
+          <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
+          Post for:
+          <select className="post_restriction" id="p_r" defaultValue={''}>
+            <option value=""></option>
+            <option value="Members_only">Members_only</option>
+            <option value="Everyone">Everyone</option>
+          </select>
+        </label>
       </form>
     </div>
   );
