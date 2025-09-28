@@ -32,6 +32,11 @@ export default function Auth() {
 
   const navigate = useNavigate();
 
+  // Forgot password states
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
+
   // Fetch profile full_name and role from Supabase profiles table
   const fetchProfile = async userId => {
     const { data, error } = await supabase
@@ -250,7 +255,50 @@ export default function Auth() {
               <h1 className="auth-header">Clubs Connect</h1>
             </header>
 
-            {isRegistering ? (
+            {isForgotPassword ? (
+              // Forgot Password Form
+              <form
+                onSubmit={async e => {
+                  e.preventDefault();
+                  setResetMessage('');
+                  const { data, error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+                    redirectTo: `${window.location.origin}/update-password`,
+                  });
+                  if (error) setResetMessage(error.message);
+                  else setResetMessage('Check your email for password reset instructions!');
+                }}
+              >
+                <fieldset>
+                  <legend>Reset Password</legend>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={resetEmail}
+                    onChange={e => setResetEmail(e.target.value)}
+                    required
+                    className="auth-input"
+                  />
+                  <br />
+                  <br />
+                  <fieldset className="reset-buttons">
+                    <button type="submit" className="btn-auth">
+                      Send Reset Email
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsForgotPassword(false);
+                        setResetMessage('');
+                      }}
+                      className="btn-auth"
+                    >
+                      Cancel
+                    </button>
+                  </fieldset>
+                </fieldset>
+                {resetMessage && <p style={{ color: 'green' }}>{resetMessage}</p>}
+              </form>
+            ) : isRegistering ? (
               <form onSubmit={handleSignUp}>
                 <fieldset>
                   <legend>Signup</legend>
@@ -367,6 +415,11 @@ export default function Auth() {
                   >
                     Sign in with Google
                   </button>
+
+                  <p className="toggle-text">
+                    Forgot your password?{' '}
+                    <button onClick={() => setIsForgotPassword(true)}>Reset here</button>
+                  </p>
                 </fieldset>
 
                 <p className="toggle-text">

@@ -124,7 +124,7 @@
 }
 
 .auth-container .toggle-text button {
-  color: black; /* blue */
+  color: black;
   background: none;
   border: none;
   cursor: pointer;
@@ -133,4 +133,17 @@
 
 .auth-container .toggle-text button:hover {
   text-decoration: underline;
+}
+
+.auth-container .reset-buttons {
+  display: flex;
+  gap: 10px; /* spacing between buttons */
+  justify-content: center; /* center buttons horizontally */
+  margin-top: 1rem;
+}
+
+.auth-container .reset-buttons .btn-auth {
+  flex: 1; /* make both buttons equal width */
+  max-width: 200px; /* optional cap for large screens */
+  display: inline-block; /* allow side-by-side */
 }

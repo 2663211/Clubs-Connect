@@ -12,6 +12,7 @@ import StudentProfile from './components/StudentProfile';
 import AddMembers from './components/AddMembers';
 import UpdateCSO from './components/UpdateCSO';
 import ExecEvents from './components/ExecEvents';
+import UpdatePassword from './components/UpdatePassword';
 
 import Search from './components/Search';
 
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/entities/:entityId" element={<EntityPage />} />
         <Route path="/entities/:id/members/add" element={<AddMembers />} />
         <Route path="/entities/:csoId/update" element={<UpdateCSO />} />
+        <Route path="/update-password" element={<UpdatePassword />} />
 
         {/* Redirect unknown routes to homepage */}
         <Route path="*" element={<Navigate to="/" replace />} />
