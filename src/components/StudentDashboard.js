@@ -5,7 +5,7 @@ import StudentHeader from './StudentHeader';
 import Search from './Search';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
-import { LikeButton } from './LikeButton';
+import LikeButton from './LikeButton';
 import sendButton from '../images/send.png';
 import waitingSend from '../images/waitingForSend.png';
 import CommentSection from './CommentSection';
@@ -41,6 +41,7 @@ export default function StudentDashboard() {
   const [activeCommentBox, setActiveCommentBox] = useState(null);
 
   useEffect(() => {
+    console.log('dashboard loading');
     const fetchFollowPost = async () => {
       setLoading(true);
       const {

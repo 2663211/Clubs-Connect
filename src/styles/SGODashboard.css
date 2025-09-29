@@ -13,7 +13,7 @@
   font-size: 1.5rem;
 }
 
-.nav-links {
+.sgo-nav-links {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -21,10 +21,14 @@
   padding: 0;
 }
 
-.nav-links a {
+.sgo-nav-links a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+.DashboardHeader .sgo-nav-links button:hover {
+  color: #fbba23 !important;
 }
 
 .user-header,
@@ -75,16 +79,20 @@
   color: black; /* text color */
   font-weight: bold;
   border-radius: 8px; /* full rounded corners like rows */
-  margin-bottom: 12px; /* space between header and first row */
+  margin-bottom: 20px; /* space between header and first row */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto; /* horizontal centering */
 }
 
 .user-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto; /* centers the whole list horizontally */
   display: flex;
   flex-direction: column;
   gap: 8px; /* space between user blocks */
+  max-width: 1000px;
 }
 
 .user-row {
@@ -247,4 +255,70 @@
 
 .modal-actions button:last-child {
   background-color: #ccc;
+}
+
+.notification-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* green */
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-box p {
+  margin: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+#Clubsearch {
+  width: 545px;
+  height: 55px;
+  background: #d9d9d9;
+  border-radius: 30px;
+}
+
+#search-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.search-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  width: 700px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  justify-self: center;
+  align-self: center;
+}
+.search-item {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid black;
+  align-items: center;
+  cursor: pointer;
 }

@@ -1,0 +1,21 @@
+.auth-container {
+  height: 100vh; /* full viewport height */
+  background-image: url('../images/loginClubs.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-container main {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 2rem;
+  max-width: 700px;
+  margin: auto;
+  border-radius: 10px;
+}

@@ -64,7 +64,7 @@ export default function Search() {
         />
       </section>
 
-      {searchQuery == '' ? (
+      {searchQuery === '' ? (
         ' '
       ) : (
         <ul className="search-list">

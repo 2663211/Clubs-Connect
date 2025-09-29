@@ -158,20 +158,6 @@ export default function SGODashboard() {
             </li>
             <li>
               <button
-                onClick={() => navigate('/announcements/sgo')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  padding: 0,
-                }}
-              >
-                Announcements
-              </button>
-            </li>
-            <li>
-              <button
                 onClick={() => navigate('/entities/sgo')}
                 style={{
                   background: 'none',

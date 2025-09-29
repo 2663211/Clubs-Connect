@@ -109,11 +109,6 @@ export default function CommentSection({ postId, studentNumber }) {
         {comments.map(c => (
           <li key={c.id}>
             <strong>{c.profiles?.full_name || 'Unknown'}:</strong>
-            {/* <ul>
-              {c.comment?.map((text, i) => (
-                <li key={i}>{text}</li>
-              ))}
-            </ul> */}
             <p>{c.comment}</p>
           </li>
         ))}
