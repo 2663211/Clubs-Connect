@@ -1,11 +1,6 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import '../styles/Execevents.css';
-
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
@@ -13,16 +8,13 @@ const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
 
 console.log('Using API URL:', API_BASE_URL);
 
-
 export default function StudentDashboard(entityId) {
-
   const [searchTerm, setSearchTerm] = useState('');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [role, setRole] = useState(null);
-
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +30,6 @@ export default function StudentDashboard(entityId) {
   });
 
   // Fetch events
-
   const fetchEvents = async () => {
     try {
       setLoading(true);
@@ -46,8 +37,6 @@ export default function StudentDashboard(entityId) {
 
       const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'GET',
-
-
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -58,7 +47,6 @@ export default function StudentDashboard(entityId) {
       const upcoming = Array.isArray(data) ? data.filter(event => new Date(event.date) >= now) : [];
 
       setEvents(upcoming);
-
     } catch (error) {
       console.error('Error fetching events:', error);
       setError(`Failed to load events: ${error.message}`);
@@ -67,11 +55,9 @@ export default function StudentDashboard(entityId) {
     }
   };
 
-
   // Fetch user, role, and exec_id
   useEffect(() => {
     const fetchUserAndRole = async () => {
-
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -81,12 +67,10 @@ export default function StudentDashboard(entityId) {
 
         // Fetch role from profiles
         const { data: profile, error: profileError } = await supabase
-
           .from('profiles')
           .select('role')
           .eq('id', user.id)
           .single();
-
 
         if (profileError) console.error('Error fetching role:', profileError.message);
         else setRole(profile?.role || null);
@@ -100,7 +84,6 @@ export default function StudentDashboard(entityId) {
 
         if (execError) console.error('Error fetching exec_id:', execError.message);
         else setNewEvent(prev => ({ ...prev, exec_id: exec?.id || null }));
-
       } else {
         setUser(null);
         setRole(null);
@@ -109,15 +92,11 @@ export default function StudentDashboard(entityId) {
 
     fetchUserAndRole();
 
-
     fetchEvents();
   }, []);
-
-
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-
       event?.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.location?.toLowerCase().includes(searchTerm.toLowerCase())
     //event?.category?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -181,21 +160,16 @@ export default function StudentDashboard(entityId) {
       console.error('Error creating event:', err);
       alert('Failed to create event.');
     }
-
   };
 
   async function createCalendarEvent(event) {
     const token = sessionStorage.getItem('provider_token');
-
-
     if (!token) {
       if (window.confirm('You need to connect Google Calendar. Connect now?')) {
         const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
         const redirectUri = window.location.origin + window.location.pathname;
         const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
-
-
         window.location.href = authUrl;
       }
       return;
@@ -226,11 +200,9 @@ export default function StudentDashboard(entityId) {
           body: JSON.stringify(calendarEvent),
         }
       );
-
       const data = await response.json();
       if (response.ok) alert('Event created! Check your Google Calendar.');
       else alert('Failed to create event: ' + (data.error?.message || 'Unknown error'));
-
     } catch (err) {
       console.error('Calendar error:', err);
       alert('Something went wrong adding to calendar.');
@@ -245,7 +217,6 @@ export default function StudentDashboard(entityId) {
       window.location.hash = '';
     }
   }, []);
-
 
   const handleFileChange = e => setFile(e.target.files[0]);
 
@@ -291,19 +262,15 @@ export default function StudentDashboard(entityId) {
     }
   };
 
-
   return (
     <div className="dashboard">
       <StudentHeader />
 
       <main>
-
         <div className="page-content">
-
           <h1 style={{ textAlign: 'center', color: '#043673', fontFamily: 'Kavoon', fontSize: 64 }}>
             Upcoming Events
           </h1>
-
 
           {role === 'exec' && (
             <button className="CreateEvent" onClick={() => setIsModalOpen(true)}>
@@ -404,7 +371,6 @@ export default function StudentDashboard(entityId) {
         )}
 
         {/* Search + Events */}
-
         <div className="search-container">
           <div className="search-box">
             <svg
@@ -425,11 +391,9 @@ export default function StudentDashboard(entityId) {
               className="search-input"
               value={searchTerm}
               onChange={handleSearchChange}
-
               placeholder="Search events..."
               autoComplete="off"
             />
-
             {searchTerm && (
               <button className="clear-button" onClick={clearSearch} aria-label="Clear search">
                 <svg
@@ -446,40 +410,11 @@ export default function StudentDashboard(entityId) {
               </button>
             )}
           </div>
-
           {searchTerm && (
             <div className="search-results-count">
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
-
-
-          {/* Events Display */}
-          <div className="events-container">
-            {loading ? (
-              <div className="loading">
-                <div className="loading-spinner"></div>
-                Loading events...
-              </div>
-            ) : error ? (
-              <div className="error-message">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="15" y1="9" x2="9" y2="15"></line>
-                  <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
-                {error}
-                <button onClick={fetchEvents} className="retry-button">
-                  Try Again
-                </button>
-
           <div className="events-container">
             {loading ? (
               <div className="loading">
@@ -489,13 +424,11 @@ export default function StudentDashboard(entityId) {
               <div className="error-message">
                 {error}
                 <button onClick={fetchEvents}>Try Again</button>
-
               </div>
             ) : filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
@@ -511,28 +444,22 @@ export default function StudentDashboard(entityId) {
                         />
                       )}
 
-
                       <button
                         className="add-to-calendar-btn"
                         onClick={() => createCalendarEvent(event)}
                       >
                         Add to Calendar
                       </button>
-
                     </>
-
                   )}
                 </div>
               ))
             ) : (
-
               <div className="no-events">No events available</div>
-
             )}
           </div>
         </div>
       </main>
-
     </div>
   );
 }
