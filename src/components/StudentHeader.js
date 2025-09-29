@@ -33,7 +33,6 @@ export default function StudentHeader() {
           <li className="nav-links">
             <button
               onClick={() => navigate('/events')}
-
               style={{
                 background: 'none',
                 border: 'none',
@@ -42,7 +41,6 @@ export default function StudentHeader() {
                 padding: 0,
               }}
             >
-
               Events
             </button>
           </li>

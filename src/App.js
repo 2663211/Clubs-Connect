@@ -12,6 +12,7 @@ import StudentProfile from './components/StudentProfile';
 
 import AddMembers from './components/AddMembers';
 import UpdateCSO from './components/UpdateCSO';
+import CSO_member from './components/CSO_member';
 
 import ExecEvents from './components/ExecEvents';
 
