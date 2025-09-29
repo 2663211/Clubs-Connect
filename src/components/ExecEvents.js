@@ -94,7 +94,6 @@ export default function StudentDashboard(entityId) {
 
     fetchEvents();
   }, []);
-
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -416,7 +415,6 @@ export default function StudentDashboard(entityId) {
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
-
           <div className="events-container">
             {loading ? (
               <div className="loading">
@@ -431,7 +429,6 @@ export default function StudentDashboard(entityId) {
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
@@ -439,7 +436,6 @@ export default function StudentDashboard(entityId) {
                   {event.description && (
                     <>
                       <p className="event-description">{event.description}</p>
-
                       {event.poster_image && (
                         <img
                           src={event.poster_image}
