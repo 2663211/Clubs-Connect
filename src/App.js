@@ -9,7 +9,9 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
+
 import CSO_member from './components/CSO_member';
+
 
 import ExecEvents from './components/ExecEvents';
 
@@ -37,6 +39,8 @@ export default function App() {
 
         <Route path="/entities/page" element={<CSOPage />} />
         <Route path="/entities/:entityId" element={<EntityPage />} />
+        <Route path="/entities/:id/members/add" element={<AddMembers />} />
+        <Route path="/entities/:csoId/update" element={<UpdateCSO />} />
 
         {/* Redirect unknown routes to homepage */}
         <Route path="*" element={<Navigate to="/" replace />} />

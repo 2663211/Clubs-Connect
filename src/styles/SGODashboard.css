@@ -79,16 +79,20 @@
   color: black; /* text color */
   font-weight: bold;
   border-radius: 8px; /* full rounded corners like rows */
-  margin-bottom: 12px; /* space between header and first row */
+  margin-bottom: 20px; /* space between header and first row */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto; /* horizontal centering */
 }
 
 .user-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto; /* centers the whole list horizontally */
   display: flex;
   flex-direction: column;
   gap: 8px; /* space between user blocks */
+  max-width: 1000px;
 }
 
 .user-row {

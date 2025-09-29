@@ -382,27 +382,23 @@ export default function StudentProfile() {
               {/* //<div className="card"> */}
               <h3>Interests:</h3>
               {csos.slice(0, visibleCount).map(cso => (
-                <div
-                  className="interest-item"
-                  key={cso.id}
-                  onClick={() => navigate(`/entities/${cso.id}`)}
-                >
+                <div className="interest-item" key={cso.id}>
                   <img
                     src={cso.logo_url || 'https://dummyimage.com/40x40/000000/ffffff&text=W'}
                     alt={cso.name}
                   />
-                  <div>
+                  <div onClick={() => navigate(`/entities/${cso.id}`)}>
                     <p className="title">{cso.name}</p>
                     <p className="subtitle">{cso.cluster}</p>
                     <p className="subtitle">Number of followers</p>
                   </div>
+                  <FollowButton csoId={cso.id} />
                   {/* <button
                     className="follow-btn"
                     onClick={() => handleFollowToggle(cso.id, cso.isFollowing)}
                   >
                     {cso.isFollowing ? 'unfollow' : 'Follow'}
                   </button> */}
-                  <FollowButton csoId={cso.id} initialIsFollowing={cso.isFollowing} />
                 </div>
               ))}
 

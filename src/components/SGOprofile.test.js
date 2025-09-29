@@ -3,6 +3,7 @@ import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-li
 import userEvent from '@testing-library/user-event';
 import SGODashboard from './SGODashboard.js';
 import SGOEntities from './SGOentities.js';
+import SGOProfile from './SGOprofile.js';
 import App from '../App.js';
 import Auth from './Auth';
 import { supabase } from '../supabaseClient';
@@ -11,32 +12,24 @@ afterEach(() => {
   cleanup();
 });
 
-test('All navigation buttons are rendered', async () => {
+test('All navigation buttons are rendered', () => {
   render(
-    <BrowserRouter>
+    <MemoryRouter initialEntries={['/dashboard/sgo']}>
       <SGODashboard />
-    </BrowserRouter>
+    </MemoryRouter>
   );
+
   const Dash_button = screen.getByText('Dashboard');
   const Annoucement_button = screen.getByText('Announcements');
   const Entity_button = screen.getByText('Entities');
   const profile_button = screen.getByText('Profile');
   const logout_button = screen.getByText('Logout');
-  expect(logout_button).toBeInTheDocument();
-  expect(profile_button).toBeInTheDocument();
-  expect(Entity_button).toBeInTheDocument();
+
   expect(Dash_button).toBeInTheDocument();
   expect(Annoucement_button).toBeInTheDocument();
-});
-
-test('User management heading rendering', () => {
-  render(
-    <BrowserRouter>
-      <SGODashboard />
-    </BrowserRouter>
-  );
-  const User_management = screen.getByText(/user management/i);
-  expect(User_management).toBeInTheDocument();
+  expect(Entity_button).toBeInTheDocument();
+  expect(profile_button).toBeInTheDocument();
+  expect(logout_button).toBeInTheDocument();
 });
 
 test('Logout button navigates to Auth page', async () => {
@@ -48,11 +41,9 @@ test('Logout button navigates to Auth page', async () => {
       </Routes>
     </MemoryRouter>
   );
-  //to locate button with this text
   const logoutButton = screen.getByText('Logout');
   await userEvent.click(logoutButton);
 
-  // Check that the Auth page loaded by looking for the Login submit button
   const loginButton = screen.getByRole('button', { name: /login/i });
   expect(loginButton).toBeInTheDocument();
 });
@@ -68,10 +59,9 @@ test('Dashboard button navigates to SGODashboard page', async () => {
   );
 
   const user = userEvent.setup();
-  // Click the Dashboard button
   const dashboardButton = screen.getByRole('button', { name: /dashboard/i });
   await user.click(dashboardButton);
-  // Assert that SGODashboard page loaded by checking "User Management" heading
+
   const userManagementHeading = await screen.findByRole('heading', { name: /user management/i });
   expect(userManagementHeading).toBeInTheDocument();
 });
@@ -90,7 +80,7 @@ test('Entities button navigates to SGOEntities page', async () => {
 
   const entitiesButton = screen.getByText('Entities');
   await user.click(entitiesButton);
-  // Look for "Create Entity" button in SGOEntities page
+
   const createEntityButton = await screen.findByRole('button', { name: /create entity/i });
   expect(createEntityButton).toBeInTheDocument();
 });

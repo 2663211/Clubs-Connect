@@ -238,108 +238,110 @@ function AddCSO() {
   }
 
   return (
-    <main className="add-cso-container">
-      <h1>Add a club, society, or organization</h1>
+    <section className="add-cso-page">
+      <main className="add-cso-container">
+        <h1>Add a club, society, or organization</h1>
 
-      {message && <p className={`status-message ${messageType}`}>{message}</p>}
+        {message && <p className={`status-message ${messageType}`}>{message}</p>}
 
-      <form onSubmit={createCSO} className="cso-form">
-        {/* Logo Upload */}
-        <label>
-          Logo
-          <input type="file" accept="image/*" onChange={selectLogoFile} />
-          <small>Upload an image file (max 5MB)</small>
-        </label>
-
-        {/* CSO Name */}
-        <label>
-          CSO Name *
-          <input
-            type="text"
-            value={formData.name}
-            onChange={e => updateField('name', e.target.value)}
-            required
-          />
-        </label>
-
-        {/* Description */}
-        <label>
-          Description
-          <textarea
-            value={formData.description}
-            onChange={e => updateField('description', e.target.value)}
-            rows="3"
-          />
-        </label>
-
-        {/* Cluster Selection */}
-        <label>
-          Cluster *
-          <select
-            value={formData.cluster}
-            onChange={e => updateField('cluster', e.target.value)}
-            required
-          >
-            <option value="">Select a cluster...</option>
-            <option value="political">Political Cluster</option>
-            <option value="academic">Academic Cluster</option>
-            <option value="social">Social Cluster</option>
-            <option value="cultural">Cultural Cluster</option>
-            <option value="religious">Religious Cluster</option>
-            <option value="sport">WITS Sport</option>
-            <option value="council">School Council</option>
-          </select>
-        </label>
-
-        {/* Subscription Required */}
-        <fieldset className="subscription">
-          <legend>Subscription Required</legend>
+        <form onSubmit={createCSO} className="cso-form">
+          {/* Logo Upload */}
           <label>
-            <input
-              type="radio"
-              value="no"
-              checked={formData.subscription === 'no'}
-              onChange={e => updateField('subscription', e.target.value)}
-            />
-            No
+            Logo
+            <input type="file" accept="image/*" onChange={selectLogoFile} />
+            <small>Upload an image file (max 5MB)</small>
           </label>
+
+          {/* CSO Name */}
           <label>
+            CSO Name *
             <input
-              type="radio"
-              value="yes"
-              checked={formData.subscription === 'yes'}
-              onChange={e => updateField('subscription', e.target.value)}
+              type="text"
+              value={formData.name}
+              onChange={e => updateField('name', e.target.value)}
+              required
             />
-            Yes
           </label>
-        </fieldset>
 
-        {/* Executive Selection */}
-        <fieldset>
-          <legend>Executive(s)</legend>
-          <ExecutiveSearch
-            executives={executives}
-            selectedExecutives={selectedExecutives}
-            onAdd={addExecutive}
-            onRemove={removeExecutive}
-          />
-        </fieldset>
+          {/* Description */}
+          <label>
+            Description
+            <textarea
+              value={formData.description}
+              onChange={e => updateField('description', e.target.value)}
+              rows="3"
+            />
+          </label>
 
-        {/* Form Actions */}
-        <section className="form-actions">
-          <button type="submit" disabled={loading} className="btn btn-primary">
-            {loading ? 'Creating CSO...' : 'Add CSO'}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/entities/sgo')}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-        </section>
-      </form>
-    </main>
+          {/* Cluster Selection */}
+          <label>
+            Cluster *
+            <select
+              value={formData.cluster}
+              onChange={e => updateField('cluster', e.target.value)}
+              required
+            >
+              <option value="">Select a cluster...</option>
+              <option value="political">Political Cluster</option>
+              <option value="academic">Academic Cluster</option>
+              <option value="social">Social Cluster</option>
+              <option value="cultural">Cultural Cluster</option>
+              <option value="religious">Religious Cluster</option>
+              <option value="sport">WITS Sport</option>
+              <option value="council">School Council</option>
+            </select>
+          </label>
+
+          {/* Subscription Required */}
+          <fieldset className="subscription">
+            <legend>Subscription Required</legend>
+            <label>
+              <input
+                type="radio"
+                value="no"
+                checked={formData.subscription === 'no'}
+                onChange={e => updateField('subscription', e.target.value)}
+              />
+              No
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="yes"
+                checked={formData.subscription === 'yes'}
+                onChange={e => updateField('subscription', e.target.value)}
+              />
+              Yes
+            </label>
+          </fieldset>
+
+          {/* Executive Selection */}
+          <fieldset>
+            <legend>Executive(s)</legend>
+            <ExecutiveSearch
+              executives={executives}
+              selectedExecutives={selectedExecutives}
+              onAdd={addExecutive}
+              onRemove={removeExecutive}
+            />
+          </fieldset>
+
+          {/* Form Actions */}
+          <section className="form-actions">
+            <button type="submit" disabled={loading} className="btn btn-primary">
+              {loading ? 'Creating CSO...' : 'Add CSO'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/entities/sgo')}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </section>
+        </form>
+      </main>
+    </section>
   );
 }
 

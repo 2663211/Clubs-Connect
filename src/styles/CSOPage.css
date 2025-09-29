@@ -84,7 +84,7 @@
 
 /* Individual post card */
 .post-card {
-  background-color: white;
+  background-color: #5f7c9f;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -235,5 +235,43 @@
 
   .posts-container {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* Confirmation banners */
+.banner {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeSlide 0.3s ease-out;
+}
+
+.banner.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.banner.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Animation for banner entry */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }
