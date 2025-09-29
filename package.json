@@ -20,17 +20,16 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "lint": "eslint . --fix && prettier --write .",
-  "lint:check": "eslint . && prettier --check .",
-  "format": "prettier --write .",
-  "format:check": "prettier --check .",
-  "fix-all": "npm run lint"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --fix && prettier --write .",
+    "lint:check": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "fix-all": "npm run lint"
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -52,6 +51,7 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "gh-pages": "^6.3.0",
     "jest": "^27.5.1",
     "lint-staged": "^16.1.6",
