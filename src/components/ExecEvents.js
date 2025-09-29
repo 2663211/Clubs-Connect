@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/StudentDashboard.css';
+import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
@@ -431,7 +431,6 @@ export default function StudentDashboard(entityId) {
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
@@ -439,7 +438,6 @@ export default function StudentDashboard(entityId) {
                   {event.description && (
                     <>
                       <p className="event-description">{event.description}</p>
-
                       {event.poster_image && (
                         <img
                           src={event.poster_image}
