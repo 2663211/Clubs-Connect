@@ -1,10 +1,7 @@
-
-
 // ExecPost.js
 //Mukondi changes
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import mail_icon from '../images/mail_icon.jpg';
-
 
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
@@ -97,11 +94,7 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
       setCaption('');
       setFile(null);
 
-
-
       window.location.reload(); // Refresh to show new post
-
-
     } catch (err) {
       console.error(err);
       onPostError?.(`Error creating post: ${err.message}`);
@@ -133,7 +126,6 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
         {loading ? 'Posting...' : 'Post'}
       </button>
 
-
       <form className="post-restriction-input">
         <label for="p_r" className="post-restriction-label">
           <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
@@ -145,8 +137,6 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
           </select>
         </label>
       </form>
-    </div>
-
-
+    </form>
   );
 }

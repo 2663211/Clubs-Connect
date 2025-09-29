@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import '../styles/Execevents.css';
+
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
@@ -15,6 +17,7 @@ export default function StudentDashboard(entityId) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [role, setRole] = useState(null);
+
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -30,6 +33,7 @@ export default function StudentDashboard(entityId) {
   });
 
   // Fetch events
+
   const fetchEvents = async () => {
     try {
       setLoading(true);
@@ -37,6 +41,7 @@ export default function StudentDashboard(entityId) {
 
       const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'GET',
+
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -67,6 +72,7 @@ export default function StudentDashboard(entityId) {
 
         // Fetch role from profiles
         const { data: profile, error: profileError } = await supabase
+
           .from('profiles')
           .select('role')
           .eq('id', user.id)
@@ -94,6 +100,7 @@ export default function StudentDashboard(entityId) {
 
     fetchEvents();
   }, []);
+
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -164,12 +171,14 @@ export default function StudentDashboard(entityId) {
 
   async function createCalendarEvent(event) {
     const token = sessionStorage.getItem('provider_token');
+
     if (!token) {
       if (window.confirm('You need to connect Google Calendar. Connect now?')) {
         const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
         const redirectUri = window.location.origin + window.location.pathname;
         const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
+
         window.location.href = authUrl;
       }
       return;
@@ -200,6 +209,7 @@ export default function StudentDashboard(entityId) {
           body: JSON.stringify(calendarEvent),
         }
       );
+
       const data = await response.json();
       if (response.ok) alert('Event created! Check your Google Calendar.');
       else alert('Failed to create event: ' + (data.error?.message || 'Unknown error'));
@@ -371,6 +381,7 @@ export default function StudentDashboard(entityId) {
         )}
 
         {/* Search + Events */}
+
         <div className="search-container">
           <div className="search-box">
             <svg
@@ -394,6 +405,7 @@ export default function StudentDashboard(entityId) {
               placeholder="Search events..."
               autoComplete="off"
             />
+
             {searchTerm && (
               <button className="clear-button" onClick={clearSearch} aria-label="Clear search">
                 <svg
@@ -410,25 +422,44 @@ export default function StudentDashboard(entityId) {
               </button>
             )}
           </div>
+
           {searchTerm && (
             <div className="search-results-count">
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
+
+          {/* Events Display */}
           <div className="events-container">
             {loading ? (
               <div className="loading">
-                <div className="loading-spinner"></div>Loading events...
+                <div className="loading-spinner"></div>
+                Loading events...
               </div>
             ) : error ? (
               <div className="error-message">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
                 {error}
-                <button onClick={fetchEvents}>Try Again</button>
+                <button onClick={fetchEvents} className="retry-button">
+                  Try Again
+                </button>
               </div>
             ) : filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
+
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>

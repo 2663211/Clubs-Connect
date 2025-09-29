@@ -13,7 +13,6 @@ import profilePhoto2 from '../images/anotherProfile.png';
 
 import CSO_member from './CSO_member';
 
-
 export default function StudentProfile() {
   const navigate = useNavigate();
 
