@@ -61,3 +61,10 @@ jobs:
           app-name: 'ClubsConnect'
           slot-name: 'Production'
           package: ./build
+<<<<<<< HEAD
+=======
+          
+
+
+
+>>>>>>> bf647347fbc465558becbebebd1acd76b8e023a4
