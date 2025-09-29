@@ -268,3 +268,12 @@
     margin-top: 8px;
   }
 }
+/* Mukondi */
+.CSO_membership {
+  position: absolute;
+  width: 900px;
+}
+.CSO_membership h3 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
