@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/StudentDashboard.css';
+import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
@@ -94,8 +94,6 @@ export default function StudentDashboard(entityId) {
 
     fetchEvents();
   }, []);
-
-
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -417,8 +415,6 @@ export default function StudentDashboard(entityId) {
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
             </div>
           )}
-
-
           <div className="events-container">
             {loading ? (
               <div className="loading">
@@ -428,22 +424,18 @@ export default function StudentDashboard(entityId) {
               <div className="error-message">
                 {error}
                 <button onClick={fetchEvents}>Try Again</button>
-
               </div>
             ) : filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
-
                   </p>
                   {event.location && <p className="event-location">{event.location}</p>}
                   {event.description && (
                     <>
                       <p className="event-description">{event.description}</p>
-
                       {event.poster_image && (
                         <img
                           src={event.poster_image}
