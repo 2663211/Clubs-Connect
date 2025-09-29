@@ -95,7 +95,6 @@ export default function StudentDashboard(entityId) {
     fetchEvents();
   }, []);
 
-
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -418,7 +417,6 @@ export default function StudentDashboard(entityId) {
             </div>
           )}
 
-
           <div className="events-container">
             {loading ? (
               <div className="loading">
@@ -428,7 +426,6 @@ export default function StudentDashboard(entityId) {
               <div className="error-message">
                 {error}
                 <button onClick={fetchEvents}>Try Again</button>
-
               </div>
             ) : filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
@@ -437,7 +434,6 @@ export default function StudentDashboard(entityId) {
 
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
-
                   </p>
                   {event.location && <p className="event-location">{event.location}</p>}
                   {event.description && (
