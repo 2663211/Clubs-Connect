@@ -1,9 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+// ExecPost.js
+//Mukondi changes
+import React, { useState, useEffect } from 'react';
+import mail_icon from '../images/mail_icon.jpg';
+
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
 
 export default function ExecPost({ entityId, onPostCreated, onPostError }) {
   const [caption, setCaption] = useState('');
+
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,6 +54,16 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
       const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
+      //Get post permissions Mukondi
+      var e = document.getElementById('p_r');
+      var value = e.value;
+      var post_permission = '';
+      if (value === 'Members_only') {
+        post_permission = 'true';
+      } else {
+        post_permission = 'false';
+      }
+
       const { error: uploadError } = await supabase.storage.from('media').upload(filePath, file);
 
       if (uploadError) throw uploadError;
@@ -68,6 +84,8 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
           media_url: mediaUrl,
           media_type: mediaType,
           cso_id: entityId,
+          //Mukondi
+          member_only: post_permission,
         },
       ]);
 
@@ -76,9 +94,10 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
       // ✅ Reset form
       setCaption('');
       setFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = ''; // clears file input
 
-      onPostCreated?.();
+
+      window.location.reload(); // Refresh to show new post
+
     } catch (err) {
       console.error(err);
       onPostError?.(`Error creating post: ${err.message}`);
@@ -109,6 +128,19 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
       <button type="submit" disabled={loading} className="post-submit-button">
         {loading ? 'Posting...' : 'Post'}
       </button>
-    </form>
+
+      <form className="post-restriction-input">
+        <label for="p_r" className="post-restriction-label">
+          <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
+          Post for:
+          <select className="post_restriction" id="p_r" defaultValue={''}>
+            <option value=""></option>
+            <option value="Members_only">Members_only</option>
+            <option value="Everyone">Everyone</option>
+          </select>
+        </label>
+      </form>
+    </div>
+
   );
 }

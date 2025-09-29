@@ -1,0 +1,32 @@
+.entities-list {
+  display: list-item;
+  width: 850px;
+}
+
+/* Entity card */
+.entity-card-cso {
+  display: flex;
+  background: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 800px;
+  height: 100px;
+  text-align: left;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.entity-logo {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+}
+.entity-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.entity-cluster {
+  margin-bottom: 5px;
+}

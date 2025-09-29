@@ -8,6 +8,7 @@ import '../styles/StudentProfile.css';
 import edit from '../images/icons8-edit-50.png';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
+import CSO_member from './CSO_member';
 
 export default function StudentProfile() {
   const navigate = useNavigate();
@@ -373,6 +374,10 @@ export default function StudentProfile() {
                 <p className="about">{userInfo.about}</p>
               </section>
             </section>
+            <aside className="CSO_membership">
+              <h3>Groups Joined</h3>
+              <CSO_member />
+            </aside>
             <aside className="interests">
               {/* //<div className="card"> */}
               <h3>Interests:</h3>
