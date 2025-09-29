@@ -7,6 +7,7 @@ export default function FollowButton({ csoId }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('loading');
     const checkFollowStatus = async () => {
       setLoading(true);
       const {
@@ -24,7 +25,7 @@ export default function FollowButton({ csoId }) {
         .eq('student_number', user.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error fetching follow status:', error.message);
       }
 

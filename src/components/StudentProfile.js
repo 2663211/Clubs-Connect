@@ -8,16 +8,20 @@ import '../styles/StudentProfile.css';
 import edit from '../images/icons8-edit-50.png';
 import { supabase } from '../supabaseClient';
 import FollowButton from './FollowButton';
+
+import profilePhoto2 from '../images/anotherProfile.png';
+
 import CSO_member from './CSO_member';
+
 
 export default function StudentProfile() {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({
-    name: 'Mmakwena',
+    name: 'Unknown',
     about: '',
     coverPic: coverPhoto2,
-    profilePic: profilePhoto,
+    profilePic: profilePhoto2,
   });
 
   const [user, setUser] = useState(null);
@@ -53,13 +57,13 @@ export default function StudentProfile() {
           name: profile.full_name || 'Unnamed User',
           about: profile.bio || '',
           coverPic: profile.cover_url || coverPhoto2,
-          profilePic: profile.avatar_url || profilePhoto,
+          profilePic: profile.avatar_url || profilePhoto2,
         });
         setEditData({
           name: profile.full_name || 'Unnamed User',
           about: profile.bio || '',
           coverPic: profile.cover_url || coverPhoto2,
-          profilePic: profile.avatar_url || profilePhoto,
+          profilePic: profile.avatar_url || profilePhoto2,
         });
       }
     };

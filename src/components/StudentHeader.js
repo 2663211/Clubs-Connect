@@ -26,9 +26,14 @@ export default function StudentHeader() {
           {/* <li className="nav-links">
             <button onClick={() => navigate('/search')}>Search</button>
           </li> */}
+
+          {/* <li className="nav-links">
+            <button onClick={() => navigate('/chat')}>Chat</button>
+          </li> */}
           <li className="nav-links">
             <button
               onClick={() => navigate('/events')}
+
               style={{
                 background: 'none',
                 border: 'none',
@@ -37,10 +42,11 @@ export default function StudentHeader() {
                 padding: 0,
               }}
             >
+
               Events
             </button>
           </li>
-          <li className="nav-links">
+          {/* <li className="nav-links">
             <button
               onClick={() => navigate('/search')}
               style={{
@@ -55,7 +61,7 @@ export default function StudentHeader() {
             </button>
 
             <button onClick={() => navigate('/chat')}>Chat</button>
-          </li>
+          </li> */}
 
           <li className="nav-links">
             <button onClick={() => navigate('/profile/student')}>Profile</button>
