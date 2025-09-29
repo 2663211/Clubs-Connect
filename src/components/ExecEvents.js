@@ -43,7 +43,10 @@ export default function StudentDashboard(entityId) {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      setEvents(Array.isArray(data) ? data : []);
+      const now = new Date();
+      const upcoming = Array.isArray(data) ? data.filter(event => new Date(event.date) >= now) : [];
+
+      setEvents(upcoming);
     } catch (error) {
       console.error('Error fetching events:', error);
       setError(`Failed to load events: ${error.message}`);
@@ -88,6 +91,7 @@ export default function StudentDashboard(entityId) {
     };
 
     fetchUserAndRole();
+
     fetchEvents();
   }, []);
 
@@ -427,6 +431,7 @@ export default function StudentDashboard(entityId) {
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
+
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
