@@ -41,75 +41,195 @@
 .nav-links button.active {
   color: #fbba23;
 }
-.posts {
-  /* posts the entire posts*/
+
+.search-container {
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.search-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-box:focus-within {
+  border-color: #4f46e5;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+}
+
+.search-icon {
+  color: #6b7280;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #374151;
+  background: transparent;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-button:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.search-results-count {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.events-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.CreateEvent {
+  float: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6f92d9ff;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
 }
-.post-section {
-  /* one post*/
-  width: 60%;
-  margin: 10px auto;
-  padding: 10px;
-  background: #5f7c9f;
-  border-radius: 10px;
-}
-
-.cso-details {
-  /*name, follower count and date*/
-  flex: 1;
-  min-width: 150px;
-  margin-left: 5px;
-  cursor: pointer;
-  padding: 5px;
-  color: white;
-}
-.CSOInfo {
-  /*cso logo and name and date*/
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  flex-wrap: wrap;
-  gap: 10px;
-  box-sizing: border-box;
-}
-.CSOname {
-  color: white;
-  font-weight: bold;
-  margin: 0;
-  font-size: 1.1rem;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
-.cso-logo {
-  /*cso logo*/
-  width: 55px;
-  height: 55px;
-  border-radius: 5px;
-  flex-shrink: 0;
-}
-.postCaption {
-  color: white;
-  margin-left: 20px;
-  font-size: 1.1rem;
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-/* Media container */
-.postMedia {
-  /*pictures and videos and audio*/
-  margin: 1rem 0;
-  display: flex;
-  justify-content: center;
-  background-color: #5f7c9f;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #dc2626;
+  font-size: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
   border-radius: 8px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Post images - prevent stretching */
-.postImage {
+.retry-button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background: #b91c1c;
+}
+
+.event-card {
+  background: #5f7c9f;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.event-card h3 {
+  margin: 0;
+  color: #ededed;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  flex: 1;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.event-poster {
   max-width: 100%;
   max-height: 600px;
   width: auto;
@@ -118,26 +238,285 @@
   display: block;
 }
 
-/* Post videos */
-.postVideo {
-  max-width: 100%;
-  max-height: 600px;
-  width: auto;
-  height: auto;
+.calendar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.add-to-calendar-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 28px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.CreateEvent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.add-to-calendar-btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+.calendar-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  min-width: 180px;
+  margin-top: 4px;
+}
+
+.calendar-dropdown:hover .calendar-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.calendar-options button {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-options button:hover {
+  background: #f9fafb;
+}
+
+.calendar-options button:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.calendar-options button:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.calendar-options svg {
+  flex-shrink: 0;
+}
+
+.event-date,
+.event-location {
+  margin: 0 0 8px 0;
+  color: #080808;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.event-description {
+  margin: 12px 0;
+  color: #070707;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.no-events {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-size: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 100%;
+  }
+
+  .search-box {
+    padding: 10px 14px;
+  }
+
+  .search-input {
+    font-size: 16px;
+  }
+
+  .events-container {
+    margin-top: 20px;
+  }
+
+  .event-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .add-to-calendar-btn {
+    align-self: flex-end;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .calendar-options {
+    right: 0;
+    left: auto;
+  }
+
+  .event-card {
+    padding: 20px;
+  }
+
+  .event-card h3 {
+    font-size: 18px;
+  }
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate (-50%, -50%);
+    border: 1px solid black;
+    border-radius: 15px;
+    z-index: 10;
+    background-color: white;
+    width: 600px;
+    max-width: 80%;
+  }
+
+  .modal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000000ff;
+  }
+}
+
+/* Overlay background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100; /* sits above page content */
+}
+
+/* Modal box */
+.modal {
+  position: fixed; /* fixed = stays in viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* center horizontally & vertically */
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 101; /* above overlay */
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header .title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #043673;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Form styling */
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: #043673;
+}
+
+.event-form input,
+.event-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 8px;
 }
 
-/* Post audio */
-.postAudio {
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem 0;
+.submit-btn {
+  padding: 10px;
+  background: #043673;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
-/* Post date */
-.followerCount,
-.postDate {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #e2e0e0;
+.post-file-input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.submit-btn:hover {
+  background: #0650a1;
 }
