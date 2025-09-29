@@ -24,15 +24,12 @@ export default function StudentDashboard(entityId) {
     date: '',
     location: '',
     description: '',
-    exec_id: '',
+    exec_id: null, // initialize as null
     poster_image: '',
     category: '',
   });
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
+  // Fetch events
   const fetchEvents = async () => {
     try {
       setLoading(true);
@@ -55,34 +52,51 @@ export default function StudentDashboard(entityId) {
     }
   };
 
+  // Fetch user, role, and exec_id
   useEffect(() => {
     const fetchUserAndRole = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
+
       if (user) {
         setUser(user);
-        const { data: profile, error } = await supabase
+
+        // Fetch role from profiles
+        const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', user.id)
           .single();
-        if (error) console.error('Error fetching role:', error.message);
+
+        if (profileError) console.error('Error fetching role:', profileError.message);
         else setRole(profile?.role || null);
+
+        // Fetch exec_id from executive table
+        const { data: exec, error: execError } = await supabase
+          .from('executive')
+          .select('id')
+          .eq('student_number', user.id)
+          .single();
+
+        if (execError) console.error('Error fetching exec_id:', execError.message);
+        else setNewEvent(prev => ({ ...prev, exec_id: exec?.id || null }));
       } else {
         setUser(null);
         setRole(null);
       }
     };
+
     fetchUserAndRole();
+    fetchEvents();
   }, []);
 
   const filteredEvents = events.filter(
     event =>
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event?.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event?.category?.toLowerCase().includes(searchTerm.toLowerCase())
+      event?.location?.toLowerCase().includes(searchTerm.toLowerCase())
+    //event?.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = e => setSearchTerm(e.target.value);
@@ -95,18 +109,50 @@ export default function StudentDashboard(entityId) {
 
   const handleCreateEvent = async e => {
     e.preventDefault();
+
     try {
+      let posterUrl = '';
+
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('event_posters')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
+
+        posterUrl = data.publicUrl;
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newEvent),
+        body: JSON.stringify({
+          ...newEvent,
+          poster_image: posterUrl, // attach uploaded URL here
+        }),
       });
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-      await fetchEvents(); // refresh list
+      await fetchEvents();
       setIsModalOpen(false);
-      setNewEvent({ title: '', date: '', location: '', description: '' });
+
+      // reset
+      setNewEvent({
+        title: '',
+        date: '',
+        location: '',
+        description: '',
+        exec_id: newEvent.exec_id,
+        category: '',
+        poster_image: '',
+      });
+      setFile(null);
     } catch (err) {
       console.error('Error creating event:', err);
       alert('Failed to create event.');
@@ -169,29 +215,12 @@ export default function StudentDashboard(entityId) {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    fetchUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
   const handleFileChange = e => setFile(e.target.files[0]);
 
   const handleSubmit = async () => {
     setLoading(true);
 
     try {
-      // 1. Upload file to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
@@ -210,7 +239,6 @@ export default function StudentDashboard(entityId) {
           ? 'video'
           : 'audio';
 
-      // 2. Insert post with entityId
       const { error: insertError } = await supabase.from('event_posters').insert([
         {
           media_url: postersUrl,
@@ -223,7 +251,7 @@ export default function StudentDashboard(entityId) {
 
       alert('Event poster uploaded successfully!');
       setFile(null);
-      window.location.reload(); // Refresh to show new post
+      window.location.reload();
     } catch (error) {
       console.error('Error uploading event poster:', error);
       alert('Failed to upload event poster.');
@@ -281,6 +309,7 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
+                  <label>" "</label>
                   <label>
                     Date & Time
                     <input
@@ -291,6 +320,7 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
+
                   <label>
                     Location
                     <input
@@ -301,12 +331,32 @@ export default function StudentDashboard(entityId) {
                     />
                   </label>
                   <label>
+                    Category
+                    <input
+                      type="text"
+                      name="category"
+                      value={newEvent.category}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </label>
+                  <label>
                     Description
                     <textarea
                       name="description"
                       value={newEvent.description}
                       onChange={handleInputChange}
                     />
+                  </label>
+                  <label>
+                    Event Poster Image
+                    <input
+                      type="file"
+                      id="fileInput"
+                      name="poster_image"
+                      accept=".jpg,.png,.jpeg"
+                      onChange={handleFileChange}
+                    ></input>
                   </label>
                   <button type="submit" className="submit-btn">
                     Save Event
@@ -384,7 +434,15 @@ export default function StudentDashboard(entityId) {
                   {event.description && (
                     <>
                       <p className="event-description">{event.description}</p>
-                      <p className="category">Category: {event.category}</p>
+
+                      {event.poster_image && (
+                        <img
+                          src={event.poster_image}
+                          alt={`${event.title} poster`}
+                          className="event-poster"
+                        />
+                      )}
+
                       <button
                         className="add-to-calendar-btn"
                         onClick={() => createCalendarEvent(event)}
