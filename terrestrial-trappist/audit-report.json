@@ -1,0 +1,101 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "devalue": {
+      "name": "devalue",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1106997,
+          "name": "devalue",
+          "dependency": "devalue",
+          "title": "devalue prototype pollution vulnerability",
+          "url": "https://github.com/advisories/GHSA-vj54-72f3-p5jv",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<5.3.2"
+        }
+      ],
+      "effects": [],
+      "range": "<5.3.2",
+      "nodes": [
+        "node_modules/devalue"
+      ],
+      "fixAvailable": true
+    },
+    "vite": {
+      "name": "vite",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1107324,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "Vite middleware may serve files starting with the same name with the public directory",
+          "url": "https://github.com/advisories/GHSA-g4jq-h2w9-997c",
+          "severity": "low",
+          "cwe": [
+            "CWE-22",
+            "CWE-200",
+            "CWE-284"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=6.0.0 <=6.3.5"
+        },
+        {
+          "source": 1107328,
+          "name": "vite",
+          "dependency": "vite",
+          "title": "Vite's `server.fs` settings were not applied to HTML files",
+          "url": "https://github.com/advisories/GHSA-jqfw-vq24-v9c3",
+          "severity": "low",
+          "cwe": [
+            "CWE-23",
+            "CWE-200",
+            "CWE-284"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=6.0.0 <=6.3.5"
+        }
+      ],
+      "effects": [],
+      "range": "6.0.0 - 6.3.5",
+      "nodes": [
+        "node_modules/vite"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 1,
+      "moderate": 0,
+      "high": 1,
+      "critical": 0,
+      "total": 2
+    },
+    "dependencies": {
+      "prod": 375,
+      "dev": 0,
+      "optional": 95,
+      "peer": 1,
+      "peerOptional": 0,
+      "total": 470
+    }
+  }
+}

@@ -1,24 +1,46 @@
 ---
-title: User Acceptance Tests
+title: User Acceptance Testing
 description: Tests to check if users are satisfied
 ---
 
 The following are user acceptance tests:
 
+## User
+
 - Given I am signed in, when I click the “Follow” button on a CSO page, then that CSO should appear in my followed list, and I should receive their updates.
-- Given I am on the sign-up page, when I enter a valid Wits email address and complete the registration form, then my account should be created, and I should be able to log in.
-- Given I have a registered account with my Wits email, when I enter my credentials on the sign-in page, then I should be logged into the application.
-- Given I am following a CSO, when I click the Unfollow button on their page, then they should be removed from my followed list, and I should stop receiving updates from them.
-- Given I am signed in, when I complete and submit a membership form for a CSO, then I should be added to the CSO’s member list.
-- Given I am on the application, when I toggle the theme setting, then the interface should switch between dark mode and light mode.
-- Given I am a member of a CSO, when I type and send a message in the group chat, then it should appear in the conversation for all members to see.
-- Given I am signed in, when I visit my dashboard, then I should see a list of CSOs I follow or belong to.
-- Given I follow or belong to one or more CSOs, when I view the recent posts section, then I should see their latest posts in chronological order.
-- Given I am signed in, when I click “Add to Calendar” on an event, then it should appear in my personal event calendar in the application.
-- Given I have administrator access, when I complete the page creation form for a CSO, then the page should be added to the application.
-- Given I have administrator access, when I mark a CSO as non-compliant, then their page should be disabled and hidden from public view.
-- Given I have administrator access, when I assign a role to a user, then their permissions should update according to the assigned role.
-- Given a CSO has been inactive beyond the allowed period, when I confirm the deletion, then it should be permanently removed from the database.
-- Given I have posting permissions, when I publish a post on the CSO page, then it should be visible to all followers and members.
-- Given I have the appropriate role, when I submit a financial statement request, then it should be sent to the relevant SGO officer or department.
-- Given I have the appropriate role, when I complete and submit the booking form, then it should be sent to the relevant SGO email address.
+- Given I am on the sign-up page, when I enter a valid Wits email and password, then my account should be created and I should be signed in.
+- Given I have a registered account, when I enter my Wits email and password on the sign-in page, then I should gain access to the application.
+- Given I am signed in and following a CSO, when I click the “Unfollow” button on the CSO page, then that CSO should be removed from my followed list and their content should no longer appear in my feed.
+- Given I am signed in, when I toggle between dark and light mode in settings, then the application should update to the selected theme.
+- Given I am signed in, when I navigate to my dashboard, then I should see a list of CSOs I follow or am a member of.
+- Given I am signed in, when I open my newsfeed, then I should see the most recent posts from CSOs I follow or am a member of.
+- Given I am signed in, when I select “Add to Calendar” for an upcoming event, then that event should appear in my personal calendar.
+- Given I am signed in, when I type a CSO name or keyword into the search bar, then the system should return matching CSOs.
+- Given I am signed in, when I click on a CSO name from search or my followed list, then I should be taken to that CSO’s page and see its posts.
+- Given I am signed in, when I edit my profile and save changes, then the new information should be displayed in my profile.
+- Given I am signed in and viewing my newsfeed, when I click the “Like” button on a post, then that post should show my like and update the like count.
+- Given I have forgotten my password, when I click on forgot password, then I should be able to securely reset and update my password using a link sent to my email.
+
+## SGO Officer
+
+- Given I am signed in as an SGO officer, when I select “Add CSO” and enter valid details, then the CSO should be created and visible to users.
+- Given I am signed in as an SGO officer, when I disable a CSO, then that CSO should no longer be accessible to users until re-enabled.
+- Given I am signed in as an SGO officer, when I assign a role to a user, then that user should gain the permissions associated with the role.
+- Given I am signed in as an SGO officer, when I delete a CSO, then it should be permanently removed from the application.
+- Given I am signed in as an SGO officer, when I remove a member from a CSO, then that member should lose access to the CSO’s resources and events.
+- Given I am signed in as an SGO officer, when I add a member to a CSO, then that member should gain access to the CSO’s resources and events.
+- Given I am signed in as an SGO officer, when I update the details of a CSO, then the new information should replace the old information across the system.
+- Given I am signed in, when I update my profile details, then my updated information should be displayed on my profile page.
+- Given I am signed in as an SGO officer, when I search for a user on the dashboard, then the system should display matching users.
+- Given I am signed in as an SGO officer, when I change a user’s role to “Executive,” then that user should have access to executive-level functions.
+- Given I am signed in as an SGO officer, when I post an announcement, then it should be displayed on the announcements page for executives to view.
+- Given I am signed in as an SGO officer and have created an announcement, when I open the announcement and select “Edit,” make changes, and save, then the announcement should be updated and the changes should be visible to executives.
+- Given I am signed in as an SGO officer and have created an announcement, when I select “Delete” on that announcement and confirm the action, then the announcement should be permanently removed from the announcements page.
+
+## Executive
+
+- Given I am signed in as an executive, when I create and publish a post on my CSO’s page, then followers should see the post in their newsfeed.
+- Given I am signed in as an executive, when I create an event for my CSO, then the event should be visible to members and available to add to their calendars.
+- Given I am signed in as an executive, when I navigate to the announcements page, then I should see all announcements posted by SGO officers.
+- Given I am signed in as an executive and have created a post on my CSO page, when I open the post and select “Edit,” make changes, and save, then the updated post should replace the previous version and be visible to followers.
+- Given I am signed in as an executive and have created a post on my CSO page, when I select “Delete” on that post and confirm the action, then the post should be permanently removed from the CSO page and no longer appear in followers’ feeds.

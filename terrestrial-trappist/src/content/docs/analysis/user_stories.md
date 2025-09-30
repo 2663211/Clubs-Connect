@@ -17,14 +17,16 @@ The following user stories outline the key features and functions each group can
 - As a user, I can sign up using my Wits email address so that I can access the application.
 - As a user, I can sign in using my Wits email address so that I can access the application.
 - As a user, I can unfollow a CSO so that I no longer see their content.
-- As a user, I can fill in a membership form so that I can become a member of a CSO.
 - As a user, I can switch between dark and light modes so that I can adapt the display to my preference.
-- As a user, I can send messages in a group chat for a CSO I am a member of so that I can communicate with others.
 - As a user, I can see the CSOs that I am following or a member of on my dashboard so that I can keep track of my subscriptions.
-- As a user, I can see the recent posts of the CSOs that I am following or a member of so that I can stay up to date.
+- As a user, I can see the recent posts of the CSOs that I am following or a member of on my newsfeed so that I can stay up to date.
 - As a user, I can add upcoming events I am interested into a calendar so that I can keep track of my schedule.
-
-* As a user visiting the website, I can view upcoming events directly in my browser so that I can see what activities are planned without needing to access the database or backend manually.
+- As a user, I can search for CSOs so that I find the ones that interest me quickly.
+- As a user, I can go to CSO pages so that I can see all their posts.
+- As a user, I can update my profile so that I can add more information about me.
+- As a user, I can like posts on my news feed so that I can express my interest or support for the content.
+- As a user, I can comment on posts on my news feed I can express my interest or support for the content.
+- As a user who has forgotten my password, I can be able to securely reset and update my password using a link sent to my email so that I can regain access to my account.
 
 ## SGO officer
 
@@ -32,11 +34,21 @@ The following user stories outline the key features and functions each group can
 - As an SGO officer, I can disable CSOs that do not meet the requirements so that they become inactive.
 - As an SGO officer, I can assign roles to different users so that they have access to specific functions.
 - As an SGO officer, I can delete CSOs from the application if they have been inactive for a long time so that the application stays up to date.
+- As an SGO officer, I can remove a member from the CSO, So that the member no longer has access to CSO resources, events, or internal information.
+- As an SGO officer, I can add new members to a CSO, so that they can access CSO resources, events, or internal information.
+- As an SGO officer, I can update the details of an existing CSO so that information shown to users is always accurate and up to date.
+- As an SGO officer, I can update my profile so that I can add more information about me.
+- As an SGO officer, I can search for users on the dashboard so that I can change their roles.
+- As an SGO officer, I can change a user’s role from a regular user to an executive, so that they can be added as executives of CSOs.
+- As an SGO officer, I can post announcements on the announcements page so that executives have access to important information for managing their CSOs.
+- As an SGO officer, I can edit an announcement I posted so that I can correct or update the information.
+- As an SGO officer, I can delete an announcement I posted so that outdated or irrelevant information does not clutter the database.
 
 ## Executive member
 
-- As an executive with posting access, I can post on the CSO page so that followers stay updated.
-- As an executive with the treasurer portfolio or similar role, I can request a financial statement so that I can see the CSO’s account balance.
-- As an executive with the secretary portfolio or similar role, I can submit a venue booking form to the SGO so that I can host events.
-- As an executive I can request a collaboration with other CSOs so that we can work together.
-- As an executive, I can see the CSO's that I am a part of to be able to interact with them.
+- As an executive, I can post on the CSO page so that followers stay updated.
+- As an executive, I can add events for CSOs so that users can keep track of them.
+- As an executive, I can view the announcements page so that I can stay informed about requirements and updates for running my CSO.
+- As an executive, I can edit a post I created so that I can correct or update the information.
+- As an executive, I can delete a post I created so that outdated or irrelevant information does not clutter the database.
+- As an executive. I can send an email to an SGO officer so that I can get personalized assistance.

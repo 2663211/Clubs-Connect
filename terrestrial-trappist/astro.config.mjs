@@ -73,7 +73,8 @@ export default defineConfig({
 					label: 'Testing',
 					items: [
 						{ label: 'Test plan', slug: 'testing/testplan' },
-						{ label: 'User Acceptance Tests', slug: 'testing/uat' }
+						{ label: 'User Testing', slug: 'testing/uat' },
+						{label: 'Security Audit', slug: 'testing/audit' }
 					]
 				},
 				{
