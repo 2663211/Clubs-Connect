@@ -28,7 +28,7 @@ The sprint schedule is as follows:
 
 ### Roles
 
-As outlined in our [methodology](/docs/planning/methodology) , we operate in a flexible, cross-functional structure. While no specific roles are permanently assigned to deployment, team members contribute as needed to ensure successful and timely releases.
+As outlined in our [methodology](/Clubs-Connect/testing/testplan/#timescales) , we operate in a flexible, cross-functional structure. While no specific roles are permanently assigned to deployment, team members contribute as needed to ensure successful and timely releases.
 
 ### Software / Hardware / Process Cutover Plan
 

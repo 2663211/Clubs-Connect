@@ -74,7 +74,8 @@ export default defineConfig({
 					items: [
 						{ label: 'Test plan', slug: 'testing/testplan' },
 						{ label: 'User Testing', slug: 'testing/uat' },
-						{label: 'Security Audit', slug: 'testing/audit' }
+						{label: 'Security Audit', slug: 'testing/audit' },
+						{label: 'Supply Chain Attack', slug: 'testing/attack' }
 					]
 				},
 				{
