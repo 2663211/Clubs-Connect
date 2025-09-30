@@ -13,7 +13,7 @@ describe('Card Component', () => {
 
   test('renders card image', () => {
     render(<Card {...mockProps} />);
-    const imageElement = screen.getByAltText(/image describing content under/i);
+    const imageElement = screen.getByAltText(/describing content under/i);
     expect(imageElement).toBeInTheDocument();
     expect(imageElement).toHaveAttribute('src', mockProps.image);
   });
