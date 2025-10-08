@@ -13,6 +13,25 @@ import profilePhoto2 from '../images/anotherProfile.png';
 
 import CSO_member from './CSO_member';
 
+/**
+ * Only allows http(s) and relative URLs in image src attributes.
+ * Returns defaultImage if the URL contains a dangerous scheme.
+ */
+function sanitizeImageUrl(url, defaultImage) {
+  if (
+    typeof url !== 'string' ||
+    url.trim() === '' ||
+    url.startsWith('javascript:') ||
+    url.startsWith('data:') ||
+    url.startsWith('vbscript:')
+  ) {
+    return defaultImage;
+  }
+  // Accept relative URLs and absolute http(s)
+  const allowed = /^(https?:\/\/|\/)/i;
+  return allowed.test(url) ? url : defaultImage;
+}
+
 export default function StudentProfile() {
   const navigate = useNavigate();
 
@@ -367,8 +386,8 @@ export default function StudentProfile() {
           <section className="profie-page">
             <section className="profile-content">
               <section className="ProfilePhotos">
-                <img src={userInfo.coverPic} id="cover" alt="cover" />
-                <img src={userInfo.profilePic} id="profile" alt="profile" />
+                <img src={sanitizeImageUrl(userInfo.coverPic, coverPhoto2)} id="cover" alt="cover" />
+                <img src={sanitizeImageUrl(userInfo.profilePic, profilePhoto2)} id="profile" alt="profile" />
                 <img src={edit} onClick={handleEdit} id="editProfile" alt="edit profile" />
               </section>
 
