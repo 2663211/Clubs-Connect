@@ -95,15 +95,15 @@ jobs:
           exit 1
 
       - name: Perform CodeQL Analysis
-        run: |
-          codeql database analyze codeql-db \
-          --format=sarifv2.1.0 \
-          --output=codeql-results/codeql-results.sarif
+        uses: github/codeql-action/analyze@v3
+        with:
+          # Optional: label in GitHub Security tab
+          category: 'Security'
 
 
       - name: Upload CodeQL results
         uses: actions/upload-artifact@v3
         with:
           name: codeql-results
-          path: codeql-results/codeql-results.sarif
+          path: codeql-results # or path to the SARIF file if you customized it
 
