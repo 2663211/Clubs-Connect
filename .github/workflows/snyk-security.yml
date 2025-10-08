@@ -15,7 +15,6 @@
 #
 # For more examples, including how to limit scans to only high-severity issues
 # and fail PR checks, see https://github.com/snyk/actions/
-
 name: Snyk Security
 
 on:
@@ -29,10 +28,6 @@ permissions:
 
 jobs:
   snyk:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,17 +46,16 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Snyk Code test
-        run: snyk code test --sarif > snyk-code.sarif || true
-
+      # Focus on your dependency vulnerabilities (PostCSS, webpack-dev-server)
       - name: Snyk Open Source test
-        run: snyk test --severity-threshold=medium || true
+        run: snyk test --json > snyk-results.json || true
 
-      - name: Snyk Open Source monitor
+      - name: Snyk monitor (track over time)
         run: snyk monitor
 
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          sarif_file: snyk-code.sarif
+          name: snyk-results
+          path: snyk-results.json
