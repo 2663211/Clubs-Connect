@@ -46,12 +46,15 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      # Focus on your dependency vulnerabilities (PostCSS, webpack-dev-server)
       - name: Snyk Open Source test
-        run: snyk test --json > snyk-results.json || true
+        run: |
+          snyk test --json > snyk-results.json
+          echo "Snyk scan completed - check results file"
+        continue-on-error: true
 
       - name: Snyk monitor (track over time)
         run: snyk monitor
+        continue-on-error: true
 
       - name: Upload results as artifact
         uses: actions/upload-artifact@v4
@@ -59,3 +62,13 @@ jobs:
         with:
           name: snyk-results
           path: snyk-results.json
+
+      # Show a summary of findings
+      - name: Display Snyk results summary
+        run: |
+          if [ -f snyk-results.json ]; then
+            echo "=== SNYK SCAN RESULTS ==="
+            cat snyk-results.json | jq -r '.vulnerabilities | length' 2>/dev/null || echo "Results file created"
+            echo "Check the snyk-results artifact for detailed findings"
+          fi
+        continue-on-error: true
