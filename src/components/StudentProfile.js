@@ -386,8 +386,16 @@ export default function StudentProfile() {
           <section className="profie-page">
             <section className="profile-content">
               <section className="ProfilePhotos">
-                <img src={sanitizeImageUrl(userInfo.coverPic, coverPhoto2)} id="cover" alt="cover" />
-                <img src={sanitizeImageUrl(userInfo.profilePic, profilePhoto2)} id="profile" alt="profile" />
+                <img
+                  src={sanitizeImageUrl(userInfo.coverPic, coverPhoto2)}
+                  id="cover"
+                  alt="cover"
+                />
+                <img
+                  src={sanitizeImageUrl(userInfo.profilePic, profilePhoto2)}
+                  id="profile"
+                  alt="profile"
+                />
                 <img src={edit} onClick={handleEdit} id="editProfile" alt="edit profile" />
               </section>
 
