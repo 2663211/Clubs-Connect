@@ -9,15 +9,11 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
-
 import AddMembers from './components/AddMembers';
 import UpdateCSO from './components/UpdateCSO';
 import CSO_member from './components/CSO_member';
-
 import ExecEvents from './components/ExecEvents';
-
 import Search from './components/Search';
-
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
 
