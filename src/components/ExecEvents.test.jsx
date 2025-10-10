@@ -1,21 +1,22 @@
 // ExecEvents.test.js
 import React from 'react';
+import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ExecEvents from './ExecEvents';
 import { BrowserRouter } from 'react-router-dom';
 
 beforeAll(() => {
-  window.alert = jest.fn();
+  window.alert = vi.fn();
 });
 
 const mockSessionStorage = (() => {
   let store = {};
   return {
-    getItem: jest.fn(key => store[key] || null),
-    setItem: jest.fn((key, value) => {
+    getItem: vi.fn(key => store[key] || null),
+    setItem: vi.fn((key, value) => {
       store[key] = value;
     }),
-    clear: jest.fn(() => {
+    clear: vi.fn(() => {
       store = {};
     }),
   };
@@ -24,7 +25,7 @@ Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
 
 // Mock fetch
 beforeEach(() => {
-  jest.spyOn(global, 'fetch').mockImplementation(() =>
+  vi.spyOn(global, 'fetch').mockImplementation(() =>
     Promise.resolve({
       ok: true,
       json: async () => [],
@@ -138,7 +139,7 @@ describe('ExecEvents - Google Calendar', () => {
   it('prompts user to connect Google Calendar if token is missing', async () => {
     mockSessionStorage.getItem.mockReturnValue(null);
 
-    window.confirm = jest.fn(() => false);
+    window.confirm = vi.fn(() => false);
 
     // event
     fetch.mockResolvedValueOnce({

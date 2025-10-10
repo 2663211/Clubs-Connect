@@ -3,7 +3,7 @@ import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-li
 import userEvent from '@testing-library/user-event';
 import SGODashboard from './SGODashboard.js';
 import SGOEntities from './SGOentities.js';
-import App from '../App.js';
+import App from '../App.jsx';
 import Auth from './Auth';
 import { supabase } from '../supabaseClient';
 

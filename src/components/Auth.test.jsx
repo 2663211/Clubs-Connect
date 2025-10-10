@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
-import Auth from './Auth.js';
+import Auth from './Auth.jsx';
 //import { supabase } from '../supabaseClient.js';
 
 // jest.mock('supabase.auth', ()=>({
