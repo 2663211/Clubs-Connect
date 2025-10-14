@@ -15,6 +15,8 @@ Camarano, N. (2024). Supabase Backend – Everything you need to know. [online] 
 
 Clark, H. (2022). 7 Stages Of The Software Development Life Cycle (SDLC). [online] The Product Manager. Available at: https://theproductmanager.com/topics/software-development-life-cycle/.
 
+Cser, T. (2024). Acceptance Testing: A Step-By-Step Guide. [online] www.functionize.com. Available at: https://www.functionize.com/automated-testing/acceptance-testing-a-step-by-step-guide.
+
 Docs. (n.d.). Build your first Astro Blog. [online] Available at: https://docs.astro.build/en/tutorial/0-introduction/.
 
 Eriksen, C. (2025). npm debug and chalk packages compromised. [online] Aikido.dev. Available at: https://www.aikido.dev/blog/npm-debug-and-chalk-packages-compromised.
@@ -37,12 +39,12 @@ Rafalski, K. (2024). Why Use React? Top Benefits for Web Development. [online] N
 
 Sire, T. (2024). Software Development Life Cycle (SDLC): 7 Models and 8 Phases - Pulsion Technology. [online] Pulsion Technology. Available at: https://www.pulsion.co.uk/blog/software-development-life-cycle-sdlc/.
 
-Socket. (2025). Popular Tinycolor npm Package Compromised in Supply Chain At... [online] Available at: https://socket.dev/blog/tinycolor-supply-chain-attack-affects-40-packages [Accessed 29 Sep. 2025].
+Socket. (2025). Popular Tinycolor npm Package Compromised in Supply Chain At... [online] Available at: https://socket.dev/blog/tinycolor-supply-chain-attack-affects-40-packages.
 
 Trend Micro. (2025). What We Know About the NPM Supply Chain Attack. [online] Available at: https://www.trendmicro.com/en_us/research/25/i/npm-supply-chain-attack.html.
 
 Ucdavis.edu. (2025). Available at: https://foa.ucdavis.edu/sites/g/files/dgvnsk3426/files/inline-files/deployment-plan.docx.
 
-Waricha (2024). A Complete Guide to Build a Documentation Site with Astro Starlight. [online] DEV Community. Available at: https://dev.to/warish/a-complete-guide-to-build-a-documentation-site-with-astro-starlight-1cp9# [Accessed 12 Aug. 2025].
+Waricha (2024). A Complete Guide to Build a Documentation Site with Astro Starlight. [online] DEV Community. Available at: https://dev.to/warish/a-complete-guide-to-build-a-documentation-site-with-astro-starlight-1cp9#.
 
 www.wits.ac.za. (n.d.). Clubs and societies - Wits University. [online] Available at: https://www.wits.ac.za/students/clubs-and-societies/.
