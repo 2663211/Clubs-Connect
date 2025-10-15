@@ -4,7 +4,7 @@ import '../styles/CSO_Member.css';
 
 import { supabase } from '../supabaseClient';
 
-export default function CSO_member() {
+export default function CSOMember() {
   //const { entityId } = useParams();
   const navigate = useNavigate();
   const [entity, setEntity] = useState(null);
@@ -20,40 +20,39 @@ export default function CSO_member() {
   const [csoDescription, setCsoDescription] = useState(' ');
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        //fetch user details from Supabase
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+      // console.log(user.id);
+
+      if (user) {
+        const { data: csoData } = await supabase //fetch CSO's of which I am a member of
+          .from('cso_members')
+          .select('cso_id')
+          .eq('student_number', user.id);
+
+        //console.log(csoData);
+        //setMember(csoData);
+        if (csoData) {
+          setLoading(true);
+          csoData.forEach(club => {
+            // memberships.push(club.cso_id);
+            //setMemberships([...memberships, club.cso_id]);
+            console.log(club.cso_id);
+
+            fetchCSO(club.cso_id);
+          });
+          setLoading(false);
+        }
+      }
+    };
     fetchUser();
-    // fetchMembership();
   }, []);
 
-  async function fetchUser() {
-    const {
-      //fetch user details from Supabase
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    setUser(user);
-    // console.log(user.id);
-
-    if (user) {
-      const { data: csoData } = await supabase //fetch CSO's of which I am a member of
-        .from('cso_members')
-        .select('cso_id')
-        .eq('student_number', user.id);
-
-      //console.log(csoData);
-      //setMember(csoData);
-      if (csoData) {
-        setLoading(true);
-        csoData.forEach(club => {
-          // memberships.push(club.cso_id);
-          setMemberships([...memberships, club.cso_id]);
-          console.log(club.cso_id);
-
-          fetchCSO(club.cso_id);
-        });
-        setLoading(false);
-      }
-    }
-  }
   //console.log(memberships);
   async function fetchCSO(cso) {
     try {
