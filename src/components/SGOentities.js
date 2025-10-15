@@ -143,7 +143,7 @@ export default function SGODashboard() {
                   padding: 0,
                 }}
               >
-                Entities
+                CSOs
               </button>
             </li>
             <li>
@@ -183,7 +183,7 @@ export default function SGODashboard() {
 
       <main className="content">
         <button className="create-entity-btn" onClick={() => navigate('/entities/add')}>
-          Create Entity
+          Create CSO
         </button>
 
         {notification.visible && (
@@ -239,7 +239,7 @@ export default function SGODashboard() {
                             }}
                             className="dropdown-item dropdown-item-danger"
                           >
-                            Delete Entity
+                            Delete CSO
                           </button>
                         </li>
                       </ul>

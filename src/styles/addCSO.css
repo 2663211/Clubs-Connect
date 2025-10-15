@@ -1,9 +1,22 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #5f7c9f;
+  z-index: 999;
+  overflow-y: auto;
+}
+
 /* Container */
 .add-cso-container {
+  position: relative;
+  z-index: 1000;
   max-width: 800px;
   margin: 40px auto;
   padding: 25px;
-  background: #f8f9fa;
+  background: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
@@ -12,7 +25,7 @@
 .add-cso-container h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
+  color: #043673;
 }
 
 /* Status messages */
@@ -52,6 +65,7 @@
   font-size: 1rem;
   font-weight: 500;
   gap: 8px;
+  color: #043673;
 }
 
 .cso-form input[type='text'],
@@ -79,6 +93,7 @@ textarea {
 
 .cso-form legend {
   font-weight: 600;
+  color: #043673;
 }
 
 /* Buttons */

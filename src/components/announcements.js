@@ -202,25 +202,25 @@ export default function AnnouncementPage() {
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <div className="announcement-loading">Loading...</div>;
   }
 
   return (
     <article className="dashboard">
-      <button onClick={() => navigate('/dashboard/sgo')} className="back-link">
-        <img src={Back} alt="Back" className="back-icon" />
+      <button onClick={() => navigate('/dashboard/sgo')} className="announcement-back-link">
+        <img src={Back} alt="Back" className="announcement-back-icon" />
         Dashboard
       </button>
 
-      <div className="main-container">
+      <div className="announcement-main-container">
         <header className="announcement-header">
-          <img src={Icon} alt="SGO" className="cso-logo-large" />
-          <h1 className="header-title">Student Governance Office</h1>
+          <img src={Icon} alt="SGO" className="announcement-cso-logo-large" />
+          <h1 className="announcement-header-title">Student Governance Office</h1>
         </header>
 
         {/* Post creation (SGO only) */}
         {canPost && (
-          <section className="creation-box">
+          <section className="announcement-creation-box">
             <textarea
               placeholder="Create an announcement"
               value={caption}
@@ -230,20 +230,20 @@ export default function AnnouncementPage() {
             />
 
             {/* Show file name if attached */}
-            {file && <p className="file-name">📎 {file.name}</p>}
+            {file && <p className="announcement-file-name">📎 {file.name}</p>}
 
-            <div className="post-controls">
-              <button onClick={handleSubmit} disabled={posting} className="post-btn">
+            <div className="announcement-post-controls">
+              <button onClick={handleSubmit} disabled={posting} className="announcement-post-btn">
                 {posting ? 'Posting...' : 'Post'}
               </button>
 
-              <label className="images-label">
-                <img src={Attachments} alt="Attach" className="paperclip-icon" />
+              <label className="announcement-images-label">
+                <img src={Attachments} alt="Attach" className="announcement-paperclip-icon" />
                 Images
                 <input
                   type="file"
                   onChange={handleFileChange}
-                  className="file-input"
+                  className="announcement-file-input"
                   accept="image/*,video/*,audio/*"
                 />
               </label>
@@ -252,35 +252,37 @@ export default function AnnouncementPage() {
         )}
 
         {/* Announcements */}
-        <section className="posts">
+        <section className="announcement-posts">
           {announcements.length === 0 ? (
-            <p className="no-posts">No announcements yet.</p>
+            <p className="announcement-no-posts">No announcements yet.</p>
           ) : (
-            <div className="post-container">
+            <div className="announcement-post-container">
               {announcements.map(a => (
-                <article key={a.id} className="post-section">
-                  <header className="post-header">
-                    <div className="CSOInfo">
+                <article key={a.id} className="announcement-post-section">
+                  <header className="announcement-post-header">
+                    <div className="announcement-CSOInfo">
                       <img
                         src={a.profiles?.avatar_url || Avatar}
                         alt="Author"
-                        className="author-avatar"
+                        className="announcement-author-avatar"
                       />
-                      <div className="cso-details">
-                        <p className="sgoName">{a.profiles?.full_name || 'SGO Officer name'}</p>
-                        <p className="postDate">{timeSince(a.created_at)}</p>
+                      <div className="announcement-cso-details">
+                        <p className="announcement-sgoName">
+                          {a.profiles?.full_name || 'SGO Officer name'}
+                        </p>
+                        <p className="announcement-postDate">{timeSince(a.created_at)}</p>
                       </div>
                     </div>
 
                     {/* Dropdown menu at top right (SGO only) */}
                     {canPost && (
-                      <div className="dropdown">
-                        <button className="dropdown-toggle">⋮</button>
-                        <div className="dropdown-menu">
+                      <div className="announcement-dropdown">
+                        <button className="announcement-dropdown-toggle">⋮</button>
+                        <div className="announcement-dropdown-menu">
                           {editingId !== a.id && (
                             <>
                               <button
-                                className="dropdown-item"
+                                className="announcement-dropdown-item"
                                 onClick={() => {
                                   setEditingId(a.id);
                                   setEditCaption(a.caption);
@@ -289,7 +291,7 @@ export default function AnnouncementPage() {
                                 Edit
                               </button>
                               <button
-                                className="dropdown-item delete"
+                                className="announcement-dropdown-item delete"
                                 onClick={() => handleDelete(a.id)}
                               >
                                 Delete
@@ -302,39 +304,49 @@ export default function AnnouncementPage() {
                   </header>
 
                   {editingId === a.id ? (
-                    <div className="edit-box">
+                    <div className="announcement-edit-box">
                       <textarea
                         value={editCaption}
                         onChange={e => setEditCaption(e.target.value)}
                         rows={3}
                         className="announcement-input"
                       />
-                      <div className="edit-actions">
-                        <button className="btn-save" onClick={() => handleEditSubmit(a.id)}>
+                      <div className="announcement-edit-actions">
+                        <button
+                          className="announcement-btn-save"
+                          onClick={() => handleEditSubmit(a.id)}
+                        >
                           Save
                         </button>
-                        <button className="btn-cancel" onClick={() => setEditingId(null)}>
+                        <button
+                          className="announcement-btn-cancel"
+                          onClick={() => setEditingId(null)}
+                        >
                           Cancel
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <p className="postCaption">{a.caption}</p>
+                    <p className="announcement-postCaption">{a.caption}</p>
                   )}
 
                   {/* Media */}
                   {a.media_url && (
-                    <div className="postMedia">
+                    <div className="announcement-post-media">
                       {a.media_type === 'image' && (
-                        <img src={a.media_url} alt="Announcement" className="postImage" />
+                        <img
+                          src={a.media_url}
+                          alt="Announcement"
+                          className="announcement-post-image"
+                        />
                       )}
                       {a.media_type === 'video' && (
-                        <video controls className="postVideo">
+                        <video controls className="announcement-post-video">
                           <source src={a.media_url} type="video/mp4" />
                         </video>
                       )}
                       {a.media_type === 'audio' && (
-                        <audio controls className="postAudio">
+                        <audio controls className="announcement-post-audio">
                           <source src={a.media_url} type="audio/mpeg" />
                         </audio>
                       )}

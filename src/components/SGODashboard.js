@@ -181,7 +181,7 @@ export default function SGODashboard() {
                   padding: 0,
                 }}
               >
-                Entities
+                CSOs
               </button>
             </li>
             <li>

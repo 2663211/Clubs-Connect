@@ -1,6 +1,6 @@
 /* Main container that wraps header and posts */
-.main-container {
-  background: #d3d3d3; /* Light gray background like in your image */
+.announcement-main-container {
+  background: #d3d3d3;
   border-radius: 10px;
   width: 794px;
   margin: 0 auto;
@@ -9,14 +9,14 @@
 }
 
 /* Back link icon */
-.back-icon {
+.announcement-back-icon {
   width: 16px;
   height: 16px;
   object-fit: contain;
 }
 
 /* Back link */
-.back-link {
+.announcement-back-link {
   background: none;
   border: none;
   color: #333;
@@ -29,7 +29,7 @@
   gap: 8px;
 }
 
-.back-link:hover {
+.announcement-back-link:hover {
   text-decoration: underline;
 }
 
@@ -41,7 +41,7 @@
   margin-bottom: 20px;
 }
 
-.cso-logo-large {
+.announcement-cso-logo-large {
   width: 100px;
   height: 100px;
   object-fit: contain;
@@ -49,7 +49,7 @@
   border-radius: 8px;
 }
 
-.header-title {
+.announcement-header-title {
   font-size: 32px;
   font-weight: bold;
   margin: 0;
@@ -58,7 +58,7 @@
 }
 
 /* Post creation box */
-.creation-box {
+.announcement-creation-box {
   background-color: white;
   border: none;
   border-radius: 8px;
@@ -87,7 +87,7 @@
   opacity: 1;
 }
 
-.post-controls {
+.announcement-post-controls {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -96,7 +96,7 @@
 }
 
 /* Post button */
-.post-btn {
+.announcement-post-btn {
   background-color: #043673;
   color: #ffffff;
   border: none;
@@ -112,24 +112,24 @@
   justify-content: center;
 }
 
-.post-btn:hover {
+.announcement-post-btn:hover {
   background: #1565c0;
 }
 
-.post-btn:disabled {
+.announcement-post-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 /* Paperclip icon */
-.paperclip-icon {
+.announcement-paperclip-icon {
   width: 16px;
   height: 16px;
   object-fit: contain;
 }
 
 /* Images label */
-.images-label {
+.announcement-images-label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -145,51 +145,51 @@
   transition: background-color 0.2s;
 }
 
-.images-label:hover {
+.announcement-images-label:hover {
   background-color: rgba(25, 118, 210, 0.1);
 }
 
-.file-input {
+.announcement-file-input {
   display: none;
 }
 
-.post-for-btn:hover {
+.announcement-post-for-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Announcement feed */
-.posts {
+.announcement-posts {
   margin-bottom: 40px;
 }
 
-.no-posts {
+.announcement-no-posts {
   text-align: center;
   color: #666;
   padding: 40px;
   border-radius: 8px;
 }
 
-.post-container {
+.announcement-post-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 /* Individual post cards */
-.post-section {
+.announcement-post-section {
   background: #8ca5c4;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.CSOInfo {
+.announcement-CSOInfo {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.author-avatar {
+.announcement-author-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -197,40 +197,40 @@
   padding: 2px;
 }
 
-.cso-details {
+.announcement-cso-details {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
 
-.CSOname {
+.announcement-CSOname {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: white;
 }
 
-.sgoName {
+.announcement-sgoName {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: white;
 }
 
-.post-header {
+.announcement-post-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.postDate {
+.announcement-postDate {
   margin: 0;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.postCaption {
+.announcement-postCaption {
   color: white;
   font-size: 16px;
   line-height: 1.5;
@@ -239,31 +239,32 @@
 }
 
 /* Media styling */
-.post-media {
+.announcement-post-media {
   margin-top: 15px;
   border-radius: 8px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.1);
 }
 
-.post-image {
+.announcement-post-image {
   width: 100%;
   height: auto;
   display: block;
 }
 
-.post-video {
+.announcement-post-video {
   width: 100%;
   height: auto;
   display: block;
 }
 
-.post-audio {
+.announcement-post-audio {
   width: 100%;
   margin: 10px 0;
 }
+
 /* Loading state */
-.loading {
+.announcement-loading {
   text-align: center;
   padding: 40px;
   color: #666;
@@ -271,7 +272,7 @@
 }
 
 /* Access denied */
-.access-denied {
+.announcement-access-denied {
   text-align: center;
   padding: 60px 20px;
   background: white;
@@ -281,41 +282,44 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.access-denied h1 {
+.announcement-access-denied h1 {
   color: #333;
   margin-bottom: 15px;
   font-family: 'Inter-Regular', Helvetica;
 }
 
-.access-denied p {
+.announcement-access-denied p {
   color: #666;
   margin-bottom: 25px;
   font-family: 'Inter-Regular', Helvetica;
 }
 
-.back-button {
-  background: #043673;
-  color: white;
+.announcement-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  font-family: 'Inter-Regular', Helvetica;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  padding: 0;
+  text-decoration: none;
 }
 
-.back-button:hover {
+.announcement-back-button:hover {
   background: #032a59;
 }
 
 /* Dropdown container */
-.dropdown {
+.announcement-dropdown {
   position: relative;
   display: inline-block;
 }
 
 /* Toggle (⋮) */
-.dropdown-toggle {
+.announcement-dropdown-toggle {
   background: none;
   border: none;
   font-size: 20px;
@@ -324,12 +328,12 @@
   padding: 4px 8px;
 }
 
-.dropdown-toggle:hover {
+.announcement-dropdown-toggle:hover {
   color: #ccc;
 }
 
 /* Dropdown menu */
-.dropdown-menu {
+.announcement-dropdown-menu {
   display: none;
   position: absolute;
   right: 0;
@@ -343,12 +347,12 @@
 }
 
 /* Show on hover */
-.dropdown:hover .dropdown-menu {
+.announcement-dropdown:hover .announcement-dropdown-menu {
   display: block;
 }
 
 /* Items inside menu */
-.dropdown-item {
+.announcement-dropdown-item {
   width: 100%;
   padding: 10px 15px;
   font-size: 14px;
@@ -358,33 +362,33 @@
   cursor: pointer;
 }
 
-.dropdown-item:hover {
+.announcement-dropdown-item:hover {
   background: #f5f5f5;
 }
 
 /* Delete option */
-.dropdown-item.delete {
+.announcement-dropdown-item.delete {
   color: red;
 }
 
-.dropdown-item.delete:hover {
+.announcement-dropdown-item.delete:hover {
   background: #ffe5e5;
 }
 
 /* Edit container */
-.edit-box {
+.announcement-edit-box {
   margin-bottom: 10px;
 }
 
 /* Arrange buttons side by side */
-.edit-actions {
+.announcement-edit-actions {
   display: flex;
   gap: 10px;
   margin-top: 8px;
 }
 
 /* Save button */
-.btn-save {
+.announcement-btn-save {
   background-color: #1976d2;
   color: #fff;
   border: none;
@@ -396,12 +400,12 @@
   transition: background 0.2s ease;
 }
 
-.btn-save:hover {
+.announcement-btn-save:hover {
   background-color: #1565c0;
 }
 
 /* Cancel button */
-.btn-cancel {
+.announcement-btn-cancel {
   background-color: #9e9e9e;
   color: white;
   border: none;
@@ -413,11 +417,11 @@
   transition: background 0.2s ease;
 }
 
-.btn-cancel:hover {
+.announcement-btn-cancel:hover {
   background-color: #757575;
 }
 
-.file-name {
+.announcement-file-name {
   font-size: 14px;
   color: #333;
   margin-top: 8px;

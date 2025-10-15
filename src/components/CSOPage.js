@@ -116,99 +116,138 @@ export default function EntityPage() {
     }
   };
 
-  // Delete Post
-  const handleDeletePost = async id => {
+  // DELETE
+  const handleDelete = async id => {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
-    await supabase.from('posts').delete().eq('id', id);
-    setPosts(posts.filter(p => p.id !== id));
+    try {
+      const { error } = await supabase.from('posts').delete().eq('id', id);
+      if (error) throw error;
+      setPosts(posts.filter(p => p.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting post: ' + err.message);
+    }
   };
 
-  if (entityLoading || postsLoading) return <div className="loading">Loading...</div>;
-  if (!entity) return <div className="error">Entity not found</div>;
+  if (entityLoading || postsLoading) return <div className="cso-loading">Loading...</div>;
+  if (!entity) return <div className="cso-error">Entity not found</div>;
 
   return (
-    <article className="entity-dashboard">
-      <button onClick={() => navigate('/entities/sgo')} className="back-link">
-        <img src={Back} alt="Back" className="back-icon" />
+    <article className="cso-entity-dashboard">
+      <button onClick={() => navigate('/entities/sgo')} className="cso-back-link">
+        <img src={Back} alt="Back" className="cso-back-icon" />
         Back
       </button>
 
-      <div className="page-layout">
-        <div className="main-container">
-          <header className="entity-header">
-            <img src={entity.logo_url || Avatar} alt={entity.name} className="entity-logo" />
-            <h1 className="entity-name">{entity.name}</h1>
-            <FollowButton csoId={entity.id} className="followBtn" />
+      <div className="cso-page-layout">
+        <div className="cso-main-container">
+          <header className="cso-entity-header">
+            <img src={entity.logo_url || Avatar} alt={entity.name} className="cso-entity-logo" />
+
+            <div className="cso-name-button-wrapper">
+              <h1 className="cso-entity-name">{entity.name}</h1>
+              <FollowButton csoId={entity.id} />
+            </div>
           </header>
 
           {canPost && <ExecPost entityId={entityId} onPostCreated={fetchPosts} />}
 
-          <section className="posts">
+          <section className="cso-posts">
             {posts.length === 0 ? (
-              <p className="no-posts">No posts yet.</p>
+              <p className="cso-no-posts">No posts yet.</p>
             ) : (
-              <div className="post-container">
+              <div className="cso-post-container">
                 {posts.map(post => {
                   const author = post.user_id || {};
                   return (
-                    <article key={post.id} className="post-section">
-                      <header className="post-header">
-                        <div className="author-info">
+                    <article key={post.id} className="cso-post-section">
+                      <header className="cso-post-header">
+                        <div className="cso-author-info">
                           <img
                             src={author.avatar_url || Avatar}
                             alt="Author"
-                            className="author-avatar"
+                            className="cso-author-avatar"
                           />
-                          <section className="author-details">
-                            <p className="author-name">{author.full_name || 'Unknown User'}</p>
-                            <p className="post-time">{timeSince(post.created_at)}</p>
+                          <section className="cso-author-details">
+                            <p className="cso-author-name">{author.full_name || 'Unknown User'}</p>
+                            <p className="cso-post-time">{timeSince(post.created_at)}</p>
                           </section>
                         </div>
 
                         {canPost && (
-                          <div className="dropdown">
-                            <button className="dropdown-toggle">⋮</button>
-                            <div className="dropdown-menu">
-                              <button className="dropdown-item">Edit</button>
-                              <button className="dropdown-item delete">Delete</button>
+                          <div className="cso-dropdown">
+                            <button className="cso-dropdown-toggle">⋮</button>
+                            <div className="cso-dropdown-menu">
+                              {editingPostId !== post.id && (
+                                <>
+                                  <button
+                                    className="cso-dropdown-item"
+                                    onClick={() => {
+                                      setEditingPostId(post.id);
+                                      setEditCaption(post.caption);
+                                    }}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="cso-dropdown-item delete"
+                                    onClick={() => handleDelete(post.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         )}
                       </header>
 
                       {editingPostId === post.id ? (
-                        <div className="edit-box">
+                        <div className="cso-edit-box">
                           <textarea
                             value={editCaption}
                             onChange={e => setEditCaption(e.target.value)}
                             rows={3}
-                            className="announcement-input"
+                            style={{
+                              width: '100%',
+                              padding: '8px',
+                              borderRadius: '4px',
+                              border: '1px solid #ddd',
+                              fontSize: '14px',
+                              fontFamily: 'inherit',
+                            }}
                           />
-                          <div className="edit-actions">
-                            <button className="btn-save" onClick={() => handleEditSubmit(post.id)}>
+                          <div className="cso-edit-actions">
+                            <button
+                              className="cso-btn-save"
+                              onClick={() => handleEditSubmit(post.id)}
+                            >
                               Save
                             </button>
-                            <button className="btn-cancel" onClick={() => setEditingPostId(null)}>
+                            <button
+                              className="cso-btn-cancel"
+                              onClick={() => setEditingPostId(null)}
+                            >
                               Cancel
                             </button>
                           </div>
                         </div>
                       ) : (
-                        <p className="post-message">{post.caption}</p>
+                        <p className="cso-post-message">{post.caption}</p>
                       )}
 
                       {post.media_url && (
-                        <div className="post-media">
+                        <div className="cso-post-media">
                           {post.media_type === 'image' && (
-                            <img src={post.media_url} alt="media" className="post-image" />
+                            <img src={post.media_url} alt="media" className="cso-post-image" />
                           )}
                           {post.media_type === 'video' && (
-                            <video controls className="post-video">
+                            <video controls className="cso-post-video">
                               <source src={post.media_url} type="video/mp4" />
                             </video>
                           )}
                           {post.media_type === 'audio' && (
-                            <audio controls className="post-audio">
+                            <audio controls className="cso-post-audio">
                               <source src={post.media_url} type="audio/mpeg" />
                             </audio>
                           )}
@@ -222,15 +261,15 @@ export default function EntityPage() {
           </section>
         </div>
         {/* Sidebar */}
-        <aside className="sidebar">
-          <div className="groups-joined">
+        <aside className="cso-sidebar">
+          <div className="cso-groups-joined">
             <h2>Groups Joined:</h2>
-            <div className="group-item">
-              <img src={entity.logo_url || Avatar} alt={entity.name} className="group-logo" />
-              <div className="group-info">
-                <p className="group-name">{entity.name}</p>
-                <p className="group-category">{entity.cluster || 'General'}</p>
-                <p className="group-followers">Active community</p>
+            <div className="cso-group-item">
+              <img src={entity.logo_url || Avatar} alt={entity.name} className="cso-group-logo" />
+              <div className="cso-group-info">
+                <p className="cso-group-name">{entity.name}</p>
+                <p className="cso-group-category">{entity.cluster || 'General'}</p>
+                <p className="cso-group-followers">Active community</p>
               </div>
             </div>
           </div>
