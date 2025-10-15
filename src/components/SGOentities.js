@@ -234,6 +234,30 @@ export default function SGODashboard() {
                           <button
                             role="menuitem"
                             onClick={() => {
+                              navigate(`/entities/${entity.id}/members/add`);
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item"
+                          >
+                            Add Members
+                          </button>
+                        </li>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
+                              navigate(`/entities/${entity.id}/update`);
+                              setOpenMenu(null);
+                            }}
+                            className="dropdown-item"
+                          >
+                            Update CSO
+                          </button>
+                        </li>
+                        <li role="none">
+                          <button
+                            role="menuitem"
+                            onClick={() => {
                               setDeleteModal({ open: true, entityId: entity.id });
                               setOpenMenu(null);
                             }}
