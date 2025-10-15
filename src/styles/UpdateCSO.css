@@ -1,0 +1,235 @@
+.update-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #5f7c9f;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+/* Container */
+.update-cso-container {
+  position: relative;
+  z-index: 1000;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.update-cso-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #043673;
+}
+
+/* Status messages */
+.update-status-message {
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.update-status-message.info {
+  background: #e7f3ff;
+  color: #084298;
+}
+
+.update-status-message.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.update-status-message.error {
+  background: #f8d7da;
+  color: #842029;
+}
+
+/* Form */
+.update-cso-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.update-cso-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: 8px;
+  color: #043673;
+}
+
+.update-cso-form input[type='text'],
+.update-cso-form input[type='file'],
+.update-cso-form select,
+.update-cso-form textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.update-cso-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Fieldsets */
+.update-cso-form fieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.update-cso-form legend {
+  font-weight: 600;
+  color: #043673;
+}
+
+/* Buttons */
+.update-form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.update-btn {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.update-btn-primary {
+  background: #043673;
+  color: #fff;
+}
+
+.update-btn-primary:hover {
+  background: #032a5a;
+}
+
+.update-btn-primary:disabled {
+  background: #6c8db5;
+  cursor: not-allowed;
+}
+
+.update-btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.update-btn-secondary:hover {
+  background: #5a6268;
+}
+
+/* Executive Search */
+.update-suggestions-dropdown {
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.update-suggestions-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.update-suggestions-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.update-executive-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.update-chip {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.update-chip button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Subscription Required Radio Buttons */
+.update-cso-form fieldset.update-subscription {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.update-cso-form fieldset.update-subscription legend {
+  font-weight: 600;
+}
+
+.update-cso-form fieldset.update-subscription label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.update-cso-form fieldset.update-subscription input[type='radio'] {
+  margin: 0;
+}
+
+.update-search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.update-current-logo {
+  margin-bottom: 15px;
+}
+
+.update-current-logo strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #043673;
+}
+
+.update-current-logo img {
+  max-width: 150px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

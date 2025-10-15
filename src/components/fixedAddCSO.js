@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import '../styles/UpdateCSO.css';
+import '../styles/addCSO.css';
 
 // Simplified Executive Search Component
 function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
@@ -29,12 +29,11 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
         value={search}
         onChange={e => setSearch(e.target.value)}
         onFocus={() => setShowSuggestions(true)}
-        className="update-search-input"
       />
 
       {/* Show suggestions dropdown */}
       {showSuggestions && availableExecutives.length > 0 && (
-        <ul className="update-suggestions-dropdown">
+        <ul className="suggestions-dropdown">
           {availableExecutives.map(exec => (
             <li key={exec.id} onMouseDown={() => selectExecutive(exec)}>
               {exec.name}
@@ -47,9 +46,9 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
       {selectedExecutives.length > 0 && (
         <section>
           <strong>Selected executives:</strong>
-          <ul className="update-executive-chips">
+          <ul className="executive-chips">
             {selectedExecutives.map(exec => (
-              <li key={exec.id} className="update-chip">
+              <li key={exec.id} className="chip">
                 {exec.name}
                 <button onClick={() => onRemove(exec.id)}>×</button>
               </li>
@@ -61,10 +60,9 @@ function ExecutiveSearch({ executives, selectedExecutives, onAdd, onRemove }) {
   );
 }
 
-// Main Update CSO Component
-function UpdateCSO() {
+// Main Add CSO Component
+function AddCSO() {
   const navigate = useNavigate();
-  const { csoId } = useParams(); // Get CSO ID from URL
 
   // Initial form state
   const [formData, setFormData] = useState({
@@ -75,94 +73,20 @@ function UpdateCSO() {
     executives: [],
   });
 
-  const [currentLogoUrl, setCurrentLogoUrl] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
   const [executives, setExecutives] = useState([]);
   const [selectedExecutives, setSelectedExecutives] = useState([]);
 
-  // Load CSO data and executives on component mount
-  useEffect(() => {
-    loadCSOData();
-    loadExecutives();
-  }, [csoId]);
-
-  // Load existing CSO data
-  async function loadCSOData() {
+  // Simplified function to load executives
+  const loadExecutives = useCallback(async () => {
     try {
-      setLoading(true);
-
-      // Fetch CSO details
-      const { data: cso, error } = await supabase.from('cso').select('*').eq('id', csoId).single();
-
-      if (error) throw error;
-
-      if (!cso) {
-        throw new Error('CSO not found');
-      }
-
-      // Populate form with existing data
-      setFormData({
-        name: cso.name || '',
-        description: cso.description || '',
-        cluster: cso.cluster || '',
-        subscription: cso.subscription || '',
-        executives: [],
-      });
-
-      setCurrentLogoUrl(cso.logo_url);
-
-      // Load existing executives for this CSO
-      const { data: csoExecs, error: execError } = await supabase
-        .from('cso_exec')
-        .select('exec_id, executive(id, student_number)')
-        .eq('cso_id', csoId);
-
-      if (execError) throw execError;
-
-      if (csoExecs && csoExecs.length > 0) {
-        // Get student numbers
-        const studentNumbers = csoExecs.map(ce => ce.executive?.student_number).filter(Boolean);
-
-        // Get profile names
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('id, full_name')
-          .in('id', studentNumbers);
-
-        // Build selected executives list
-        const selectedExecs = csoExecs.map(ce => ({
-          id: ce.exec_id,
-          student_number: ce.executive?.student_number,
-          name: profiles?.find(p => p.id === ce.executive?.student_number)?.full_name || 'Unknown',
-        }));
-
-        setSelectedExecutives(selectedExecs);
-        setFormData(prev => ({
-          ...prev,
-          executives: selectedExecs.map(e => e.id),
-        }));
-      }
-
-      setLoading(false);
-    } catch (error) {
-      showMessage(error.message || 'Failed to load CSO data', 'error');
-      setLoading(false);
-    }
-  }
-
-  // Simplified function to load all executives
-  async function loadExecutives() {
-    try {
-      // Get executive records
       const { data: execData } = await supabase.from('executive').select('id, "student_number"');
 
       if (!execData || execData.length === 0) return;
 
-      // Get profile names
       const studentNumbers = execData.map(e => e['student_number']).filter(Boolean);
 
       const { data: profiles } = await supabase
@@ -170,7 +94,6 @@ function UpdateCSO() {
         .select('id, full_name')
         .in('id', studentNumbers);
 
-      // Combine data
       const executivesWithNames = execData.map(exec => ({
         id: exec.id,
         student_number: exec['student_number'],
@@ -181,7 +104,12 @@ function UpdateCSO() {
     } catch (error) {
       showMessage('Failed to load executives', 'error');
     }
-  }
+  }, []); // dependencies: add anything used inside that can change
+
+  // Load executives on component mount
+  useEffect(() => {
+    loadExecutives();
+  }, [loadExecutives]);
 
   // Helper function to show messages
   function showMessage(text, type = 'info') {
@@ -248,9 +176,9 @@ function UpdateCSO() {
   }
 
   // Handle form submission
-  async function updateCSOData(event) {
+  async function createCSO(event) {
     event.preventDefault();
-    setSubmitting(true);
+    setLoading(true);
 
     try {
       // Validate required fields
@@ -258,36 +186,33 @@ function UpdateCSO() {
         throw new Error('Name and cluster are required');
       }
 
-      // Upload new logo if selected
-      let logo_url = currentLogoUrl;
+      // Upload logo if selected
+      let logo_url = null;
       if (logoFile) {
         logo_url = await uploadLogo(logoFile);
       }
 
-      // Update CSO record
+      // Create CSO record
       const { data: cso, error } = await supabase
         .from('cso')
-        .update({
-          name: formData.name,
-          description: formData.description,
-          cluster: formData.cluster,
-          subscription: formData.subscription,
-          logo_url,
-        })
-        .eq('id', csoId)
+        .insert([
+          {
+            name: formData.name,
+            description: formData.description,
+            cluster: formData.cluster,
+            subscription: formData.subscription,
+            logo_url,
+          },
+        ])
         .select()
         .single();
 
       if (error) throw error;
 
-      // Update executives - remove old ones and add new ones
-      // First, delete existing links
-      await supabase.from('cso_exec').delete().eq('cso_id', csoId);
-
-      // Then add new links if any
+      // Link executives if any selected
       if (formData.executives.length > 0) {
         const links = formData.executives.map(execId => ({
-          cso_id: csoId,
+          cso_id: cso.id,
           exec_id: execId,
           portfolio: 'Member',
           can_post: true,
@@ -300,45 +225,26 @@ function UpdateCSO() {
       }
 
       // Success - redirect
-      showMessage('CSO updated successfully!', 'success');
+      showMessage('CSO created successfully!', 'success');
       setTimeout(() => navigate('/entities/sgo'), 2000);
     } catch (error) {
-      showMessage(error.message || 'Failed to update CSO', 'error');
+      showMessage(error.message || 'Failed to create CSO', 'error');
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   }
 
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="update-modal-backdrop">
-        <main className="update-cso-container">
-          <h1>Loading CSO data...</h1>
-        </main>
-      </div>
-    );
-  }
-
   return (
-    <div className="update-modal-backdrop">
-      <main className="update-cso-container">
-        <h1>Update club, society, or organization</h1>
+    <section className="add-cso-page">
+      <main className="add-cso-container">
+        <h1>Add a club, society, or organization</h1>
 
-        {message && <p className={`update-status-message ${messageType}`}>{message}</p>}
+        {message && <p className={`status-message ${messageType}`}>{message}</p>}
 
-        <form onSubmit={updateCSOData} className="update-cso-form">
-          {/* Current Logo Display */}
-          {currentLogoUrl && !logoFile && (
-            <div className="update-current-logo">
-              <strong>Current Logo:</strong>
-              <img src={currentLogoUrl} alt="Current logo" />
-            </div>
-          )}
-
+        <form onSubmit={createCSO} className="cso-form">
           {/* Logo Upload */}
           <label>
-            {currentLogoUrl ? 'Change Logo' : 'Logo'}
+            Logo
             <input type="file" accept="image/*" onChange={selectLogoFile} />
             <small>Upload an image file (max 5MB)</small>
           </label>
@@ -384,7 +290,7 @@ function UpdateCSO() {
           </label>
 
           {/* Subscription Required */}
-          <fieldset className="update-subscription">
+          <fieldset className="subscription">
             <legend>Subscription Required</legend>
             <label>
               <input
@@ -418,22 +324,22 @@ function UpdateCSO() {
           </fieldset>
 
           {/* Form Actions */}
-          <section className="update-form-actions">
-            <button type="submit" disabled={submitting} className="update-btn update-btn-primary">
-              {submitting ? 'Updating CSO...' : 'Update CSO'}
+          <section className="form-actions">
+            <button type="submit" disabled={loading} className="btn btn-primary">
+              {loading ? 'Creating CSO...' : 'Add CSO'}
             </button>
             <button
               type="button"
               onClick={() => navigate('/entities/sgo')}
-              className="update-btn update-btn-secondary"
+              className="btn btn-secondary"
             >
               Cancel
             </button>
           </section>
         </form>
       </main>
-    </div>
+    </section>
   );
 }
 
-export default UpdateCSO;
+export default AddCSO;
