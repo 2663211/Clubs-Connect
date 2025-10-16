@@ -118,7 +118,7 @@
 
 /* Individual post */
 .cso-post-section {
-  background: #8ca5c4;
+  background: #5f7c9f;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -207,7 +207,7 @@
 }
 
 .cso-groups-joined {
-  background: white;
+  background: #d3d3d3;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -245,7 +245,7 @@
 .cso-group-name {
   margin: 0;
   font-weight: 600;
-  color: #333;
+  color: black;
   font-size: 16px;
 }
 

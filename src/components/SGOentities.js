@@ -246,7 +246,7 @@ export default function SGOentities() {
                           <button
                             role="menuitem"
                             onClick={() => {
-                              navigate(`/entities/:csoId/update`);
+                              navigate(`/entities/${entity.id}/update`);
                               setOpenMenu(null);
                             }}
                             className="dropdown-item"
