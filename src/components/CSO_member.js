@@ -25,9 +25,9 @@ export default function CSOMember() {
         //fetch user details from Supabase
         data: { user },
       } = await supabase.auth.getUser();
+      if (!user) return;
 
       setUser(user);
-      // console.log(user.id);
 
       if (user) {
         const { data: csoData } = await supabase //fetch CSO's of which I am a member of
@@ -35,15 +35,9 @@ export default function CSOMember() {
           .select('cso_id')
           .eq('student_number', user.id);
 
-        //console.log(csoData);
-        //setMember(csoData);
         if (csoData) {
           setLoading(true);
           csoData.forEach(club => {
-            // memberships.push(club.cso_id);
-            //setMemberships([...memberships, club.cso_id]);
-            console.log(club.cso_id);
-
             fetchCSO(club.cso_id);
           });
           setLoading(false);
@@ -69,17 +63,8 @@ export default function CSOMember() {
         .single();
 
       if (error) throw error;
-      //console.log(csoData);
-      //setMember(csoData);
-      //console.log(csoDetails);
 
       if (csoDetails) {
-        // setEntities([...entities, {
-        //     csoID: csoDetails.id, csoName: csoDetails.name, csoDescription: csoDetails.description,
-        //     csoCluster: csoDetails.cluster, csoLogo: csoDetails.logo_url
-        // }]);
-        //console.log(csoDetails.name);
-        //setEntities([...entities, csoDetails]);
         setEntities(entities => [...entities, csoDetails]);
       }
     } catch (err) {
@@ -95,7 +80,7 @@ export default function CSOMember() {
 
   return (
     <article>
-      <section className="entities-list">
+      <section className="entities-list" data-testid="entity_section">
         {loading ? (
           <p>Loading entities...</p>
         ) : entities.length === 0 ? (
