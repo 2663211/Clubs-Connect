@@ -32,7 +32,6 @@ function sanitizeImageUrl(url, defaultImage) {
   return allowed.test(url) ? url : defaultImage;
 }
 
-
 export default function StudentProfile() {
   const navigate = useNavigate();
 
