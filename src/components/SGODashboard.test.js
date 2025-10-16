@@ -46,7 +46,7 @@ test('renders all navigation buttons', () => {
 
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
   expect(screen.getByText('Announcements')).toBeInTheDocument();
-  expect(screen.getByText('Entities')).toBeInTheDocument();
+  expect(screen.getByText('CSOs')).toBeInTheDocument();
   expect(screen.getByText('Profile')).toBeInTheDocument();
   expect(screen.getByText('Logout')).toBeInTheDocument();
 });
@@ -97,7 +97,7 @@ test('Entities button navigates to /entities/sgo', async () => {
     </BrowserRouter>
   );
 
-  const entitiesButton = screen.getByText('Entities');
+  const entitiesButton = screen.getByText('CSOs');
   await userEvent.click(entitiesButton);
 
   expect(mockedNavigate).toHaveBeenCalledWith('/entities/sgo');

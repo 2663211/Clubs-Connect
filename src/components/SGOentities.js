@@ -143,7 +143,7 @@ export default function SGOentities() {
                   padding: 0,
                 }}
               >
-                Entities
+                CSOs
               </button>
             </li>
             <li>
@@ -183,7 +183,7 @@ export default function SGOentities() {
 
       <main className="content">
         <button className="create-entity-btn" onClick={() => navigate('/entities/add')}>
-          Create Entity
+          Create CSO
         </button>
 
         {notification.visible && (
@@ -263,7 +263,7 @@ export default function SGOentities() {
                             }}
                             className="dropdown-item dropdown-item-danger"
                           >
-                            Delete Entity
+                            Delete CSO
                           </button>
                         </li>
                       </ul>
