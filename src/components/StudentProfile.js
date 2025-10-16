@@ -11,7 +11,7 @@ import FollowButton from './FollowButton';
 
 import profilePhoto2 from '../images/anotherProfile.png';
 
-import CSO_member from './CSO_member';
+import CSOMember from './CSO_member';
 
 /**
  * Only allows http(s) and relative URLs in image src attributes.
@@ -406,7 +406,7 @@ export default function StudentProfile() {
             </section>
             <aside className="CSO_membership">
               <h3>Groups Joined</h3>
-              <CSO_member />
+              <CSOMember />
             </aside>
             <aside className="interests">
               {/* //<div className="card"> */}
