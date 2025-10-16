@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { use, useState } from 'react';
+import { TiThMenu } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
 import { handleLogout } from './Auth';
@@ -13,13 +14,19 @@ document.querySelectorAll('.nav-links').forEach(link => {
     this.classList.add('active');
   });
 });
+
+
 export default function StudentHeader() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu =() =>{
+    setIsOpen(!isOpen)
+  }
   const navigate = useNavigate();
   return (
     <header className="StudentHeader">
       <h1>Clubs Connect</h1>
       <nav>
-        <ul className="nav-bar">
+        <ul className={isOpen ? "nav-bar active" : "nav-bar"}>
           <li className="nav-links">
             <button onClick={() => navigate('/dashboard/student')}>NewsFeed</button>
           </li>
@@ -75,6 +82,9 @@ export default function StudentHeader() {
             </button>
           </li>
         </ul>
+        <section className="icon" onClick={toggleMenu}>
+          <TiThMenu />
+        </section>
       </nav>
     </header>
   );
