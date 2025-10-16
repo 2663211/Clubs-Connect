@@ -134,7 +134,7 @@ export default function EntityPage() {
 
   return (
     <article className="cso-entity-dashboard">
-      <button onClick={() => navigate('/entities/sgo')} className="cso-back-link">
+      <button onClick={() => navigate(-1)} className="cso-back-link">
         <img src={Back} alt="Back" className="cso-back-icon" />
         Back
       </button>
