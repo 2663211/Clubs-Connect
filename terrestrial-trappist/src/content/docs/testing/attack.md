@@ -87,6 +87,7 @@ The compromised package included a function (NpmModule.updatePackage) that:
 
 Affected Packages and Versions:
 
+```
 - backslash 0.2.1
 - chalk-template 1.1.1
 - supports-hyperlinks 4.1.1
@@ -105,11 +106,13 @@ Affected Packages and Versions:
 - chalk 5.6.1
 - debug 4.4.2
 - ansi-styles 6.2.2
+```
 
 **The Tinycolor npm Package compromise**
 
 Affected Packages and Versions:
 
+```
 - angulartics2 14.1.2
 - @ctrl/deluge 7.2.2
 - @ctrl/golang-template 1.4.3
@@ -148,5 +151,68 @@ Affected Packages and Versions:
 - rxnt-kue 1.0.7
 - swc-plugin-component-annotate 1.9.2
 - ts-gaussian 3.0.6
+```
 
-## Affects on systems
+## Dependencies Overview
+
+This section outlines the current dependencies that are in our package-lock files. As of the time of this report, there is no indication that any of the listed packages have been affected by the Shaid-Hulud Supply Chain Attack. This report is prepared prior to the Sprint 3 deadline on 29 September 2025. Due to the worm-like propagation characteristics of Shai-Hulud, additional packages may become affected over time. This analysis represents an initial assessment of our dependencies, forming the first line of response in safeguarding the Clubs Connect Application.
+
+A comprehensive system audit is available [Clubs Connect Audit](/Clubs-Connect/testing/audit) where tools such as Dependabot alerts and code scanners were used to identify potential risks and malware that could impact the application.
+
+### Application Dependencies
+
+```
+@supabase/supabase-js 2.55.0
+@testing-library/dom 10.4.1
+bootstrap 5.3.8
+cors 2.8.5
+express: 5.1.0
+lucide-react 0.542.0
+react 19.1.1
+react-bootstrap 2.10.10
+react-dom 19.1.1
+react-router 6.30.1
+react-router-dom 6.30.1
+react-scripts 5.0.1
+web-vitals 2.1.4
+```
+
+### Application Dev Dependencies
+
+```
+@babel/preset-env 7.28.3
+@babel/preset-react 7.27.1
+@testing-library/jest-dom 6.8.0
+@testing-library/react 16.3.0
+@testing-library/user-event 14.6.1
+babel-jest 30.1.2
+cross-env 10.1.0
+eslint 8.57.1
+eslint-config-prettier 10.1.8
+eslint-plugin-prettier 5.5.4
+eslint-plugin-react-hooks 5.2.0
+gh-pages 6.3.0
+husky 9.1.7
+jest 27.5.1
+lint-staged 16.1.6
+prettier 3.6.2
+react-test-renderer 19.1.1
+supertest 7.1.4
+```
+
+### Server Dependencies
+
+```
+express 4.18.2
+cors 2.8.5
+@supabase/supabase-js 2.0.0
+dotenv 16.0.0
+```
+
+### Documentation Website Dependencies
+
+```
+@astrojs/starlight 0.36.0
+astro 5.14.4
+sharp 0.34.2
+```
