@@ -18,19 +18,20 @@ import CSOMember from './CSO_member';
  * Returns defaultImage if the URL contains a dangerous scheme.
  */
 function sanitizeImageUrl(url, defaultImage) {
-  if (
-    typeof url !== 'string' ||
-    url.trim() === '' ||
-    url.startsWith('javascript:') ||
-    url.startsWith('data:') ||
-    url.startsWith('vbscript:')
-  ) {
+  if (typeof url !== 'string' || url.trim() === '') return defaultImage;
+
+  const unsafeSchemes = ['javascript', 'data', 'vbscript'];
+  const scheme = url.split(':')[0].toLowerCase();
+
+  if (unsafeSchemes.includes(scheme)) {
     return defaultImage;
   }
-  // Accept relative URLs and absolute http(s)
+
+  // Allow only relative or absolute http(s) URLs
   const allowed = /^(https?:\/\/|\/)/i;
   return allowed.test(url) ? url : defaultImage;
 }
+
 
 export default function StudentProfile() {
   const navigate = useNavigate();
