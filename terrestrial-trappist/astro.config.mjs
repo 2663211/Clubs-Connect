@@ -110,6 +110,6 @@ export default defineConfig({
       ],
     }),
   ],
-  site: "https://thetomaunatlala-777.github.io",
+  site: "https://2663211.github.io",
   base: "/Clubs-Connect/",
 });
