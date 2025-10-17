@@ -1,27 +1,12 @@
-name: Run Tests
-permissions:
-  contents: read
-
+name: 'coverage'
 on:
-  pull_request:
+  pull_request_target:
     branches:
+      - master
       - main
-
 jobs:
-  test:
+  coverage:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Jest tests
-        run: npm test
+      - uses: actions/checkout@v3
+      - uses: ArtiomTr/jest-coverage-report-action@v2
