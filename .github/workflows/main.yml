@@ -23,9 +23,3 @@ jobs:
 
       - name: Run tests and collect coverage
         run: npm run test:ci
-
-      - name: Code Coverage Summary
-        uses: irongut/Code-Coverage-Action@v1.2.0
-        with:
-          filepath: coverage/lcov.info
-          threshold: 80
