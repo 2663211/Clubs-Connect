@@ -3,6 +3,81 @@ title: Appendix
 description: This is where the evidence of the scrum methodology is.
 ---
 
+## Project Proposal
+
+1. What is the name of your project?<br>
+   Clubs Connect (Sample name)
+2. Give a brief description of the project.<br>
+   Clubs Connect is a web application designed to bring together various university structures such as clubs, societies, university offices, and councils for the holistic benefit of students. It allows students to interact with these structures, learn about what they do, see upcoming events, and discover how to get involved.
+
+   The platform also encourages collaboration between clubs and societies for events and campaigns, offers tips for attracting new members, and connects them with companies or partners who can fund or support their activities. It’s a space to encourage partnership, visibility, and unity across the university community.
+
+3. Provide a feature description of the project.<br>
+   The platform includes the following key features:
+
+   - Entity Pages: Each society, office, council, or company gets a dedicated page with info like name, logo, what they do, contact details, posts, events, exec team members, etc. Think of it like a mini website.
+   - Page Admin and Contributors: An exec member can create the entity page and invite others from their team to contribute. The creator becomes the admin and can transfer ownership as teams change annually.
+   - Messaging System:
+     Personal messages between students and exec members.
+     Group chats for society members.
+     Optional communal messaging boards for finding collaborators, asking questions, or networking.
+   - Membership Control:
+     Users can follow or sign up for societies.
+     Some content (like polls, internal announcements) can be restricted to signed-up members only.
+   - Calendar Integration: Students can track events, volunteering opportunities, or anything they’re attending through an integrated calendar view.
+   - Polls & Forms: Entity pages can include polls, newsletters, feedback forms, and even elections (for student councils).
+   - Event & Notification Posts: Societies and offices can post updates, event info, and notifications. Users who follow or are members will get these updates.
+   - Collaboration Requests: Clubs can reach out to each other or companies for partnerships or sponsorships through formal request features.
+   - SGO Oversight:
+     SGO can post admin notices, send invitations, and manage societies directly on the platform.
+     Could also help verify page creators using Wits emails and internal society membership data.
+   - Companies & Sponsors: Can create a profile, find societies to partner with, and be visible to relevant execs. <br>
+
+4. Provide a list of API modules your project will provide.
+
+   - Authentication API - (student login, exec verification using Wits emails)
+   - Messaging API - (personal and group messaging features)
+   - Posts & Feed API - (for handling page updates, notices, polls, etc.)
+   - Membership & Follower Management API - (joining/following a society)
+   - Collaboration Request API - (between clubs or with companies)
+   - Notification API - (for alerting users of new posts, events, messages)
+   - Calendar Events API - (add/view/manage event participation)
+   - Admin Tools API - (SGO tools for managing societies, exec roles, invitations) \
+
+5. Provide a list of UI pages your project will require.
+
+   - Homepage - (Intro to Clubs Connect, search bar, featured societies/offices)
+   - Login/Signup Page
+   - Dashboard - (based on role: student, exec, SGO, company)
+   - Entity Profile Page - (for clubs, societies, councils, offices, companies)
+   - Messaging Interface - (personal and group chats)
+   - Event Calendar Page - (personalised for the user)
+   - Collaboration Requests Page - (sent/received requests)
+   - Polls & Forms Interface - (to participate or create)
+   - Notifications Page
+   - SGO Admin Panel (to manage societies, verify users, send notices)
+
+6. Provide a list of database components your project requires.
+
+   - User Table
+   - Entity Table
+   - Posts Table
+   - Events Table
+   - Messages Table
+   - Membership Table
+   - Collaboration Requests Table
+   - Polls & Feedback Forms Table
+   - Notifications Table
+
+7. Provide a potential use case of an external API.
+
+   - Google Calendar API: To sync and display upcoming events or volunteering activities for each student.
+   - Messaging API (like Twilio Conversations or Stream Chat): To enable real-time messaging between users and groups.
+   - Google Maps API: To show directions to event venues or office locations inside/outside campus.
+
+_An exec member is someone who is part of the entity leadership team_ <br>
+_An entity is referring either a society, a club, a council, wits office_
+
 ## Meeting Minutes
 
 MEETING DETAILS <br>
@@ -648,7 +723,7 @@ MEETING DETAILS<br>
 **Date:** 14 October 2025<br>
 **Time:** 19:00 - 19:34<br>
 **Venue:** Online (Discord)<br>
-**Attendees:** Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Vusani Radzilani<br>
+**Attendees:** Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana<br>
 **Absent:** None<br>
 
 AGENDA<br>
@@ -690,5 +765,56 @@ ADDITIONAL NOTES<br>
 None.
 
 ![Meeting Minutes](/Clubs-Connect/M12.png "Meeting")
+
+---
+
+MEETING DETAILS<br>
+**Date:** 17 October 2025<br>
+**Time:** 16:00 - 16:40<br>
+**Venue:** Online (Discord)<br>
+**Attendees:** Busisiwe Mnisi, Paballo Molaontoa, Mmakwena Moichela, Mukondi Ramabulana<br>
+**Absent:** Theto Maunatlala<br>
+
+AGENDA<br>
+
+1. Opening and welcome
+2. Things yet to finalize
+
+MINUTES<br>
+
+**Discussion points:**
+
+Opening and welcome:
+
+- Everyone is overwhelmed as the submission is 2 days away. Theto Maunatlala sent her apologies and update on the work she has done so far.
+
+Things yet to finalize:
+
+- Testing, tests are still being done, we still have not met the code coverage yet. Also, the CI for testing is included
+- Put logic for checking CSO, fix how CSOs look on search
+- The navigation bar is fixed so that adapts to differnt screen sizes
+
+**Decisions made:**
+
+- Busisiwe Mnisi will submit the work.
+- Have a meeting on Sunday evening to check if everything is ready to be submitted.
+
+**Action items:**<br>
+_Action item - Person Responsible - Due Date_<br>
+
+1. Deploy documentation website, finish the documentation website and report - Busisiwe Mnisi - 19 October 2025,
+2. Finish Testing of SGO features and write about user feedback- Paballo Molaontoa - 19 October 2025,
+3. Write about API, - Theto Maunatlala - 19 October 2025,
+4. Put logic for checking CSO, fix how CSOs look on search, write about automated testing - Mukondi Ramabulana - 19 October 2025,
+5. Move deployment to master, continue with testing, write about deployment - Mmakwena Moichela - 19 October 2025
+
+CLOSURE<br>
+The meeting was adjourned at 16:40. This was the final documented meeting for the project development.
+
+ADDITIONAL NOTES<br>
+None.
+
+![Meeting Minutes](/Clubs-Connect/M13.png "Meeting")
+![Meeting Minutes](/Clubs-Connect/M14.png "Update from Thetho Maunatlala")
 
 ---

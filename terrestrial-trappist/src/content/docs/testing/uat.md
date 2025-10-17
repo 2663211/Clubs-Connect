@@ -16,6 +16,7 @@ The User Acceptance Testing process for Clubs Connect followed these key steps:
 - **Creation of User Acceptance Tests:** user stories were developed early in the project and used to design specific UAT scenarios. These scenarios served as a guide for evaluating the platform from a user’s perspective.
 
 - **Creation of Feedback Form:** a Google Form was created to collect feedback from users who tested the platform. The form questions were based on the user acceptance test scenarios to ensure structured and relevant responses.
+  The form used for collecting feedback is this: <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdDXXtfUHauEi_5OyyyE0EyUOtErnvvPEt6sx58qZgLe2vqPg/viewform?embedded=true" width="640" height="3000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 
 - **Results and Analysis:** UAT sessions were conducted throughout development to gather feedback from users. The collected responses were analysed, and recommended changes were implemented to enhance the platform. Summaries of the findings and improvements are included below.
 
@@ -64,3 +65,5 @@ The following are user acceptance tests:
 - Given I am signed in as an executive and have created a post on my CSO page, when I select “Delete” on that post and confirm the action, then the post should be permanently removed from the CSO page and no longer appear in followers’ feeds.
 
 ## Results
+
+<iframe width="640" height="450" src="https://lookerstudio.google.com/embed/reporting/9f0f09f5-c662-4127-bf9d-d31a37569b71/page/0U2bF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>

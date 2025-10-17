@@ -44,12 +44,15 @@ As outlined in the methodology, the team follows a flat structure where all memb
 - Posting on a CSO page
 - Following a CSO
 - API functionality
-- Creating a CSO event
+- Creating a CSO events
+- API testing
+- Test files for all componest
 
 ## Out of Scope (Features not to be tested)
 
 - Browser compatibility across different platforms
 - External APIs from third-party projects
+- Index.js, report web vitals
 
 ## Environment & Tools
 
