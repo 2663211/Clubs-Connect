@@ -6,7 +6,7 @@ import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://clubs-connect-api.onrender.com/api';
 
 console.log('Using API URL:', API_BASE_URL);
 
