@@ -6,7 +6,8 @@ import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
-const API_BASE_URL = 'https://api.allorigins.win/raw?url=https://clubs-connect-api.onrender.com';
+const API_URL = 'https://api.allorigins.win/raw?url=';
+const API_BASE_URL = `${API_URL}https://clubs-connect-api.onrender.com/api/events`;
 
 console.log('Using API URL:', API_BASE_URL);
 
