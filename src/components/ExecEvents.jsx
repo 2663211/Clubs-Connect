@@ -527,30 +527,10 @@ export default function StudentDashboard(entityId) {
                 <div className="loading-spinner"></div>
                 Loading events...
               </div>
-            ) : error ? (
-              <div className="error-message">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="15" y1="9" x2="9" y2="15"></line>
-                  <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
-                {error}
-                <button onClick={fetchEvents} className="retry-button">
-                  Try Again
-                </button>
-              </div>
             ) : filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
@@ -565,7 +545,6 @@ export default function StudentDashboard(entityId) {
                           className="event-poster"
                         />
                       )}
-
                       <button
                         className="add-to-calendar-btn"
                         onClick={() => createCalendarEvent(event)}
