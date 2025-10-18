@@ -33,35 +33,48 @@ const allowedOrigins = [
   'https://gentle-coast-05e458303.1.azurestaticapps.net',
 ];
 
-// CORS middleware
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      console.log('🌐 Request from origin:', origin || 'no-origin');
+// CORS configuration
+const corsOptions = {
+  origin: (origin, callback) => {
+    console.log('🌐 Request from origin:', origin || 'no-origin');
 
-      // Allow requests with no origin (Postman, mobile apps)
-      if (!origin) return callback(null, true);
+    // Allow requests with no origin (Postman, mobile apps, server-to-server)
+    if (!origin) {
+      console.log('✅ Allowing request with no origin');
+      return callback(null, true);
+    }
 
-      // Allow exact matches or all in dev mode
-      if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-        return callback(null, true);
-      }
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ Origin allowed:', origin);
+      return callback(null, true);
+    }
 
-      console.log('❌ CORS blocked origin:', origin);
-      callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 200,
-    maxAge: 86400, // Cache preflight for 24 hours
-  })
-);
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('✅ Development mode - allowing origin:', origin);
+      return callback(null, true);
+    }
 
-// Let CORS handle preflight requests properly
-app.options('*', cors());
+    // Reject in production
+    console.log('❌ CORS blocked origin:', origin);
+    callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  preflightContinue: false,
+  maxAge: 86400, // Cache preflight for 24 hours
+};
 
-// Request logging
+// Apply CORS middleware FIRST - this is critical
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight requests for all routes
+app.options('*', cors(corsOptions));
+
+// Request logging (after CORS)
 app.use((req, res, next) => {
   console.log(`📝 ${req.method} ${req.url} from ${req.get('origin') || req.get('host')}`);
   next();
@@ -172,6 +185,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`🔗 Health check: http://localhost:${PORT}/`);
     console.log(`🧪 CORS test: http://localhost:${PORT}/api/cors-test`);
     console.log(`📊 Events API: http://localhost:${PORT}/api/events`);
+    console.log('🔐 Allowed origins:', allowedOrigins);
   });
 
   // Graceful shutdown
