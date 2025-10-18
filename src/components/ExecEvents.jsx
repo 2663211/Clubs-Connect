@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import '../styles/Execevents.css';
-
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
@@ -17,7 +15,7 @@ export default function StudentDashboard(entityId) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [role, setRole] = useState(null);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // ✅ NEW
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,21 +25,19 @@ export default function StudentDashboard(entityId) {
     date: '',
     location: '',
     description: '',
-    exec_id: null, // initialize as null
+    exec_id: null,
     poster_image: '',
     category: '',
   });
 
   // Fetch events
-
   const fetchEvents = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE_URL}/api/events`, {
+      const response = await fetch(`${API_BASE_URL}/events`, {
         method: 'GET',
-
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -70,9 +66,7 @@ export default function StudentDashboard(entityId) {
       if (user) {
         setUser(user);
 
-        // Fetch role from profiles
         const { data: profile, error: profileError } = await supabase
-
           .from('profiles')
           .select('role')
           .eq('id', user.id)
@@ -81,7 +75,6 @@ export default function StudentDashboard(entityId) {
         if (profileError) console.error('Error fetching role:', profileError.message);
         else setRole(profile?.role || null);
 
-        // Fetch exec_id from executive table
         const { data: exec, error: execError } = await supabase
           .from('executive')
           .select('id')
@@ -97,7 +90,6 @@ export default function StudentDashboard(entityId) {
     };
 
     fetchUserAndRole();
-
     fetchEvents();
   }, []);
 
@@ -106,12 +98,10 @@ export default function StudentDashboard(entityId) {
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.location?.toLowerCase().includes(searchTerm.toLowerCase())
-    //event?.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = e => setSearchTerm(e.target.value);
   const clearSearch = () => setSearchTerm('');
-
   const handleInputChange = e => {
     const { name, value } = e.target;
     setNewEvent(prev => ({ ...prev, [name]: value }));
@@ -134,7 +124,6 @@ export default function StudentDashboard(entityId) {
         if (uploadError) throw uploadError;
 
         const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
-
         posterUrl = data.publicUrl;
       }
 
@@ -143,7 +132,7 @@ export default function StudentDashboard(entityId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...newEvent,
-          poster_image: posterUrl, // attach uploaded URL here
+          poster_image: posterUrl,
         }),
       });
 
@@ -152,7 +141,6 @@ export default function StudentDashboard(entityId) {
       await fetchEvents();
       setIsModalOpen(false);
 
-      // reset
       setNewEvent({
         title: '',
         date: '',
@@ -169,20 +157,10 @@ export default function StudentDashboard(entityId) {
     }
   };
 
-  async function createCalendarEvent(event) {
+  // ✅ NEW: helper to post calendar event
+  async function postCalendarEvent(event) {
     const token = sessionStorage.getItem('provider_token');
-
-    if (!token) {
-      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
-        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
-        const redirectUri = window.location.origin + window.location.pathname;
-        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
-
-        window.location.href = authUrl;
-      }
-      return;
-    }
+    if (!token) return;
 
     const calendarEvent = {
       summary: event.title || 'Untitled Event',
@@ -211,20 +189,53 @@ export default function StudentDashboard(entityId) {
       );
 
       const data = await response.json();
-      if (response.ok) alert('Event created! Check your Google Calendar.');
-      else alert('Failed to create event: ' + (data.error?.message || 'Unknown error'));
+      if (response.ok) {
+        setShowSuccessPopup(true);
+        sessionStorage.removeItem('pending_event');
+        setTimeout(() => setShowSuccessPopup(false), 3000);
+      } else {
+        alert('Failed to create event: ' + (data.error?.message || 'Unknown error'));
+      }
     } catch (err) {
       console.error('Calendar error:', err);
       alert('Something went wrong adding to calendar.');
     }
   }
 
+  // ✅ MODIFIED: createCalendarEvent
+  async function createCalendarEvent(event) {
+    const token = sessionStorage.getItem('provider_token');
+
+    if (!token) {
+      // store pending event for after redirect
+      sessionStorage.setItem('pending_event', JSON.stringify(event));
+
+      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
+        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
+        const redirectUri = window.location.origin + window.location.pathname;
+        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
+        window.location.href = authUrl;
+      }
+      return;
+    }
+
+    await postCalendarEvent(event);
+  }
+
+  // ✅ MODIFIED: handle token on redirect and create event automatically
   useEffect(() => {
     if (window.location.hash.includes('access_token')) {
       const params = new URLSearchParams(window.location.hash.substring(1));
       const token = params.get('access_token');
       if (token) sessionStorage.setItem('provider_token', token);
       window.location.hash = '';
+
+      const pendingEvent = sessionStorage.getItem('pending_event');
+      if (pendingEvent) {
+        const event = JSON.parse(pendingEvent);
+        postCalendarEvent(event);
+      }
     }
   }, []);
 
@@ -232,7 +243,6 @@ export default function StudentDashboard(entityId) {
 
   const handleSubmit = async () => {
     setLoading(true);
-
     try {
       const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
@@ -240,7 +250,6 @@ export default function StudentDashboard(entityId) {
       const { error: uploadError } = await supabase.storage
         .from('event_posters')
         .upload(filePath, file);
-
       if (uploadError) throw uploadError;
 
       const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
@@ -300,7 +309,6 @@ export default function StudentDashboard(entityId) {
           )}
         </div>
 
-        {/* Modal */}
         {isModalOpen && (
           <>
             <div className="overlay" onClick={() => setIsModalOpen(false)} />
@@ -322,7 +330,6 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
-
                   <label>
                     Date & Time
                     <input
@@ -333,7 +340,6 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
-
                   <label>
                     Location
                     <input
@@ -380,7 +386,10 @@ export default function StudentDashboard(entityId) {
           </>
         )}
 
-        {/* Search + Events */}
+        {/* ✅ SUCCESS POPUP */}
+        {showSuccessPopup && (
+          <div className="success-popup">🎉 Event added to your Google Calendar!</div>
+        )}
 
         <div className="search-container">
           <div className="search-box">
@@ -396,7 +405,6 @@ export default function StudentDashboard(entityId) {
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.35-4.35"></path>
             </svg>
-
             <input
               type="text"
               className="search-input"
@@ -405,7 +413,6 @@ export default function StudentDashboard(entityId) {
               placeholder="Search events..."
               autoComplete="off"
             />
-
             {searchTerm && (
               <button className="clear-button" onClick={clearSearch} aria-label="Clear search">
                 <svg
@@ -429,7 +436,6 @@ export default function StudentDashboard(entityId) {
             </div>
           )}
 
-          {/* Events Display */}
           <div className="events-container">
             {loading ? (
               <div className="loading">
@@ -459,7 +465,6 @@ export default function StudentDashboard(entityId) {
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
-
                   <p className="event-date">
                     {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
                   </p>
@@ -474,7 +479,6 @@ export default function StudentDashboard(entityId) {
                           className="event-poster"
                         />
                       )}
-
                       <button
                         className="add-to-calendar-btn"
                         onClick={() => createCalendarEvent(event)}
