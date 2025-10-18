@@ -322,7 +322,7 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
-                  <label>" "</label>
+
                   <label>
                     Date & Time
                     <input

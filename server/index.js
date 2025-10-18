@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-// Debug environment variables (safe for production)
+// Debug environment variables
 console.log('🔧 Environment Variables Check:');
 console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Loaded' : '❌ Missing');
 console.log(
@@ -20,117 +20,78 @@ console.log('NODE_ENV:', process.env.NODE_ENV || 'development');
 
 const app = express();
 
-// Production-ready CORS configuration
+// Allowed origins
 const allowedOrigins = [
-  // Development origins
   'http://localhost:3000',
   'http://localhost:5000',
   'http://localhost:5001',
   'http://localhost:5002',
   'http://127.0.0.1:5001',
   'http://127.0.0.1:5002',
-  // Production origins
   'https://2663211.github.io',
   'https://mango-sand-065fa6a03.1.azurestaticapps.net',
   'https://gentle-coast-05e458303.1.azurestaticapps.net',
 ];
 
-// More permissive CORS for production API
+// CORS middleware
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
       console.log('🌐 Request from origin:', origin || 'no-origin');
 
-      // Allow requests with no origin (mobile apps, Postman, etc.)
-      if (!origin) {
+      // Allow requests with no origin (Postman, mobile apps)
+      if (!origin) return callback(null, true);
+
+      // Allow exact matches or all in dev mode
+      if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
         return callback(null, true);
       }
 
-      // Check if origin is allowed
-      if (allowedOrigins.some(allowedOrigin => origin.startsWith(allowedOrigin))) {
-        return callback(null, true);
-      }
-
-      // For development, be more permissive
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('🔧 Development mode - allowing origin:', origin);
-        return callback(null, true);
-      }
-
-      // Log blocked origins for debugging
       console.log('❌ CORS blocked origin:', origin);
-      console.log('📝 Allowed origins:', allowedOrigins);
-
       callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: [
-      'Origin',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'Cache-Control',
-      'Pragma',
-    ],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
     credentials: true,
-    optionsSuccessStatus: 200, // For legacy browser support
-    maxAge: 86400, // Cache preflight response for 24 hours
+    optionsSuccessStatus: 200,
+    maxAge: 86400, // Cache preflight for 24 hours
   })
 );
 
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-  console.log('📡 Preflight request for:', req.url);
-  res.sendStatus(200);
-});
+// Let CORS handle preflight requests properly
+app.options('*', cors());
 
-// Request logging middleware
+// Request logging
 app.use((req, res, next) => {
   console.log(`📝 ${req.method} ${req.url} from ${req.get('origin') || req.get('host')}`);
   next();
 });
 
+// Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Supabase client setup
 let supabase;
-
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
   console.error('❌ Missing required environment variables!');
-  console.log('Required variables:');
-  console.log('- SUPABASE_URL');
-  console.log('- SUPABASE_SERVICE_ROLE_KEY');
-
-  if (process.env.NODE_ENV === 'production') {
-    process.exit(1);
-  } else {
-    console.log('⚠️  Development mode - continuing without Supabase...');
-    supabase = null;
-  }
+  if (process.env.NODE_ENV === 'production') process.exit(1);
+  supabase = null;
 } else {
   try {
     supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-      global: {
-        headers: { 'x-application': 'clubs-connect-api' },
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
+      global: { headers: { 'x-application': 'clubs-connect-api' } },
     });
     console.log('✅ Supabase client created successfully');
   } catch (error) {
     console.error('❌ Failed to create Supabase client:', error.message);
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    if (process.env.NODE_ENV === 'production') process.exit(1);
     supabase = null;
   }
 }
 
-// Health check route with detailed info
+// Health check
 app.get('/', (req, res) => {
   res.json({
     service: 'Clubs Connect API',
@@ -139,13 +100,13 @@ app.get('/', (req, res) => {
     environment: process.env.NODE_ENV || 'development',
     cors: {
       requestOrigin: req.get('origin') || 'no-origin',
-      allowedOrigins: allowedOrigins,
+      allowedOrigins,
     },
     version: '1.0.0',
   });
 });
 
-// API status endpoint
+// API status
 app.get('/api/status', (req, res) => {
   res.json({
     api: 'healthy',
@@ -155,7 +116,7 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// CORS test endpoint
+// CORS test
 app.get('/api/cors-test', (req, res) => {
   res.json({
     message: 'CORS is working!',
@@ -187,7 +148,7 @@ app.use((error, req, res, next) => {
       error: 'CORS Error',
       message: error.message,
       origin: req.get('origin'),
-      allowedOrigins: allowedOrigins,
+      allowedOrigins,
     });
   }
 
@@ -211,14 +172,11 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`🔗 Health check: http://localhost:${PORT}/`);
     console.log(`🧪 CORS test: http://localhost:${PORT}/api/cors-test`);
     console.log(`📊 Events API: http://localhost:${PORT}/api/events`);
-    console.log(`🌐 CORS enabled for:`, allowedOrigins.slice(0, 3), '...');
   });
 
   // Graceful shutdown
   process.on('SIGTERM', () => {
     console.log('🛑 SIGTERM received, shutting down gracefully');
-    server.close(() => {
-      console.log('✅ Process terminated');
-    });
+    server.close(() => console.log('✅ Process terminated'));
   });
 }
