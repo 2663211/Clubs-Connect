@@ -37,3 +37,7 @@ app.get('/api/sessions/:groupId', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Proxy server running on port ${PORT}`));
+
+app.get('/', (req, res) => {
+  res.send('✅ Proxy server is running. Use /api/groups or /api/sessions/:groupId');
+});
