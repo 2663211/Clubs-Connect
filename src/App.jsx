@@ -9,17 +9,14 @@ import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
 import StudentProfile from './components/StudentProfile';
-
 import AddMembers from './components/AddMembers';
 import UpdateCSO from './components/UpdateCSO';
-import CSO_member from './components/CSO_member';
-
+import CSOMember from './components/CSO_member';
 import ExecEvents from './components/ExecEvents';
-
 import Search from './components/Search';
-
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
+import StudySessions from './components/StudySessions';
 
 export default function App() {
   return (
@@ -39,11 +36,12 @@ export default function App() {
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
-        <Route path="/cso/member" element={<CSO_member />} />
+        <Route path="/cso/member" element={<CSOMember />} />
 
         <Route path="/events" element={<ExecEvents />} />
 
         <Route path="/events" element={<ExecEvents />} />
+        <Route path="/study_sessions" element={<StudySessions />} />
 
         <Route path="/entities/page" element={<CSOPage />} />
         <Route path="/entities/:entityId" element={<EntityPage />} />

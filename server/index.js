@@ -31,8 +31,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5002',
   // Production origins
   'https://2663211.github.io',
-  'https://clubs-connect-2.vercel.app', // Add if you use Vercel
-  'https://clubs-connect.netlify.app', // Add if you use Netlify
+  'https://mango-sand-065fa6a03.1.azurestaticapps.net',
 ];
 
 // More permissive CORS for production API

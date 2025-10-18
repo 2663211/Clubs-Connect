@@ -69,6 +69,21 @@ export default function StudentHeader() {
           </li> */}
 
           <li className="nav-links">
+            <button
+              onClick={() => navigate('/study_sessions')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              Study Sessions
+            </button>
+          </li>
+
+          <li className="nav-links">
             <button onClick={() => navigate('/profile/student')}>Profile</button>
           </li>
           <li className="nav-links">
