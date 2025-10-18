@@ -36,20 +36,48 @@ export default function StudentDashboard(entityId) {
     category: '',
   });
 
-  // Fetch events - using proxy for GET
-  const fetchEvents = async () => {
+  // Fetch events with retry logic for sleeping servers
+  const fetchEvents = async (retryCount = 0) => {
+    const maxRetries = 3;
+    const timeout = 30000; // 30 seconds timeout
+
     try {
       setLoading(true);
-      setError(null);
+      if (retryCount === 0) {
+        setError(null);
+      } else {
+        setError(`Server is waking up... Attempt ${retryCount + 1}/${maxRetries + 1}`);
+      }
 
-      // Try direct API first, fallback to proxy
+      console.log(`Fetching events (attempt ${retryCount + 1})...`);
+
+      // Fetch with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
       let response;
       try {
+        // Try direct API first
         response = await fetch(`${API_BASE_URL}/api/events`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
         });
+        clearTimeout(timeoutId);
       } catch (err) {
+        clearTimeout(timeoutId);
+
+        // If it's a network error and we have retries left, try again
+        if (
+          retryCount < maxRetries &&
+          (err.name === 'AbortError' || err.message.includes('fetch'))
+        ) {
+          console.log(`Attempt ${retryCount + 1} failed, retrying in 2 seconds...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          return fetchEvents(retryCount + 1);
+        }
+
+        // Try proxy as last resort
         console.log('Direct API failed, trying proxy...');
         response = await fetch(`${API_BASE_URL_PROXY}/api/events`, {
           method: 'GET',
@@ -57,16 +85,35 @@ export default function StudentDashboard(entityId) {
         });
       }
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       const now = new Date();
       const upcoming = Array.isArray(data) ? data.filter(event => new Date(event.date) >= now) : [];
 
       setEvents(upcoming);
+      setError(null);
+      console.log(`✅ Successfully fetched ${upcoming.length} events`);
     } catch (error) {
       console.error('Error fetching events:', error);
-      setError(`Failed to load events: ${error.message}`);
+
+      // If we have retries left and it's a network error, retry
+      if (
+        retryCount < maxRetries &&
+        (error.name === 'AbortError' ||
+          error.message.includes('fetch') ||
+          error.message.includes('network'))
+      ) {
+        console.log(`Retry ${retryCount + 1}/${maxRetries}...`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return fetchEvents(retryCount + 1);
+      }
+
+      setError(
+        `Failed to load events: ${error.message}. The server may be sleeping (Render free tier). Click "Try Again".`
+      );
     } finally {
       setLoading(false);
     }
@@ -124,9 +171,12 @@ export default function StudentDashboard(entityId) {
     setNewEvent(prev => ({ ...prev, [name]: value }));
   };
 
-  // FIXED: Create Event - Use direct API without proxy
+  // FIXED: Create Event with retry logic
   const handleCreateEvent = async e => {
     e.preventDefault();
+
+    // Show loading state
+    setLoading(true);
 
     try {
       let posterUrl = '';
@@ -164,14 +214,51 @@ export default function StudentDashboard(entityId) {
 
       console.log('Creating event with data:', eventData);
 
-      // POST to direct API (no proxy)
-      const response = await fetch(`${API_BASE_URL}/api/events`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventData),
-      });
+      // POST to direct API with timeout and retry
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      let response;
+      let retries = 0;
+      const maxRetries = 2;
+
+      while (retries <= maxRetries) {
+        try {
+          response = await fetch(`${API_BASE_URL}/api/events`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventData),
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+
+          if (response.ok) {
+            break; // Success!
+          } else if (retries < maxRetries) {
+            console.log(`Request failed (status ${response.status}), retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            retries++;
+          } else {
+            throw new Error(`Failed after ${maxRetries + 1} attempts`);
+          }
+        } catch (err) {
+          clearTimeout(timeoutId);
+
+          if (
+            retries < maxRetries &&
+            (err.name === 'AbortError' || err.message.includes('fetch'))
+          ) {
+            console.log(`Attempt ${retries + 1} failed, retrying in 2 seconds...`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            retries++;
+          } else {
+            throw err;
+          }
+        }
+      }
 
       console.log('Response status:', response.status);
 
@@ -204,7 +291,11 @@ export default function StudentDashboard(entityId) {
       setFile(null);
     } catch (err) {
       console.error('Error creating event:', err);
-      alert(`Failed to create event: ${err.message}`);
+      alert(
+        `Failed to create event: ${err.message}. The server may be sleeping. Please try again.`
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
