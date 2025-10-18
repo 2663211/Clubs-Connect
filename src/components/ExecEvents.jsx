@@ -164,7 +164,7 @@ export default function StudentDashboard(entityId) {
   // Function to actually post to Google Calendar
   const postCalendarEvent = async event => {
     const token = sessionStorage.getItem('provider_token');
-    
+
     if (!token) {
       alert('Calendar token not found. Please try again.');
       return;
