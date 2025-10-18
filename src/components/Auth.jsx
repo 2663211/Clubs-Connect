@@ -114,7 +114,7 @@ export default function Auth() {
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   // Signup handler
   const handleSignUp = async e => {

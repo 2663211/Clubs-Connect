@@ -53,7 +53,7 @@ test('Logout button navigates to Auth page', async () => {
   await userEvent.click(logoutButton);
 
   // Check that the Auth page loaded by looking for the Login submit button
-  const loginButton = screen.getByRole('button', { name: /login/i });
+  const loginButton = screen.getByRole('button', { name: /sign in with google/i });
   expect(loginButton).toBeInTheDocument();
 });
 

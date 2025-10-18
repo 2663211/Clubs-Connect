@@ -31,6 +31,10 @@ const allowedOrigins = [
   'http://127.0.0.1:5002',
   // Production origins
   'https://2663211.github.io',
+<<<<<<< HEAD
+=======
+  'https://mango-sand-065fa6a03.1.azurestaticapps.net',
+>>>>>>> 0490d92a2fb2587f2ab9412f39efd4169b64f9e7
   'https://gentle-coast-05e458303.1.azurestaticapps.net',
 ];
 

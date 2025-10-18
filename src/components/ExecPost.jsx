@@ -54,8 +54,8 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
       const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
       //Get post permissions Mukondi
-      var e = document.getElementById('p_r');
-      var value = e.value;
+      var h = document.getElementById('p_r');
+      var value = h.value;
       var post_permission = '';
       if (value === 'Members_only') {
         post_permission = 'true';

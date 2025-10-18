@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import '../styles/AddMembers.css';
@@ -16,16 +16,7 @@ export default function AddMembersPage() {
   const [addModal, setAddModal] = useState({ open: false, userId: null });
   const [removeModal, setRemoveModal] = useState({ open: false, userId: null });
 
-  useEffect(() => {
-    fetchCSO();
-    fetchMembers();
-  }, []);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [members]);
-
-  async function fetchCSO() {
+  const fetchCSO = useCallback(async () => {
     try {
       const { data, error } = await supabase.from('cso').select('id, name').eq('id', id).single();
       if (error) throw error;
@@ -33,9 +24,22 @@ export default function AddMembersPage() {
     } catch (err) {
       console.error('Failed to fetch CSO:', err.message);
     }
-  }
+  }, [id]);
 
-  async function fetchUsers() {
+  const fetchMembers = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cso_members')
+        .select('student_number, profiles:student_number (id, full_name, role, avatar_url)')
+        .eq('cso_id', id);
+      if (error) throw error;
+      setMembers(data || []);
+    } catch (err) {
+      console.error('Error fetching members:', err);
+    }
+  }, [id]);
+
+  const fetchUsers = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -51,20 +55,16 @@ export default function AddMembersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [members]);
 
-  async function fetchMembers() {
-    try {
-      const { data, error } = await supabase
-        .from('cso_members')
-        .select('student_number, profiles:student_number (id, full_name, role, avatar_url)')
-        .eq('cso_id', id);
-      if (error) throw error;
-      setMembers(data || []);
-    } catch (err) {
-      console.error('Error fetching members:', err);
-    }
-  }
+  useEffect(() => {
+    fetchCSO();
+    fetchMembers();
+  }, [fetchCSO, fetchMembers]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   async function handleAddMember(studentId) {
     try {
