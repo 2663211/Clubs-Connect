@@ -41,6 +41,47 @@
 .nav-links button.active {
   color: #fbba23;
 }
+
+.icon{
+  font-size:1.5rem;
+  cursor: pointer;
+  display: none;
+
+}
+
+@media(max-width: 768px){
+  .icon{
+    display:block;
+  }
+  .StudentHeader .nav-bar{
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    background-color: #043673;
+    width: 300px;
+    height: 30vh;
+    top: -500px;
+    right:0;
+    z-index: 10;
+    transition: all 0.5s;
+  }
+  .nav-links{
+    border-bottom: white 2px solid;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    
+  }
+
+
+  .nav-bar.active{
+    top:10%;
+    transition: all 0.5s ease-in;
+  }
+
+  
+}
 .posts {
   /* posts the entire posts*/
   display: flex;

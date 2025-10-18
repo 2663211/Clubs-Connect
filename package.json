@@ -3,6 +3,7 @@
   "name": "clubs-connect",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",
     "@testing-library/dom": "^10.4.1",
@@ -20,10 +21,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
     "lint": "eslint . --fix && prettier --write .",
     "lint:check": "eslint . && prettier --check .",
     "format": "prettier --write .",
@@ -45,9 +47,10 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
-    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^5.0.4",
     "babel-jest": "^30.1.2",
     "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
@@ -58,10 +61,13 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "gh-pages": "^6.3.0",
     "jest": "^27.5.1",
+    "jsdom": "^27.0.0",
     "lint-staged": "^16.1.6",
     "prettier": "^3.6.2",
     "react-test-renderer": "^19.1.1",
-    "supertest": "^7.1.4"
+    "supertest": "^7.1.4",
+    "vite": "^7.1.9",
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
