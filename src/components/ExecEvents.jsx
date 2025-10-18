@@ -527,7 +527,7 @@ export default function StudentDashboard(entityId) {
                 <div className="loading-spinner"></div>
                 Loading events...
               </div>
-            ) : filteredEvents.length > 0 ? (
+            ) : (
               filteredEvents.map((event, index) => (
                 <div key={event.id || index} className="event-card">
                   <h3>{event.title || 'Untitled Event'}</h3>
@@ -555,8 +555,6 @@ export default function StudentDashboard(entityId) {
                   )}
                 </div>
               ))
-            ) : (
-              <div className="no-events">No events available</div>
             )}
           </div>
         </div>
