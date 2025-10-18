@@ -38,14 +38,18 @@ export default function StudentDashboard(entityId) {
 
   // Fetch events with retry logic for sleeping servers
   const fetchEvents = async (retryCount = 0) => {
-    const maxRetries = 5;
-    const timeout = 40000; // 30 seconds timeout
+    const maxRetries = 3;
+    const timeout = 30000; // 30 seconds timeout
 
     try {
       setLoading(true);
       if (retryCount === 0) {
         setError(null);
+      } else {
+        setError(`Server is waking up... Attempt ${retryCount + 1}/${maxRetries + 1}`);
       }
+
+      console.log(`Fetching events (attempt ${retryCount + 1})...`);
 
       // Fetch with timeout
       const controller = new AbortController();
