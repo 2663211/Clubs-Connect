@@ -1,15 +1,14 @@
-import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import FollowButton from './FollowButton';
 import { supabase } from '../supabaseClient';
 
-vi.mock('../supabaseClient');
+jest.mock('../supabaseClient');
 
 describe('Follow Button', () => {
   const mockUser = { id: '123' };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
   test('renders button with "Follow" text when not following', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });

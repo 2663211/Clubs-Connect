@@ -1,16 +1,16 @@
-import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import LikeButton from './LikeButton';
 import { supabase } from '../supabaseClient';
+jest.mock('../supabaseClient');
 
-vi.mock('../supabaseClient');
+jest.mock('../supabaseClient');
 
 const mockUser = { id: '123' };
 const renderLikeButton = (props = {}) => render(<LikeButton postId="post-1" {...props} />);
 
 describe('LikeButton UI', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
 
     // mock user
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });

@@ -1,22 +1,22 @@
 // ExecEvents.test.js
 import React from 'react';
-import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ExecEvents from './ExecEvents';
 import { BrowserRouter } from 'react-router-dom';
+jest.mock('../supabaseClient');
 
 beforeAll(() => {
-  window.alert = vi.fn();
+  window.alert = jest.fn();
 });
 
 const mockSessionStorage = (() => {
   let store = {};
   return {
-    getItem: vi.fn(key => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: jest.fn(key => store[key] || null),
+    setItem: jest.fn((key, value) => {
       store[key] = value;
     }),
-    clear: vi.fn(() => {
+    clear: jest.fn(() => {
       store = {};
     }),
   };
@@ -25,7 +25,7 @@ Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
 
 // Mock fetch
 beforeEach(() => {
-  vi.spyOn(global, 'fetch').mockImplementation(() =>
+  jest.spyOn(global, 'fetch').mockImplementation(() =>
     Promise.resolve({
       ok: true,
       json: async () => [],
