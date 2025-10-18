@@ -522,40 +522,61 @@ export default function StudentDashboard(entityId) {
 
           {/* Events Display */}
           <div className="events-container">
-            {loading ? (
-              <div className="loading">
-                <div className="loading-spinner"></div>
-                Loading events...
-              </div>
-            ) : (
-              filteredEvents.map((event, index) => (
-                <div key={event.id || index} className="event-card">
-                  <h3>{event.title || 'Untitled Event'}</h3>
-                  <p className="event-date">
-                    {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
-                  </p>
-                  {event.location && <p className="event-location">{event.location}</p>}
-                  {event.description && (
-                    <>
-                      <p className="event-description">{event.description}</p>
-                      {event.poster_image && (
-                        <img
-                          src={event.poster_image}
-                          alt={`${event.title} poster`}
-                          className="event-poster"
-                        />
-                      )}
-                      <button
-                        className="add-to-calendar-btn"
-                        onClick={() => createCalendarEvent(event)}
-                      >
-                        Add to Calendar
-                      </button>
-                    </>
-                  )}
+            {
+              loading ? (
+                <div className="loading">
+                  <div className="loading-spinner"></div>
+                  Loading events...
                 </div>
-              ))
-            )}
+              ) : error ? (
+                <div className="error-message">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                  {error}
+                  <button onClick={fetchEvents} className="retry-button">
+                    Try Again
+                  </button>
+                </div>
+              ) : filteredEvents.length > 0 ? (
+                filteredEvents.map((event, index) => (
+                  <div key={event.id || index} className="event-card">
+                    <h3>{event.title || 'Untitled Event'}</h3>
+                    <p className="event-date">
+                      {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
+                    </p>
+                    {event.location && <p className="event-location">{event.location}</p>}
+                    {event.description && (
+                      <>
+                        <p className="event-description">{event.description}</p>
+                        {event.poster_image && (
+                          <img
+                            src={event.poster_image}
+                            alt={`${event.title} poster`}
+                            className="event-poster"
+                          />
+                        )}
+                        <button
+                          className="add-to-calendar-btn"
+                          onClick={() => createCalendarEvent(event)}
+                        >
+                          Add to Calendar
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ))
+              ) : null /* Just render nothing if no events */
+            }
           </div>
         </div>
       </main>
