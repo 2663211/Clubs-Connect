@@ -9,7 +9,7 @@ import { supabase } from '../supabaseClient';
 const API_BASE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000/api'
-    : 'https://clubs-connect-api.onrender.com/api';
+    : 'https://clubs-connect-api.onrender.com';
 
 console.log('Using API URL:', API_BASE_URL);
 
