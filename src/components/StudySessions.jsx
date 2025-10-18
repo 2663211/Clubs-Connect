@@ -4,6 +4,8 @@ import StudentHeader from './StudentHeader';
 
 // Using CORS proxy for studynester API
 const API_BASE_URL = 'https://api.allorigins.win/raw?url=https://studynester.onrender.com';
+
+export default function StudySessions() {
   const [searchTerm, setSearchTerm] = useState('');
   const [groups, setGroups] = useState([]);
   const [sessions, setSessions] = useState({});
