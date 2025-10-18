@@ -46,18 +46,42 @@ export default function EntityPage() {
       if (error) return console.error('Auth error:', error.message);
       setUser(user);
       if (user && entityId) {
-        const [execRes, profileRes] = await Promise.all([
-          supabase
+        try{
+        const {data: execRes, error} = await   supabase
             .from('cso_exec')
-            .select('can_post')
+            .select('exec_id')
             .eq('cso_id', entityId)
-            .eq('exec_id', user.id)
-            .single(),
-          supabase.from('profiles').select('role').eq('id', user.id).single(),
-        ]);
-        setCanPost(execRes.data?.can_post || profileRes.data?.role === 'sgo');
+            .limit(1);
+
+            //if(error) throw error;
+
+            const{data: profileRes}= await supabase
+            .from('profiles')
+            .select('role').eq('id', user.id)
+            .single();
+        
+        if(profileRes.role === 'sgo'){
+          setCanPost(true);
+          fetchPosts(true);
+        }else{
+        if(execRes != null){
+           const { data: execS_N } = await supabase
+                .from('executive').select('student_number').eq('id', execRes[0].exec_id).single();
+              const s_n = execS_N.student_number;
+              if (s_n === user.id) {
+                setCanPost(true);
+                fetchPosts(true);
+              }
+              else{
+                fetchPosts(false);
+              }
+         }
       }
-    };
+    } catch(err){
+      console.error('Failed to fetch exec data:',err.message);
+    }
+    }
+  };
     fetchUser();
   }, [entityId]);
 
@@ -82,8 +106,11 @@ export default function EntityPage() {
   }, [entityId]);
 
   // Fetch posts
-  const fetchPosts = async () => {
+  const fetchPosts = async user  => {
     try {
+      //show member posts
+      if(user===true){
+        try{
       const { data, error } = await supabase
         .from('posts')
         .select(
@@ -98,10 +125,32 @@ export default function EntityPage() {
     } finally {
       setPostsLoading(false);
     }
-  };
-  useEffect(() => {
-    fetchPosts();
-  }, [entityId]);
+  }
+  else{
+        try{
+      const { data, error } = await supabase
+        .from('posts')
+        .select(
+          'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
+        )
+        .eq('cso_id', entityId)
+        .eq('member_only',false)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setPosts(data || []);
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setPostsLoading(false);
+    }
+  }
+}catch(err){
+      console.error('Failed to fetch posts data:',err.message);
+    }
+};
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, [entityId]);
 
   // Save Edit
   const handleEditSubmit = async id => {

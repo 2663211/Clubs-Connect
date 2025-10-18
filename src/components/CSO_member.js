@@ -96,7 +96,7 @@ export default function CSO_member() {
 
   return (
     <article>
-      <section className="entities-list">
+      <section className="CSOentities-list">
         {loading ? (
           <p>Loading entities...</p>
         ) : entities.length === 0 ? (
@@ -105,7 +105,7 @@ export default function CSO_member() {
           uniqueArray.map(entity => (
             <article
               key={entity.id}
-              className="entity-card-cso"
+              className="entity-card-cso1"
               onClick={() => navigate(`/entities/${entity.id}`)}
             >
               <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
