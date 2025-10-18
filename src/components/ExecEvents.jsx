@@ -6,7 +6,11 @@ import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
-const API_BASE_URL = 'https://api.allorigins.win/raw?url=https://clubs-connect-api.onrender.com';
+// Use direct API for POST requests, CORS proxy only for GET
+const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
+const API_BASE_URL_PROXY =
+  'https://api.allorigins.win/raw?url=https://clubs-connect-api.onrender.com';
+
 console.log('Using API URL:', API_BASE_URL);
 
 export default function StudentDashboard(entityId) {
@@ -27,23 +31,31 @@ export default function StudentDashboard(entityId) {
     date: '',
     location: '',
     description: '',
-    exec_id: null, // initialize as null
+    exec_id: null,
     poster_image: '',
     category: '',
   });
 
-  // Fetch events
-
+  // Fetch events - using proxy for GET
   const fetchEvents = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE_URL}/api/events`, {
-        method: 'GET',
-
-        headers: { 'Content-Type': 'application/json' },
-      });
+      // Try direct API first, fallback to proxy
+      let response;
+      try {
+        response = await fetch(`${API_BASE_URL}/api/events`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } catch (err) {
+        console.log('Direct API failed, trying proxy...');
+        response = await fetch(`${API_BASE_URL_PROXY}/api/events`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -70,9 +82,7 @@ export default function StudentDashboard(entityId) {
       if (user) {
         setUser(user);
 
-        // Fetch role from profiles
         const { data: profile, error: profileError } = await supabase
-
           .from('profiles')
           .select('role')
           .eq('id', user.id)
@@ -81,7 +91,6 @@ export default function StudentDashboard(entityId) {
         if (profileError) console.error('Error fetching role:', profileError.message);
         else setRole(profile?.role || null);
 
-        // Fetch exec_id from executive table
         const { data: exec, error: execError } = await supabase
           .from('executive')
           .select('id')
@@ -97,7 +106,6 @@ export default function StudentDashboard(entityId) {
     };
 
     fetchUserAndRole();
-
     fetchEvents();
   }, []);
 
@@ -106,7 +114,6 @@ export default function StudentDashboard(entityId) {
       event?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event?.location?.toLowerCase().includes(searchTerm.toLowerCase())
-    //event?.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = e => setSearchTerm(e.target.value);
@@ -117,13 +124,16 @@ export default function StudentDashboard(entityId) {
     setNewEvent(prev => ({ ...prev, [name]: value }));
   };
 
+  // FIXED: Create Event - Use direct API without proxy
   const handleCreateEvent = async e => {
     e.preventDefault();
 
     try {
       let posterUrl = '';
 
+      // Upload poster image first if exists
       if (file) {
+        console.log('Uploading poster image...');
         const fileExt = file.name.split('.').pop();
         const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
@@ -131,28 +141,57 @@ export default function StudentDashboard(entityId) {
           .from('event_posters')
           .upload(filePath, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
 
         const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
-
         posterUrl = data.publicUrl;
+        console.log('Poster uploaded:', posterUrl);
       }
 
+      // Create event payload
+      const eventData = {
+        title: newEvent.title,
+        date: newEvent.date,
+        location: newEvent.location,
+        description: newEvent.description,
+        exec_id: newEvent.exec_id,
+        category: newEvent.category,
+        poster_image: posterUrl,
+      };
+
+      console.log('Creating event with data:', eventData);
+
+      // POST to direct API (no proxy)
       const response = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...newEvent,
-          poster_image: posterUrl, // attach uploaded URL here
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventData),
       });
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      console.log('Response status:', response.status);
 
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('API error:', errorData);
+        throw new Error(`Failed to create event: ${errorData.error || response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Event created successfully:', result);
+
+      // Success! Refresh events and close modal
       await fetchEvents();
       setIsModalOpen(false);
 
-      // reset
+      // Show success message
+      alert('Event created successfully!');
+
+      // Reset form
       setNewEvent({
         title: '',
         date: '',
@@ -165,7 +204,7 @@ export default function StudentDashboard(entityId) {
       setFile(null);
     } catch (err) {
       console.error('Error creating event:', err);
-      alert('Failed to create event.');
+      alert(`Failed to create event: ${err.message}`);
     }
   };
 
@@ -212,7 +251,6 @@ export default function StudentDashboard(entityId) {
 
       const data = await response.json();
       if (response.ok) {
-        // Show success popup instead of alert
         setShowSuccessPopup(true);
         setTimeout(() => setShowSuccessPopup(false), 3000);
       } else {
@@ -234,48 +272,6 @@ export default function StudentDashboard(entityId) {
   }, []);
 
   const handleFileChange = e => setFile(e.target.files[0]);
-
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    try {
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('event_posters')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
-      const postersUrl = data.publicUrl;
-
-      const postersType = file.type.startsWith('image')
-        ? 'image'
-        : file.type.startsWith('video')
-          ? 'video'
-          : 'audio';
-
-      const { error: insertError } = await supabase.from('event_posters').insert([
-        {
-          media_url: postersUrl,
-          media_type: postersType,
-          exec_id: entityId,
-        },
-      ]);
-
-      if (insertError) throw insertError;
-
-      alert('Event poster uploaded successfully!');
-      setFile(null);
-      window.location.reload();
-    } catch (error) {
-      console.error('Error uploading event poster:', error);
-      alert('Failed to upload event poster.');
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="dashboard">
@@ -374,7 +370,7 @@ export default function StudentDashboard(entityId) {
                       name="poster_image"
                       accept=".jpg,.png,.jpeg"
                       onChange={handleFileChange}
-                    ></input>
+                    />
                   </label>
                   <button type="submit" className="submit-btn">
                     Save Event
@@ -386,7 +382,6 @@ export default function StudentDashboard(entityId) {
         )}
 
         {/* Search + Events */}
-
         <div className="search-container">
           <div className="search-box">
             <svg
