@@ -188,6 +188,28 @@ if (process.env.NODE_ENV !== 'test') {
     console.log('🔐 Allowed origins:', allowedOrigins);
   });
 
+  // Keep-alive in production to prevent server sleep (Render free tier)
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🏓 Keep-alive enabled - pinging every 14 minutes');
+
+    setInterval(
+      async () => {
+        try {
+          // Ping the server's own health endpoint
+          const response = await fetch(`https://clubs-connect-api.onrender.com/api/status`);
+          if (response.ok) {
+            console.log('🏓 Keep-alive ping successful');
+          } else {
+            console.log('⚠️ Keep-alive ping returned status:', response.status);
+          }
+        } catch (err) {
+          console.error('❌ Keep-alive ping failed:', err.message);
+        }
+      },
+      14 * 60 * 1000
+    ); // Every 14 minutes
+  }
+
   // Graceful shutdown
   process.on('SIGTERM', () => {
     console.log('🛑 SIGTERM received, shutting down gracefully');
