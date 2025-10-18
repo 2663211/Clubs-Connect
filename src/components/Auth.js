@@ -4,9 +4,6 @@ import { supabase } from '../supabaseClient';
 import { useLocation } from 'react-router-dom';
 import '../styles/Auth.css';
 import { useNavigate } from 'react-router-dom';
-//import StudentDashboard from './StudentDashboard';
-//import SGODashboard from './SGODashboard';
-//import ExecDashboard from './ExecDashboard';
 
 export const handleLogout = async () => {
   await supabase.auth.signOut();
@@ -118,7 +115,7 @@ export default function Auth() {
     };
   }, [navigate]);
 
-  // Signup handler
+  // Signup handler. Remove
   const handleSignUp = async e => {
     e.preventDefault();
     if (!isWitsEmail(email)) {
@@ -150,7 +147,7 @@ export default function Auth() {
     setIsSignedUp(true);
   };
 
-  // Login handler
+  // Login handler. Remove for google sign ups
   const handleLogin = async e => {
     e.preventDefault();
     if (!isWitsEmail(email)) {
@@ -213,19 +210,6 @@ export default function Auth() {
     setName('');
   };
 
-  if (isSignedUp) {
-    return (
-      <section className="auth-container">
-        <main>
-          <p>
-            Thank you for signing up! Please check your email at <b>{email}</b> to confirm your
-            account. After confirming, you can log in.
-          </p>
-        </main>
-      </section>
-    );
-  }
-
   if (checkingSession) {
     return (
       <section className="auth-container">
@@ -241,17 +225,7 @@ export default function Auth() {
       {user ? (
         <main>
           {/*
-        <section aria-label="User Info">
-          <p>Welcome, {userName || user.user_metadata?.name || user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </section>
-        
-       
-
-        {role === 'student' && <StudentDashboard />}
-        {role === 'sgo' && <SGODashboard />}
-        {role === 'exec' && <ExecDashboard />}
-
+          just keep this here
         */}
         </main>
       ) : (
@@ -267,52 +241,6 @@ export default function Auth() {
                 <fieldset>
                   <legend>Signup</legend>
 
-                  {/*<label htmlFor="signup-name">Full Name</label>*/}
-                  <br />
-                  <input
-                    id="signup-name"
-                    className="auth-input"
-                    type="text"
-                    placeholder="Full Name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                  />
-                  <br />
-                  <br />
-
-                  {/*<label htmlFor="signup-email">Email</label>*/}
-                  <br />
-                  <input
-                    id="signup-email"
-                    className="auth-input"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                  />
-                  <br />
-                  <br />
-
-                  {/*<label htmlFor="signup-password">Password</label>*/}
-                  <br />
-                  <input
-                    id="signup-password"
-                    className="auth-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
-                  />
-                  <br />
-                  <br />
-
-                  <button type="submit" disabled={loading} className="btn-auth">
-                    Sign up
-                  </button>
-                  <br />
                   <br />
 
                   <button
@@ -323,13 +251,17 @@ export default function Auth() {
                   >
                     Sign up with Google
                   </button>
+
+                  <br />
+                  <br />
+
+                  <button type="button" onClick={handleRegisterToggle} className="btn-auth">
+                    Already have an account? Login here
+                  </button>
                 </fieldset>
 
                 <p className="toggle-text">
-                  Already have an account?{' '}
-                  <button type="button" onClick={handleRegisterToggle}>
-                    Login here
-                  </button>
+                  <b>Use your Wits Google Account to Sign up</b>
                 </p>
               </form>
             ) : (
@@ -337,37 +269,6 @@ export default function Auth() {
                 <fieldset>
                   <legend>Login</legend>
 
-                  {/*<label htmlFor="login-email">Email</label>*/}
-                  <br />
-                  <input
-                    id="login-email"
-                    className="auth-input"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                  />
-                  <br />
-                  <br />
-
-                  {/*<label htmlFor="login-password">Password</label>*/}
-                  <br />
-                  <input
-                    id="login-password"
-                    className="auth-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
-                  />
-                  <br />
-                  <br />
-
-                  <button type="submit" disabled={loading} className="btn-auth">
-                    Login
-                  </button>
                   <br />
                   <br />
 
@@ -379,13 +280,17 @@ export default function Auth() {
                   >
                     Sign in with Google
                   </button>
+
+                  <br />
+                  <br />
+
+                  <button type="button" onClick={handleRegisterToggle} className="btn-auth">
+                    Don't have an account? Sign up here
+                  </button>
                 </fieldset>
 
                 <p className="toggle-text">
-                  Don't have an account?{' '}
-                  <button type="button" onClick={handleRegisterToggle}>
-                    Signup here
-                  </button>
+                  <b>Use your Wits Google Account to Sign in</b>
                 </p>
               </form>
             )}
