@@ -23,13 +23,6 @@ const app = express();
 // Allowed origins
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:5000',
-  'http://localhost:5001',
-  'http://localhost:5002',
-  'http://127.0.0.1:5001',
-  'http://127.0.0.1:5002',
-  'https://2663211.github.io',
-  'https://mango-sand-065fa6a03.1.azurestaticapps.net',
   'https://gentle-coast-05e458303.1.azurestaticapps.net',
 ];
 
