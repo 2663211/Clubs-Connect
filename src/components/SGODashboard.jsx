@@ -182,7 +182,7 @@ export default function SGODashboard() {
                   padding: 0,
                 }}
               >
-                Entities
+                CSOs
               </button>
             </li>
             <li>
@@ -237,7 +237,7 @@ export default function SGODashboard() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />{' '}
-          <img src={searchLogo} id="search-icon" alt="search" />
+          <img src={require('../images/icons8-search.gif')} id="search-icon" alt="search" />
         </section>
 
         {loading ? (

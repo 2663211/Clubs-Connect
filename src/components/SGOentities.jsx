@@ -143,7 +143,7 @@ export default function SGOentities() {
                   padding: 0,
                 }}
               >
-                Entities
+                CSOs
               </button>
             </li>
             <li>
@@ -183,7 +183,7 @@ export default function SGOentities() {
 
       <main className="content">
         <button className="create-entity-btn" onClick={() => navigate('/entities/add')}>
-          Create Entity
+          Create CSO
         </button>
 
         {notification.visible && (
@@ -196,14 +196,14 @@ export default function SGOentities() {
           </aside>
         )}
 
-        <section className="entities-list">
+        <section className="sgocc-entities-list">
           {loading ? (
             <p>Loading entities...</p>
           ) : entities.length === 0 ? (
             <p>No entities found.</p>
           ) : (
             entities.map(entity => (
-              <article key={entity.id} className="entity-card">
+              <article key={entity.id} className="sgocc-entity-card">
                 <div className="entity-menu-container">
                   <button
                     className="entity-menu-trigger"
@@ -246,7 +246,7 @@ export default function SGOentities() {
                           <button
                             role="menuitem"
                             onClick={() => {
-                              navigate(`/entities/:csoId/update`);
+                              navigate(`/entities/${entity.id}/update`);
                               setOpenMenu(null);
                             }}
                             className="dropdown-item"
@@ -263,7 +263,7 @@ export default function SGOentities() {
                             }}
                             className="dropdown-item dropdown-item-danger"
                           >
-                            Delete Entity
+                            Delete CSO
                           </button>
                         </li>
                       </ul>
@@ -272,15 +272,15 @@ export default function SGOentities() {
                 </div>
 
                 {entity.logo_url && (
-                  <img src={entity.logo_url} alt={entity.name} className="entity-logo" />
+                  <img src={entity.logo_url} alt={entity.name} className="sgocc-entity-logo" />
                 )}
                 <header>
                   <h2>{entity.name}</h2>
-                  <p className="entity-cluster">{entity.cluster}</p>
+                  <p className="sgocc-entity-cluster">{entity.cluster}</p>
                 </header>
 
                 {entity.description && (
-                  <section className="entity-description">
+                  <section className="sgocc-entity-description">
                     <p>{entity.description}</p>
                   </section>
                 )}

@@ -1,86 +1,90 @@
 import { BrowserRouter, MemoryRouter, Link, Routes, Route } from 'react-router-dom';
 import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SGODashboard from './SGODashboard.js';
-import SGOEntities from './SGOentities.js';
-import SGOProfile from './SGOprofile.js';
-import App from '../App.js';
+import SGODashboard from './SGODashboard';
+import SGOEntities from './SGOentities';
+import SGOProfile from './SGOprofile';
+import App from '../App';
 import Auth from './Auth';
 import { supabase } from '../supabaseClient';
 
+// Mock useNavigate
+const mockedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedNavigate,
+}));
+
 afterEach(() => {
   cleanup();
+  mockedNavigate.mockReset();
 });
 
 test('All navigation buttons are rendered', () => {
   render(
-    <MemoryRouter initialEntries={['/dashboard/sgo']}>
+    <BrowserRouter>
       <SGODashboard />
-    </MemoryRouter>
+    </BrowserRouter>
   );
 
-  const Dash_button = screen.getByText('Dashboard');
-  const Annoucement_button = screen.getByText('Announcements');
-  const Entity_button = screen.getByText('Entities');
-  const profile_button = screen.getByText('Profile');
-  const logout_button = screen.getByText('Logout');
-
-  expect(Dash_button).toBeInTheDocument();
-  expect(Annoucement_button).toBeInTheDocument();
-  expect(Entity_button).toBeInTheDocument();
-  expect(profile_button).toBeInTheDocument();
-  expect(logout_button).toBeInTheDocument();
+  expect(screen.getByText('Dashboard')).toBeInTheDocument();
+  expect(screen.getByText('Announcements')).toBeInTheDocument();
+  expect(screen.getByText('CSOs')).toBeInTheDocument();
+  expect(screen.getByText('Profile')).toBeInTheDocument();
+  expect(screen.getByText('Logout')).toBeInTheDocument();
 });
 
-test('Logout button navigates to Auth page', async () => {
+test('Logout button navigates to /auth', async () => {
   render(
-    <MemoryRouter initialEntries={['/dashboard']}>
-      <Routes>
-        <Route path="/dashboard" element={<SGODashboard />} />
-        <Route path="/auth" element={<Auth />} />
-      </Routes>
-    </MemoryRouter>
+    <BrowserRouter>
+      <SGODashboard />
+    </BrowserRouter>
   );
   const logoutButton = screen.getByText('Logout');
   await userEvent.click(logoutButton);
-
-  const loginButton = screen.getByRole('button', { name: /login/i });
-  expect(loginButton).toBeInTheDocument();
+  expect(mockedNavigate).toHaveBeenCalledWith('/auth');
 });
 
-test('Dashboard button navigates to SGODashboard page', async () => {
+test('Dashboard button navigates to /dashboard/sgo', async () => {
   render(
-    <MemoryRouter initialEntries={['/entities/sgo']}>
-      <Routes>
-        <Route path="/entities/sgo" element={<SGOEntities />} />
-        <Route path="/dashboard/sgo" element={<SGODashboard />} />
-      </Routes>
-    </MemoryRouter>
+    <BrowserRouter>
+      <SGODashboard />
+    </BrowserRouter>
   );
-
-  const user = userEvent.setup();
-  const dashboardButton = screen.getByRole('button', { name: /dashboard/i });
-  await user.click(dashboardButton);
-
-  const userManagementHeading = await screen.findByRole('heading', { name: /user management/i });
-  expect(userManagementHeading).toBeInTheDocument();
+  const dashboardButton = screen.getByText('Dashboard');
+  await userEvent.click(dashboardButton);
+  expect(mockedNavigate).toHaveBeenCalledWith('/dashboard/sgo');
 });
 
-test('Entities button navigates to SGOEntities page', async () => {
+test('Announcements button navigates to /announcements/sgo', async () => {
   render(
-    <MemoryRouter initialEntries={['/dashboard']}>
-      <Routes>
-        <Route path="/dashboard" element={<SGODashboard />} />
-        {/* match the actual path here */}
-        <Route path="/entities/sgo" element={<SGOEntities />} />
-      </Routes>
-    </MemoryRouter>
+    <BrowserRouter>
+      <SGODashboard />
+    </BrowserRouter>
   );
-  const user = userEvent.setup();
+  const announcementsButton = screen.getByText('Announcements');
+  await userEvent.click(announcementsButton);
+  expect(mockedNavigate).toHaveBeenCalledWith('/announcements/sgo');
+});
 
-  const entitiesButton = screen.getByText('Entities');
-  await user.click(entitiesButton);
+test('Entities button navigates to /entities/sgo', async () => {
+  render(
+    <BrowserRouter>
+      <SGODashboard />
+    </BrowserRouter>
+  );
+  const entitiesButton = screen.getByText('CSOs');
+  await userEvent.click(entitiesButton);
+  expect(mockedNavigate).toHaveBeenCalledWith('/entities/sgo');
+});
 
-  const createEntityButton = await screen.findByRole('button', { name: /create entity/i });
-  expect(createEntityButton).toBeInTheDocument();
+test('Profile button navigates to /profile/sgo', async () => {
+  render(
+    <BrowserRouter>
+      <SGODashboard />
+    </BrowserRouter>
+  );
+  const profileButton = screen.getByText('Profile');
+  await userEvent.click(profileButton);
+  expect(mockedNavigate).toHaveBeenCalledWith('/profile/sgo');
 });
