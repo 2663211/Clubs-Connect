@@ -7,15 +7,15 @@ description: Audit of the system - Supply Chain Attack
 
 ### Audit Results
 
-The first step in response to the attack was to audit the system. We use React for the development and it uses npm packages, and the first thing was to find out if the we were using some of the affected packages.
+The first step in response to the attack was to audit the system. We used React for the development and it uses npm packages, and the first thing was to find out if the we were using some of the affected packages, the .
 
 1. Dependabots Alerts
-   We first enabled the Dependabots Alert of GitHub to run on main. These were the
+   We enabled the Dependabots Alert on GitHub to run on main. These were thenresults
 
 2. Code Scanning
-   As an extra layer of protection we employed code scanning to help detect obfuscated code than can be caused by malware. These were the initial results after the tool was enabled.
+   As an extra layer of protection we employed code scanning to help detect obfuscated code than can be caused by malware. These were the initial results after the tool was enabled. We used CodeQL and the results are as follows from GitHub
 
-3. npm audit
+3. npm audit results. We ran npm audit on the terminal
 
 ```
 {
@@ -124,6 +124,8 @@ The first step in response to the attack was to audit the system. We use React f
 ### Analysis of results
 
 ### Solution/ fix of results
+
+Most of the alerts we could not fix them because we were using Create React App which used React 5.0.0, the last
 
 ## Risk Assessment
 

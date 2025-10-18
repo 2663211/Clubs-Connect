@@ -18,6 +18,8 @@ The User Acceptance Testing process for Clubs Connect followed these key steps:
 - **Creation of Feedback Form:** a Google Form was created to collect feedback from users who tested the platform. The form questions were based on the user acceptance test scenarios to ensure structured and relevant responses.
   The form used for collecting feedback is this: <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdDXXtfUHauEi_5OyyyE0EyUOtErnvvPEt6sx58qZgLe2vqPg/viewform?embedded=true" width="640" height="3000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 
+- **Direct observations:** an alternative to using the feedback form to give feedback was direct observation, some of the team members met with users and allowed them to use the application while observing how they use it and getting feedback.
+
 - **Results and Analysis:** UAT sessions were conducted throughout development to gather feedback from users. The collected responses were analysed, and recommended changes were implemented to enhance the platform. Summaries of the findings and improvements are included below.
 
 ## User Acceptance Tests
@@ -66,4 +68,26 @@ The following are user acceptance tests:
 
 ## Results
 
-<iframe width="640" height="450" src="https://lookerstudio.google.com/embed/reporting/9f0f09f5-c662-4127-bf9d-d31a37569b71/page/0U2bF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+<iframe width="700" height="600" src="https://lookerstudio.google.com/embed/reporting/9f0f09f5-c662-4127-bf9d-d31a37569b71/page/0U2bF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+After collecting feedback from users through surveys and direct observation, the responses were analysed to understand how students experienced Clubs Connect and how the system could be improved. Overall, the feedback received was highly positive, with most participants expressing enthusiasm about the concept of the application and its potential usefulness for Wits students. Many users even mentioned that Clubs Connect looked and felt like an official Wits University platform, largely due to the colour scheme and the overall layout. They believed it would be a valuable system for the university to adopt since there is currently no centralized platform for managing student clubs and societies.
+
+**General Impressions**
+Many users found the application easy to navigate and understand. They reported that moving from the homepage to signing up and accessing the main app interface was smooth and intuitive. This confirmed that the navigation design effectively supported a logical flow through the system. The consistency in page structure and button placement also helped users feel comfortable exploring the different features without much assistance.
+
+**Feedback on Roles and Dashboards**
+Since Clubs Connect includes multiple user roles such as Students, Executives, and SGO (Student Governance Office), users were encouraged to test the functionality of each dashboard. Feedback from users who explored the SGO dashboard was particularly positive. They appreciated the high level of control that the SGO role had, such as the ability to delete profiles, create clubs, edit or delete posts, and manage club memberships. Users noted that these permissions accurately reflected how a real administrative role would function and gave the platform a sense of realism and authority.
+On the other hand, students testing the Student Dashboard enjoyed the ability to follow any number of clubs or societies without restriction. They found this feature convenient and felt it encouraged engagement with various student groups. The clarity of club listings and the simplicity of following or unfollowing clubs were seen as major strengths of the design.
+
+**Interface and Aesthetic Feedback**
+In terms of design, several users commented positively on the use of Wits-inspired colours, which gave the app a familiar and official look. However, some users suggested that the colour palette could be updated to make the interface feel more modern or vibrant. Since user interface preferences are subjective, this feedback was noted for consideration in future iterations but was not treated as an immediate issue. The key takeaway was that while aesthetics can vary in appeal, the app’s usability remained strong across all users.
+
+**Functional Improvements Based on Feedback**
+A few important suggestions from users led directly to implemented improvements. One common request was for posts within clubs to display who created them. Users felt that showing the author of a post would add transparency and context, especially in busy clubs with multiple administrators. In response to this, the feature was added, each post now clearly displays the name of the user who made it.
+Another issue raised involved user profiles. Initially, the gender placeholder in the profile section defaulted to “Female,” which some male users found inaccurate or exclusionary. Based on this feedback, the placeholder was changed to a gender-neutral value to make the platform more inclusive for all users.
+
+**Addressing Account Management Concerns**
+One participant raised a practical question about what would happen if a user forgot their password. At the time, this functionality had not been implemented, and the developer jokingly responded that users simply could not forget it. However, the comment highlighted a real limitation regarding authentication and password recovery. To address this, the team decided to integrate Google Sign-In as the exclusive login method. This not only eliminated the need for password management but also enhanced security, as user credentials were protected by Google’s authentication system. This solution was beneficial for both users and developers, as it simplified the login process and reduced security risks.
+
+**Summary of Insights**
+In summary, the feedback confirmed that Clubs Connect successfully met its goal of providing an intuitive and accessible platform for student engagement. Users praised its structure, navigation, and realism, and several of their suggestions directly led to meaningful improvements in the system. While a few comments touched on personal preferences such as colours or layout aesthetics, the overall response demonstrated strong approval and genuine interest in the project’s potential. The feedback process not only validated the design choices made by the team but also guided thoughtful refinements that enhanced usability and inclusivity. Ultimately, user feedback not only strengthened the quality of the final product but also emphasized the importance of user-centered design in building meaningful and functional applications.
