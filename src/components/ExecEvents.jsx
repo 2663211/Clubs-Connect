@@ -6,10 +6,7 @@ import '../styles/Execevents.css';
 import StudentHeader from './StudentHeader';
 import { supabase } from '../supabaseClient';
 
-// Use direct API for POST requests, CORS proxy only for GET
-const API_BASE_URL = 'https://clubs-connect-api.onrender.com';
-const API_BASE_URL_PROXY =
-  'https://api.allorigins.win/raw?url=https://clubs-connect-api.onrender.com';
+const API_BASE_URL = '/api';
 
 console.log('Using API URL:', API_BASE_URL);
 
@@ -36,84 +33,27 @@ export default function StudentDashboard(entityId) {
     category: '',
   });
 
-  // Fetch events with retry logic for sleeping servers
-  const fetchEvents = async (retryCount = 0) => {
-    const maxRetries = 3;
-    const timeout = 30000; // 30 seconds timeout
-
+  // Fetch events
+  const fetchEvents = async () => {
     try {
       setLoading(true);
-      if (retryCount === 0) {
-        setError(null);
-      } else {
-        setError(`Server is waking up... Attempt ${retryCount + 1}/${maxRetries + 1}`);
-      }
+      setError(null);
 
-      console.log(`Fetching events (attempt ${retryCount + 1})...`);
+      const response = await fetch(`${API_BASE_URL}/events`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-      // Fetch with timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-      let response;
-      try {
-        // Try direct API first
-        response = await fetch(`${API_BASE_URL}/api/events`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          signal: controller.signal,
-        });
-        clearTimeout(timeoutId);
-      } catch (err) {
-        clearTimeout(timeoutId);
-
-        // If it's a network error and we have retries left, try again
-        if (
-          retryCount < maxRetries &&
-          (err.name === 'AbortError' || err.message.includes('fetch'))
-        ) {
-          console.log(`Attempt ${retryCount + 1} failed, retrying in 2 seconds...`);
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          return fetchEvents(retryCount + 1);
-        }
-
-        // Try proxy as last resort
-        console.log('Direct API failed, trying proxy...');
-        response = await fetch(`${API_BASE_URL_PROXY}/api/events`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
       const now = new Date();
       const upcoming = Array.isArray(data) ? data.filter(event => new Date(event.date) >= now) : [];
 
       setEvents(upcoming);
-      setError(null);
-      console.log(`✅ Successfully fetched ${upcoming.length} events`);
     } catch (error) {
       console.error('Error fetching events:', error);
-
-      // If we have retries left and it's a network error, retry
-      if (
-        retryCount < maxRetries &&
-        (error.name === 'AbortError' ||
-          error.message.includes('fetch') ||
-          error.message.includes('network'))
-      ) {
-        console.log(`Retry ${retryCount + 1}/${maxRetries}...`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        return fetchEvents(retryCount + 1);
-      }
-
-      setError(
-        `Failed to load events: ${error.message}. The server may be sleeping (Render free tier). Click "Try Again".`
-      );
+      setError(`Failed to load events: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -171,19 +111,13 @@ export default function StudentDashboard(entityId) {
     setNewEvent(prev => ({ ...prev, [name]: value }));
   };
 
-  // FIXED: Create Event with retry logic
   const handleCreateEvent = async e => {
     e.preventDefault();
-
-    // Show loading state
-    setLoading(true);
 
     try {
       let posterUrl = '';
 
-      // Upload poster image first if exists
       if (file) {
-        console.log('Uploading poster image...');
         const fileExt = file.name.split('.').pop();
         const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
@@ -191,94 +125,26 @@ export default function StudentDashboard(entityId) {
           .from('event_posters')
           .upload(filePath, file);
 
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-          throw uploadError;
-        }
+        if (uploadError) throw uploadError;
 
         const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
         posterUrl = data.publicUrl;
-        console.log('Poster uploaded:', posterUrl);
       }
 
-      // Create event payload
-      const eventData = {
-        title: newEvent.title,
-        date: newEvent.date,
-        location: newEvent.location,
-        description: newEvent.description,
-        exec_id: newEvent.exec_id,
-        category: newEvent.category,
-        poster_image: posterUrl,
-      };
+      const response = await fetch(`${API_BASE_URL}/events`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newEvent,
+          poster_image: posterUrl,
+        }),
+      });
 
-      console.log('Creating event with data:', eventData);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-      // POST to direct API with timeout and retry
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
-      let response;
-      let retries = 0;
-      const maxRetries = 2;
-
-      while (retries <= maxRetries) {
-        try {
-          response = await fetch(`${API_BASE_URL}/api/events`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(eventData),
-            signal: controller.signal,
-          });
-
-          clearTimeout(timeoutId);
-
-          if (response.ok) {
-            break; // Success!
-          } else if (retries < maxRetries) {
-            console.log(`Request failed (status ${response.status}), retrying...`);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            retries++;
-          } else {
-            throw new Error(`Failed after ${maxRetries + 1} attempts`);
-          }
-        } catch (err) {
-          clearTimeout(timeoutId);
-
-          if (
-            retries < maxRetries &&
-            (err.name === 'AbortError' || err.message.includes('fetch'))
-          ) {
-            console.log(`Attempt ${retries + 1} failed, retrying in 2 seconds...`);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            retries++;
-          } else {
-            throw err;
-          }
-        }
-      }
-
-      console.log('Response status:', response.status);
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('API error:', errorData);
-        throw new Error(`Failed to create event: ${errorData.error || response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log('Event created successfully:', result);
-
-      // Success! Refresh events and close modal
       await fetchEvents();
       setIsModalOpen(false);
 
-      // Show success message
-      alert('Event created successfully!');
-
-      // Reset form
       setNewEvent({
         title: '',
         date: '',
@@ -291,26 +157,16 @@ export default function StudentDashboard(entityId) {
       setFile(null);
     } catch (err) {
       console.error('Error creating event:', err);
-      alert(
-        `Failed to create event: ${err.message}. The server may be sleeping. Please try again.`
-      );
-    } finally {
-      setLoading(false);
+      alert('Failed to create event.');
     }
   };
 
-  async function createCalendarEvent(event) {
+  // Function to actually post to Google Calendar
+  const postCalendarEvent = async event => {
     const token = sessionStorage.getItem('provider_token');
 
     if (!token) {
-      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
-        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
-        const redirectUri = window.location.origin + window.location.pathname;
-        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
-
-        window.location.href = authUrl;
-      }
+      alert('Calendar token not found. Please try again.');
       return;
     }
 
@@ -342,6 +198,7 @@ export default function StudentDashboard(entityId) {
 
       const data = await response.json();
       if (response.ok) {
+        sessionStorage.removeItem('pending_event');
         setShowSuccessPopup(true);
         setTimeout(() => setShowSuccessPopup(false), 3000);
       } else {
@@ -351,18 +208,89 @@ export default function StudentDashboard(entityId) {
       console.error('Calendar error:', err);
       alert('Something went wrong adding to calendar.');
     }
+  };
+
+  async function createCalendarEvent(event) {
+    const token = sessionStorage.getItem('provider_token');
+
+    if (!token) {
+      sessionStorage.setItem('pending_event', JSON.stringify(event));
+
+      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
+        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
+        const redirectUri = window.location.origin + window.location.pathname;
+        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
+        window.location.href = authUrl;
+      }
+      return;
+    }
+
+    await postCalendarEvent(event);
   }
 
   useEffect(() => {
     if (window.location.hash.includes('access_token')) {
       const params = new URLSearchParams(window.location.hash.substring(1));
       const token = params.get('access_token');
-      if (token) sessionStorage.setItem('provider_token', token);
+      if (token) {
+        sessionStorage.setItem('provider_token', token);
+      }
       window.location.hash = '';
+
+      const pendingEvent = sessionStorage.getItem('pending_event');
+      if (pendingEvent) {
+        const event = JSON.parse(pendingEvent);
+        setTimeout(() => {
+          postCalendarEvent(event);
+        }, 500);
+      }
     }
   }, []);
 
   const handleFileChange = e => setFile(e.target.files[0]);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('event_posters')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from('event_posters').getPublicUrl(filePath);
+      const postersUrl = data.publicUrl;
+
+      const postersType = file.type.startsWith('image')
+        ? 'image'
+        : file.type.startsWith('video')
+          ? 'video'
+          : 'audio';
+
+      const { error: insertError } = await supabase.from('event_posters').insert([
+        {
+          media_url: postersUrl,
+          media_type: postersType,
+          exec_id: entityId,
+        },
+      ]);
+
+      if (insertError) throw insertError;
+
+      alert('Event poster uploaded successfully!');
+      setFile(null);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error uploading event poster:', error);
+      alert('Failed to upload event poster.');
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard">
@@ -414,7 +342,7 @@ export default function StudentDashboard(entityId) {
                       required
                     />
                   </label>
-
+                  <label>" "</label>
                   <label>
                     Date & Time
                     <input
@@ -461,7 +389,7 @@ export default function StudentDashboard(entityId) {
                       name="poster_image"
                       accept=".jpg,.png,.jpeg"
                       onChange={handleFileChange}
-                    />
+                    ></input>
                   </label>
                   <button type="submit" className="submit-btn">
                     Save Event
@@ -487,7 +415,6 @@ export default function StudentDashboard(entityId) {
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.35-4.35"></path>
             </svg>
-
             <input
               type="text"
               className="search-input"
@@ -496,7 +423,6 @@ export default function StudentDashboard(entityId) {
               placeholder="Search events..."
               autoComplete="off"
             />
-
             {searchTerm && (
               <button className="clear-button" onClick={clearSearch} aria-label="Clear search">
                 <svg
@@ -514,6 +440,26 @@ export default function StudentDashboard(entityId) {
             )}
           </div>
 
+          {/* Success Popup */}
+          {showSuccessPopup && (
+            <div className="success-popup">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Event added to your calendar!</span>
+            </div>
+          )}
+
           {searchTerm && (
             <div className="search-results-count">
               {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
@@ -522,66 +468,64 @@ export default function StudentDashboard(entityId) {
 
           {/* Events Display */}
           <div className="events-container">
-            {
-              loading ? (
-                <div className="loading">
-                  <div className="loading-spinner"></div>
-                  Loading events...
+            {loading ? (
+              <div className="loading">
+                <div className="loading-spinner"></div>
+                Loading events...
+              </div>
+            ) : error ? (
+              <div className="error-message">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                {error}
+                <button onClick={fetchEvents} className="retry-button">
+                  Try Again
+                </button>
+              </div>
+            ) : filteredEvents.length > 0 ? (
+              filteredEvents.map((event, index) => (
+                <div key={event.id || index} className="event-card">
+                  <h3>{event.title || 'Untitled Event'}</h3>
+                  <p className="event-date">
+                    {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
+                  </p>
+                  {event.location && <p className="event-location">{event.location}</p>}
+                  {event.description && (
+                    <>
+                      <p className="event-description">{event.description}</p>
+                      {event.poster_image && (
+                        <img
+                          src={event.poster_image}
+                          alt={`${event.title} poster`}
+                          className="event-poster"
+                        />
+                      )}
+                      <button
+                        className="add-to-calendar-btn"
+                        onClick={() => createCalendarEvent(event)}
+                      >
+                        Add to Calendar
+                      </button>
+                    </>
+                  )}
                 </div>
-              ) : filteredEvents.length > 0 ? (
-                filteredEvents.map((event, index) => (
-                  <div key={event.id || index} className="event-card">
-                    <h3>{event.title || 'Untitled Event'}</h3>
-                    <p className="event-date">
-                      {event.date ? new Date(event.date).toLocaleString() : 'Date TBD'}
-                    </p>
-                    {event.location && <p className="event-location">{event.location}</p>}
-                    {event.description && (
-                      <>
-                        <p className="event-description">{event.description}</p>
-                        {event.poster_image && (
-                          <img
-                            src={event.poster_image}
-                            alt={`${event.title} poster`}
-                            className="event-poster"
-                          />
-                        )}
-                        <button
-                          className="add-to-calendar-btn"
-                          onClick={() => createCalendarEvent(event)}
-                        >
-                          Add to Calendar
-                        </button>
-                      </>
-                    )}
-                  </div>
-                ))
-              ) : null /* Just render nothing if no events */
-            }
+              ))
+            ) : (
+              <div className="no-events">No events available</div>
+            )}
           </div>
         </div>
       </main>
-
-      {/* Success Popup */}
-      {showSuccessPopup && (
-        <div className="success-popup">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ marginRight: '10px', verticalAlign: 'middle' }}
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-          <span>Event added to your calendar!</span>
-        </div>
-      )}
     </div>
   );
 }
