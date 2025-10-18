@@ -6,23 +6,55 @@ description: Overview of the project folder organization
 The repository follows a structured layout to separate concerns and make collaboration easier.
 
 ```bash
-Clubs-Connect/
-│
-├── src/                  # Main application source code
-│   ├── components/       # Reusable React components (buttons, forms, modals, etc.)
-│   ├── pages/            # Page-level components (routes in the app)
-│   ├── styles/           # CSS files and global styles
-│   ├── utils/            # Utility/helper functions
-│   ├── services/         # API calls and integrations (e.g., Supabase, Google API)
-│   └── tests/            # Unit and integration tests
-│
-├── public/               # Static assets (images, icons, logos)
-│
-├── docs/                 # Documentation site (Astro Starlight)
-│
-├── .github/workflows/    # GitHub Actions CI/CD workflows
-│
-├── package.json          # Dependencies and npm scripts
-├── README.md             # Project overview
-└── ...other config files (eslint, prettier, etc.)
+.
+├── API-Documentation.md
+├── CONTRIBUTING.md
+├── README.md
+├── _mocks_
+├── coverage
+│   ├── clover.xml
+│   ├── coverage-final.json
+│   ├── lcov-report
+│   └── lcov.info
+├── fix-eslint.sh
+├── index.html
+├── package-lock.json
+├── package.json
+├── proxy
+│   ├── package.json
+│   └── proxy-server.js
+├── public
+│   ├── favicon.ico
+│   ├── login.png
+│   ├── loginClubs.png
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── network.png
+│   └── robots.txt
+├── server
+│   ├── index.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── routes
+│   └── tests
+├── settings.json
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── App.test.jsx
+│   ├── components
+│   ├── images
+│   ├── index.css
+│   ├── index.jsx
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── styles
+│   └── supabaseClient.js
+├── staticwebapp.config.json
+├── terrestrial-trappist
+└── vite.config.js
+
+14 directories, 35 files
 ```
