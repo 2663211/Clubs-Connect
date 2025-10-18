@@ -186,6 +186,7 @@ export default function Auth() {
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth`, // ensures redirect goes to Auth page
+        
       },
     });
     if (error) setError(error.message);

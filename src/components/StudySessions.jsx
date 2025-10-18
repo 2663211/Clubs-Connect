@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../styles/StudySessions.css';
 import StudentHeader from './StudentHeader';
 
-// Using CORS proxy to bypass CORS restrictions
-const API_BASE_URL = 'https://corsproxy.io/?https://studynester.onrender.com';
+// Using CORS proxy for studynester API
+const API_BASE_URL = 'https://api.allorigins.win/raw?url=https://studynester.onrender.com';
 
 console.log('Using API URL:', API_BASE_URL);
 
@@ -13,6 +13,7 @@ export default function StudySessions() {
   const [sessions, setSessions] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Fetch groups and their sessions
   const fetchGroupsAndSessions = async () => {
@@ -102,6 +103,94 @@ export default function StudySessions() {
     });
   };
 
+  // Function to actually post to Google Calendar
+  const postCalendarEvent = async session => {
+    const token = sessionStorage.getItem('provider_token');
+    
+    if (!token) {
+      alert('Calendar token not found. Please try again.');
+      return;
+    }
+
+    const calendarEvent = {
+      summary: session.title || 'Untitled Study Session',
+      description: `${session.description || ''}\n\nGroup: ${session.groupName}\n${session.groupDescription || ''}`,
+      location: session.location || '',
+      start: {
+        dateTime: new Date(session.start_time).toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      },
+      end: {
+        dateTime: new Date(session.end_time).toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      },
+    };
+
+    try {
+      const response = await fetch(
+        'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(calendarEvent),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        sessionStorage.removeItem('pending_session');
+        setShowSuccessPopup(true);
+        setTimeout(() => setShowSuccessPopup(false), 3000);
+      } else {
+        alert('Failed to create session: ' + (data.error?.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Calendar error:', err);
+      alert('Something went wrong adding to calendar.');
+    }
+  };
+
+  async function createCalendarEvent(session) {
+    const token = sessionStorage.getItem('provider_token');
+
+    if (!token) {
+      sessionStorage.setItem('pending_session', JSON.stringify(session));
+
+      if (window.confirm('You need to connect Google Calendar. Connect now?')) {
+        const clientId = '6362194905-pmodrrbvhbvqpcqnqcm3blupqkb96fbl.apps.googleusercontent.com';
+        const redirectUri = window.location.origin + window.location.pathname;
+        const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.events');
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=consent`;
+        window.location.href = authUrl;
+      }
+      return;
+    }
+
+    await postCalendarEvent(session);
+  }
+
+  useEffect(() => {
+    if (window.location.hash.includes('access_token')) {
+      const params = new URLSearchParams(window.location.hash.substring(1));
+      const token = params.get('access_token');
+      if (token) {
+        sessionStorage.setItem('provider_token', token);
+      }
+      window.location.hash = '';
+
+      const pendingSession = sessionStorage.getItem('pending_session');
+      if (pendingSession) {
+        const session = JSON.parse(pendingSession);
+        setTimeout(() => {
+          postCalendarEvent(session);
+        }, 500);
+      }
+    }
+  }, []);
+
   return (
     <div className="dashboard">
       <StudentHeader />
@@ -154,6 +243,26 @@ export default function StudySessions() {
               </button>
             )}
           </div>
+
+          {/* Success Popup */}
+          {showSuccessPopup && (
+            <div className="success-popup">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Study session added to your calendar!</span>
+            </div>
+          )}
 
           {searchTerm && (
             <div className="search-results-count">
@@ -222,6 +331,13 @@ export default function StudySessions() {
                       <strong>About the group:</strong> {session.groupDescription}
                     </p>
                   )}
+
+                  <button
+                    className="add-to-calendar-btn"
+                    onClick={() => createCalendarEvent(session)}
+                  >
+                    Add to Calendar
+                  </button>
                 </div>
               ))
             ) : (
