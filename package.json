@@ -1,8 +1,9 @@
 {
-  "homepage": "https://2663211.github.io/Clubs-Connect",
+  "homepage": ".",
   "name": "clubs-connect",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",
     "@testing-library/dom": "^10.4.1",
