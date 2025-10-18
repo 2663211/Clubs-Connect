@@ -35,7 +35,31 @@ const allowedOrigins = [
 
 // CORS configuration
 const corsOptions = {
-  origin: true,
+  origin: (origin, callback) => {
+    console.log('🌐 Request from origin:', origin || 'no-origin');
+
+    // Allow requests with no origin (Postman, mobile apps, server-to-server)
+    if (!origin) {
+      console.log('✅ Allowing request with no origin');
+      return callback(null, true);
+    }
+
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ Origin allowed:', origin);
+      return callback(null, true);
+    }
+
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('✅ Development mode - allowing origin:', origin);
+      return callback(null, true);
+    }
+
+    // Reject in production
+    console.log('❌ CORS blocked origin:', origin);
+    callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   credentials: true,
