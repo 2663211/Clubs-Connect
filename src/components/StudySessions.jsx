@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../styles/StudySessions.css';
 import StudentHeader from './StudentHeader';
 
-// Using CORS proxy for studynester API
-const API_BASE_URL = 'https://api.allorigins.win/raw?url=https://studynester.onrender.com';
+// ✅ Use your Render proxy instead of AllOrigins or direct API
+const API_BASE_URL = 'https://studynester-proxy.onrender.com/api';
 
 export default function StudySessions() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,7 +19,7 @@ export default function StudySessions() {
       setLoading(true);
       setError(null);
 
-      // Fetch all groups
+      // ✅ Fetch groups via proxy
       const groupsResponse = await fetch(`${API_BASE_URL}/groups`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ export default function StudySessions() {
       const groupsList = Array.isArray(groupsData) ? groupsData : [];
       setGroups(groupsList);
 
-      // Fetch sessions for each group
+      // ✅ Fetch sessions via proxy
       const sessionPromises = groupsList.map(group =>
         fetch(`${API_BASE_URL}/sessions/${group.id}`)
           .then(res => (res.ok ? res.json() : []))
