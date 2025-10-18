@@ -23,6 +23,7 @@ export default function Auth() {
   const [error, setError] = useState('');
   //const [isRegistering, setIsRegistering] = useState(false)
   const [isSignedUp, setIsSignedUp] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   const location = useLocation();
   const [isRegistering, setIsRegistering] = useState(location.state?.form === 'signup');
@@ -83,6 +84,7 @@ export default function Auth() {
           });
         }
       }
+      setCheckingSession(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -219,6 +221,16 @@ export default function Auth() {
             Thank you for signing up! Please check your email at <b>{email}</b> to confirm your
             account. After confirming, you can log in.
           </p>
+        </main>
+      </section>
+    );
+  }
+
+  if (checkingSession) {
+    return (
+      <section className="auth-container">
+        <main>
+          <p>Loading...</p>
         </main>
       </section>
     );
