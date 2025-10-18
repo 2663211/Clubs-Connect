@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import '../styles/UpdateCSO.css';
@@ -85,13 +85,9 @@ function UpdateCSO() {
   const [selectedExecutives, setSelectedExecutives] = useState([]);
 
   // Load CSO data and executives on component mount
-  useEffect(() => {
-    loadCSOData();
-    loadExecutives();
-  }, [csoId]);
 
   // Load existing CSO data
-  async function loadCSOData() {
+  const loadCSOData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -152,10 +148,10 @@ function UpdateCSO() {
       showMessage(error.message || 'Failed to load CSO data', 'error');
       setLoading(false);
     }
-  }
+  }, [csoId]);
 
   // Simplified function to load all executives
-  async function loadExecutives() {
+  const loadExecutives = useCallback(async () => {
     try {
       // Get executive records
       const { data: execData } = await supabase.from('executive').select('id, "student_number"');
@@ -181,7 +177,12 @@ function UpdateCSO() {
     } catch (error) {
       showMessage('Failed to load executives', 'error');
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    loadCSOData();
+    loadExecutives();
+  }, [loadCSOData, loadExecutives]);
 
   // Helper function to show messages
   function showMessage(text, type = 'info') {

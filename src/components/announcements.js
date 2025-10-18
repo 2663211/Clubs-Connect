@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import '../styles/announcements.css';
@@ -76,7 +76,7 @@ export default function AnnouncementPage() {
   }, []);
 
   // Fetch announcements
-  const fetchAnnouncements = async () => {
+  const fetchAnnouncements = useCallback(async () => {
     if (!canView) {
       setLoading(false);
       return;
@@ -89,7 +89,7 @@ export default function AnnouncementPage() {
           `
           id, caption, media_url, media_type, created_at, user_id,
           profiles ( full_name, avatar_url )
-        `
+         `
         )
         .order('created_at', { ascending: false });
 
@@ -100,11 +100,11 @@ export default function AnnouncementPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [canView]);
 
   useEffect(() => {
     if (user) fetchAnnouncements();
-  }, [user, canView]);
+  }, [user, fetchAnnouncements]);
 
   const handleFileChange = e => setFile(e.target.files[0]);
 
@@ -154,7 +154,7 @@ export default function AnnouncementPage() {
       alert('Announcement posted successfully!');
       setCaption('');
       setFile(null);
-      fetchAnnouncements();
+      await fetchAnnouncements();
     } catch (err) {
       console.error(err);
       alert('Error posting announcement: ' + err.message);

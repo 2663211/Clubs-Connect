@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import '../styles/addCSO.css';
@@ -80,20 +80,13 @@ function AddCSO() {
   const [executives, setExecutives] = useState([]);
   const [selectedExecutives, setSelectedExecutives] = useState([]);
 
-  // Load executives on component mount
-  useEffect(() => {
-    loadExecutives();
-  }, []);
-
   // Simplified function to load executives
-  async function loadExecutives() {
+  const loadExecutives = useCallback(async () => {
     try {
-      // Get executive records
       const { data: execData } = await supabase.from('executive').select('id, "student_number"');
 
       if (!execData || execData.length === 0) return;
 
-      // Get profile names
       const studentNumbers = execData.map(e => e['student_number']).filter(Boolean);
 
       const { data: profiles } = await supabase
@@ -101,7 +94,6 @@ function AddCSO() {
         .select('id, full_name')
         .in('id', studentNumbers);
 
-      // Combine data
       const executivesWithNames = execData.map(exec => ({
         id: exec.id,
         student_number: exec['student_number'],
@@ -112,7 +104,12 @@ function AddCSO() {
     } catch (error) {
       showMessage('Failed to load executives', 'error');
     }
-  }
+  }, []); // dependencies: add anything used inside that can change
+
+  // Load executives on component mount
+  useEffect(() => {
+    loadExecutives();
+  }, [loadExecutives]);
 
   // Helper function to show messages
   function showMessage(text, type = 'info') {
@@ -238,7 +235,7 @@ function AddCSO() {
   }
 
   return (
-    <div className="modal-backdrop">
+    <section className="add-cso-page">
       <main className="add-cso-container">
         <h1>Add a club, society, or organization</h1>
 
@@ -341,7 +338,7 @@ function AddCSO() {
           </section>
         </form>
       </main>
-    </div>
+    </section>
   );
 }
 
