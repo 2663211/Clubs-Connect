@@ -75,7 +75,19 @@ These testing libraries are used for automated testing of React components and a
 [Jest Docs](https://jestjs.io/docs/getting-started)  
 [React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro)
 
-## Astro JS x Starlight
+## Astro JS × Starlight
+
+**Purpose in Project**  
+The Astro JS Starlight template is used to create professional and structured software documentation for software projects.
+
+**Justification**
+
+- Provides a polished and professional framework for writing documentation.
+- Saves time by eliminating the need to learn additional tools or programming from scratch.
+- Ensures a fast, reliable, and easily deployable documentation website.
+
+**Documentation / Reference**  
+[Astro JS Starlight Documentation](https://starlight.astro.build/)
 
 ## Big O No API
 

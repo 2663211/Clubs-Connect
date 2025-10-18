@@ -56,7 +56,7 @@ export default defineConfig({
           label: "Design",
           items: [
             { label: "Interface Design", slug: "design/interface_design" },
-            { label: "Data Models", slug: "design/data_models" },
+            { label: "Database Documentation", slug: "design/data_models" },
           ],
         },
         {
@@ -90,10 +90,7 @@ export default defineConfig({
         },
         {
           label: "Maintanance",
-          items: [
-            //{ label: 'The Bit-by-Bit Team', slug: 'introduction/team' },
-            //{ label: 'Project Overview', slug: 'introduction/clubs_connect' }
-          ],
+          items: [{ label: "The Bit-by-Bit Team", slug: "introduction/team" }],
         },
         {
           label: "LLMs Usage",
