@@ -21,7 +21,17 @@ describe('Exec Post', () => {
   const mockMemberships = [
     { id: 1, name: 'Drama Club', cluster: 'Arts', logo_url: '/drama.png',student_number: '1234' },
     { id: 2, name: 'Robotics Society', cluster: 'STEM', logo_url: '/robotics.png', student_number: '1235' }
-  ]
+  ];
+  const mockPosts = [
+    {
+      id: 1,
+      cso_id: 1,
+      caption: 'First post caption',
+      media_url: 'https://example.com/image1.jpg',
+      media_type: 'image',
+      member_only: false,
+      created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+    }];
   const mockUserId = '1234';
   const member = true;
 
