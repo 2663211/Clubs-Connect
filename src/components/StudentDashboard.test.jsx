@@ -164,45 +164,6 @@ describe('StudentDashboard Component - UI Tests', () => {
       }
     });
 
-    // Setup follow data separately
-    const mockFollowChain = {
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn(function(col, val) {
-        if (col === 'follow_status') {
-          return {
-            ...this,
-            then: (resolve) => resolve({ data: mockFollowData, error: null }),
-          };
-        }
-        return this;
-      }),
-    };
-
-    supabase.from.mockImplementation((table) => {
-      if (table === 'cso_follow') {
-        return mockFollowChain;
-      }
-      if (table === 'posts') {
-        return {
-          select: jest.fn().mockReturnThis(),
-          in: jest.fn().mockReturnThis(),
-          eq: jest.fn().mockReturnThis(),
-          order: jest.fn().mockResolvedValue({
-            data: mockPosts,
-            error: null,
-          }),
-        };
-      }
-      if (table === 'cso') {
-        return {
-          select: jest.fn().mockReturnThis(),
-          in: jest.fn().mockResolvedValue({
-            data: mockCSOData,
-            error: null,
-          }),
-        };
-      }
-    });
   });
 
   describe('Initial Rendering', () => {

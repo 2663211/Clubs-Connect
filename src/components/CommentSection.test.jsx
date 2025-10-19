@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import CommentSection from './CommentSection';
 import { supabase } from '../supabaseClient';
 
+
 jest.mock('../supabaseClient');
 
 describe('CommentSection', () => {
@@ -18,9 +19,9 @@ describe('CommentSection', () => {
         })
       })
     });
-    
+
     supabase.from.mockReturnValue({ select: mockSelect });
-    
+
     render(<CommentSection postId={1} studentNumber="12345" />);
     expect(screen.getByPlaceholderText(/write a comment/i)).toBeInTheDocument();
   });
@@ -35,14 +36,14 @@ describe('CommentSection', () => {
           })
         })
       }),
-      insert: mockInsert
+      insert: mockInsert,
     });
 
     render(<CommentSection postId={1} studentNumber="12345" />);
-    
+
     const sendButton = screen.getByAltText('send-button');
     fireEvent.click(sendButton);
-    
+
     await waitFor(() => {
       expect(mockInsert).not.toHaveBeenCalled();
     });

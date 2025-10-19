@@ -3,8 +3,6 @@ import LikeButton from './LikeButton';
 import { supabase } from '../supabaseClient';
 jest.mock('../supabaseClient');
 
-jest.mock('../supabaseClient');
-
 const mockUser = { id: '123' };
 const renderLikeButton = () => render(<LikeButton postId="post-1" />);
 
@@ -77,25 +75,25 @@ describe('LikeButton UI', () => {
     supabase.from.mockImplementation(table => {
       if (table === 'Comments') {
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          order: vi.fn().mockReturnThis(),
-          limit: vi.fn().mockResolvedValue({
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          order: jest.fn().mockReturnThis(),
+          limit: jest.fn().mockResolvedValue({
             data: [{ liked: true }],
             error: null,
           }),
-          update: vi.fn().mockReturnThis(),
+          update: jest.fn().mockReturnThis(),
         };
       }
       if (table === 'posts') {
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({
             data: { like_count: 10 },
             error: null,
           }),
-          update: vi.fn().mockReturnThis(),
+          update: jest.fn().mockReturnThis(),
         };
       }
     });
