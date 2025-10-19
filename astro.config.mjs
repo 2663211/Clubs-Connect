@@ -90,7 +90,7 @@ export default defineConfig({
         },
         {
           label: "Maintanance",
-          items: [{ label: "The Bit-by-Bit Team", slug: "introduction/team" }],
+          items: [{ label: "User Guide", slug: "maintanance/user_guide" }],
         },
         {
           label: "LLMs Usage",
