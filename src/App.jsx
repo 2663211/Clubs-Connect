@@ -16,11 +16,8 @@ import ExecEvents from './components/ExecEvents';
 import Search from './components/Search';
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
-<<<<<<< HEAD:src/App.js
-import Announcements from './components/announcements';
-=======
 import StudySessions from './components/StudySessions';
->>>>>>> master:src/App.jsx
+import Announcements from './components/announcements';
 
 export default function App() {
   return (
@@ -40,12 +37,8 @@ export default function App() {
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
-<<<<<<< HEAD:src/App.js
-        <Route path="/announcements/sgo" element={<Announcements />} />
-        <Route path="/cso/member" element={<CSO_member />} />
-=======
         <Route path="/cso/member" element={<CSOMember />} />
->>>>>>> master:src/App.jsx
+        <Route path="/announcements/sgo" element={<Announcements />} />
 
         <Route path="/events" element={<ExecEvents />} />
 
