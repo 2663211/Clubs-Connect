@@ -42,7 +42,7 @@ export default function CSOMember() {
           csoData.forEach(club => {
             // memberships.push(club.cso_id);
             //setMemberships([...memberships, club.cso_id]);
-            console.log(club.cso_id);
+            //console.log(club.cso_id);
 
             fetchCSO(club.cso_id);
           });

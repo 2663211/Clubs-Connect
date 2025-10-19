@@ -38,7 +38,7 @@ test('renders without crashing', () => {
     </BrowserRouter>
   );
 });
-  test('renders entity section', async () => {
+  test('renders entity section with no entities', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUserId } });
     supabase.from.mockReturnValue({
       select: () => ({
@@ -53,6 +53,22 @@ test('renders without crashing', () => {
     render(<CSOMember />);
 
     await waitFor(() => expect(screen.getByText(/No entities found/i)).toBeInTheDocument());
+  });
+   test('renders entity section with found entity', async () => {
+    supabase.auth.getUser.mockResolvedValue({ data: { user: mockUserId } });
+    supabase.from.mockReturnValue({
+      select: () => ({
+        eq: () => ({
+          eq: () => ({
+            single: () => Promise.resolve({ data: mockCSOs[0], error: null }),
+          }),
+        }),
+      }),
+    });
+
+    render(<CSOMember />);
+
+    await waitFor(() => expect(screen.getByText(/Drama club/i)).toBeInTheDocument());
   });
 
 });
