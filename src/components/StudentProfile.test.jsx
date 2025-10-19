@@ -18,29 +18,23 @@ jest.mock('../supabaseClient', () => ({
   },
 }));
 
-jest.mock('react-router-dom', async () => {
-  const actual = await jest.requireActual('react-router-dom');
+jest.mock('react-router-dom', () => {
+  const actual = jest.requireActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => jest.fn(),
   };
 });
 
-jest.mock('./StudentHeader', () => ({
-  default: () => <div data-testid="student-header">Student Header</div>,
-}));
 
-jest.mock('./CSO_member', () => ({
-  default: () => <div data-testid="cso-member">CSO Member</div>,
-}));
+jest.mock('./StudentHeader', () => () => <div>Mock StudentHeader</div>);
+jest.mock('./CSO_member', () => () => <div>Mock CSO_member</div>);
+jest.mock('./FollowButton', () => () => <div>Mock FollowButton</div>);
 
-jest.mock('./FollowButton', () => ({
-  default: ({ csoId }) => <button data-testid={`follow-btn-${csoId}`}>Follow</button>,
-}));
 
 // Helper to wrap component with Router
-const renderWithRouter = (component) => {
-  return render(<BrowserRouter>{component}</BrowserRouter>);
+const renderWithRouter = ui => {
+  return render(<BrowserRouter>{ui}</BrowserRouter>);
 };
 
 describe('StudentProfile Component - UI Tests', () => {
