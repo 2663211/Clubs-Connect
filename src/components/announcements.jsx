@@ -41,6 +41,7 @@ export default function AnnouncementPage() {
   const [editingId, setEditingId] = useState(null);
   const [editCaption, setEditCaption] = useState('');
   const [notification, setNotification] = useState({ message: '', visible: false });
+  const [deleteModal, setDeleteModal] = useState({ open: false, announcementId: null });
 
   // Helper function to show notifications
   const showNotification = message => {
@@ -198,9 +199,13 @@ export default function AnnouncementPage() {
     }
   };
 
-  // DELETE
-  const handleDelete = async id => {
-    if (!window.confirm('Are you sure you want to delete this post?')) return;
+  // DELETE - Updated to use modal
+  const handleDeleteClick = id => {
+    setDeleteModal({ open: true, announcementId: id });
+  };
+
+  const handleDeleteConfirm = async () => {
+    const id = deleteModal.announcementId;
 
     try {
       const { error } = await supabase.from('announcements').delete().eq('id', id);
@@ -209,9 +214,11 @@ export default function AnnouncementPage() {
 
       setAnnouncements(announcements.filter(a => a.id !== id));
       showNotification('Announcement deleted successfully!');
+      setDeleteModal({ open: false, announcementId: null });
     } catch (err) {
       console.error(err);
       showNotification('Error deleting post: ' + err.message);
+      setDeleteModal({ open: false, announcementId: null });
     }
   };
 
@@ -313,7 +320,7 @@ export default function AnnouncementPage() {
                               </button>
                               <button
                                 className="announcement-dropdown-item delete"
-                                onClick={() => handleDelete(a.id)}
+                                onClick={() => handleDeleteClick(a.id)}
                               >
                                 Delete
                               </button>
@@ -379,6 +386,25 @@ export default function AnnouncementPage() {
           )}
         </section>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.open && (
+        <aside className="announcement-modal-overlay" role="dialog" aria-modal="true">
+          <section className="announcement-modal">
+            <header>
+              <h2>Confirm Deletion</h2>
+            </header>
+            <p>Are you sure you want to delete this announcement?</p>
+
+            <footer className="announcement-modal-actions">
+              <button onClick={handleDeleteConfirm}>Yes, Delete</button>
+              <button onClick={() => setDeleteModal({ open: false, announcementId: null })}>
+                Cancel
+              </button>
+            </footer>
+          </section>
+        </aside>
+      )}
     </article>
   );
 }

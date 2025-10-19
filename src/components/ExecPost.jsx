@@ -3,18 +3,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import mail_icon from '../images/mail_icon.png';
 import paperclipIcon from '../images/paperclip.png';
-
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
 
-export default function ExecPost({ entityId, onPostCreated, onPostError }) {
+export default function ExecPost({ entityId, onPostCreated, showNotification }) {
   const [caption, setCaption] = useState('');
-
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fileInputRef = useRef(null); // ✅ ref for file input
+  const fileInputRef = useRef(null);
 
   // Fetch logged-in user
   useEffect(() => {
@@ -39,66 +37,81 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
     e.preventDefault();
 
     if (!user) {
-      onPostError?.('You must be logged in to post.');
+      showNotification('You must be logged in to post.');
       return;
     }
-    if (!file) {
-      onPostError?.('Please select a file.');
+
+    // Validation: Must have either caption or file
+    if (!caption.trim() && !file) {
+      showNotification('Please enter a caption or attach a file');
       return;
     }
 
     setLoading(true);
 
     try {
-      // 1. Upload file to Supabase Storage
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+      // Get post permissions
+      const selectElement = document.getElementById('p_r');
+      const value = selectElement.value;
 
-      //Get post permissions Mukondi
-      var h = document.getElementById('p_r');
-      var value = h.value;
-      var post_permission = '';
-      if (value === 'Members_only') {
-        post_permission = 'true';
-      } else {
-        post_permission = 'false';
+      // If no selection made, show notification
+      if (!value) {
+        showNotification('Please select post visibility (Members only or Everyone)');
+        setLoading(false);
+        return;
       }
 
-      const { error: uploadError } = await supabase.storage.from('media').upload(filePath, file);
+      const memberOnly = value === 'Members_only';
 
-      if (uploadError) throw uploadError;
+      let mediaUrl = null;
+      let mediaType = null;
 
-      const { data } = supabase.storage.from('media').getPublicUrl(filePath);
-      const mediaUrl = data.publicUrl;
+      // Upload file if present
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
-      const mediaType = file.type.startsWith('image')
-        ? 'image'
-        : file.type.startsWith('video')
-          ? 'video'
-          : 'audio';
+        const { error: uploadError } = await supabase.storage.from('media').upload(filePath, file);
 
-      // 2. Insert post
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage.from('media').getPublicUrl(filePath);
+        mediaUrl = data.publicUrl;
+
+        mediaType = file.type.startsWith('image')
+          ? 'image'
+          : file.type.startsWith('video')
+            ? 'video'
+            : 'audio';
+      }
+
+      // Insert post
       const { error: insertError } = await supabase.from('posts').insert([
         {
-          caption,
+          caption: caption.trim() || null,
           media_url: mediaUrl,
           media_type: mediaType,
           cso_id: entityId,
-          //Mukondi
-          member_only: post_permission,
+          user_id: user.id,
+          member_only: memberOnly,
         },
       ]);
 
       if (insertError) throw insertError;
 
-      // ✅ Reset form
+      // Reset form
       setCaption('');
       setFile(null);
+      selectElement.value = '';
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
 
-      window.location.reload(); // Refresh to show new post
+      // Call parent callback (this will show success notification)
+      onPostCreated();
     } catch (err) {
       console.error(err);
-      onPostError?.(`Error creating post: ${err.message}`);
+      showNotification(`Error creating post: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -116,7 +129,6 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
 
       {file && <p className="post-file-name">📎 {file.name}</p>}
 
-      {/* ✅ Just wrap these three items in a div */}
       <div className="post-actions-row">
         <button type="submit" disabled={loading} className="post-submit-button">
           {loading ? 'Posting...' : 'Post'}
@@ -130,14 +142,17 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
             onChange={handleFileChange}
             className="post-file-input"
             ref={fileInputRef}
+            accept="image/*,video/*,audio/*"
           />
         </label>
 
         <label htmlFor="p_r" className="post-restriction-label">
           <img src={mail_icon} className="cover" id="mail_icon" alt="post-mail-icon" />
           POST FOR:
-          <select className="post_restriction" id="p_r" defaultValue={''}>
-            <option className="post-item" value=""></option>
+          <select className="post_restriction" id="p_r" defaultValue="">
+            <option className="post-item" value="">
+              Select...
+            </option>
             <option className="post-item" value="Members_only">
               Members only
             </option>

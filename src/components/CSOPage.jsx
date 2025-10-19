@@ -39,6 +39,9 @@ export default function EntityPage() {
   // notification state
   const [notification, setNotification] = useState({ message: '', visible: false });
 
+  // delete modal state
+  const [deleteModal, setDeleteModal] = useState({ open: false, postId: null });
+
   // Helper function to show notifications
   const showNotification = message => {
     setNotification({ message, visible: true });
@@ -62,8 +65,6 @@ export default function EntityPage() {
             .select('exec_id')
             .eq('cso_id', entityId)
             .limit(1);
-
-          //if(error) throw error;
 
           const { data: profileRes } = await supabase
             .from('profiles')
@@ -121,7 +122,6 @@ export default function EntityPage() {
   // Fetch posts
   const fetchPosts = async user => {
     try {
-      //show member posts
       if (user === true) {
         try {
           const { data, error } = await supabase
@@ -161,6 +161,12 @@ export default function EntityPage() {
     }
   };
 
+  // Handle post created
+  const handlePostCreated = () => {
+    fetchPosts(canPost);
+    showNotification('Post created successfully!');
+  };
+
   // Save Edit
   const handleEditSubmit = async id => {
     if (!editCaption.trim()) {
@@ -179,17 +185,25 @@ export default function EntityPage() {
     }
   };
 
-  // DELETE
-  const handleDelete = async id => {
-    if (!window.confirm('Are you sure you want to delete this post?')) return;
+  // DELETE - Open modal
+  const handleDeleteClick = id => {
+    setDeleteModal({ open: true, postId: id });
+  };
+
+  // DELETE - Confirm
+  const handleDeleteConfirm = async () => {
+    const id = deleteModal.postId;
+
     try {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
       setPosts(posts.filter(p => p.id !== id));
       showNotification('Post deleted successfully!');
+      setDeleteModal({ open: false, postId: null });
     } catch (err) {
       console.error(err);
       showNotification('Error deleting post: ' + err.message);
+      setDeleteModal({ open: false, postId: null });
     }
   };
 
@@ -221,7 +235,13 @@ export default function EntityPage() {
             </aside>
           )}
 
-          {canPost && <ExecPost entityId={entityId} onPostCreated={fetchPosts} />}
+          {canPost && (
+            <ExecPost
+              entityId={entityId}
+              onPostCreated={handlePostCreated}
+              showNotification={showNotification}
+            />
+          )}
 
           <section className="cso-posts">
             {posts.length === 0 ? (
@@ -262,7 +282,7 @@ export default function EntityPage() {
                                   </button>
                                   <button
                                     className="cso-dropdown-item delete"
-                                    onClick={() => handleDelete(post.id)}
+                                    onClick={() => handleDeleteClick(post.id)}
                                   >
                                     Delete
                                   </button>
@@ -331,6 +351,7 @@ export default function EntityPage() {
             )}
           </section>
         </div>
+
         {/* Sidebar */}
         <aside className="cso-sidebar">
           <div className="cso-groups-joined">
@@ -346,6 +367,23 @@ export default function EntityPage() {
           </div>
         </aside>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.open && (
+        <aside className="cso-modal-overlay" role="dialog" aria-modal="true">
+          <section className="cso-modal">
+            <header>
+              <h2>Confirm Deletion</h2>
+            </header>
+            <p>Are you sure you want to delete this post?</p>
+
+            <footer className="cso-modal-actions">
+              <button onClick={handleDeleteConfirm}>Yes, Delete</button>
+              <button onClick={() => setDeleteModal({ open: false, postId: null })}>Cancel</button>
+            </footer>
+          </section>
+        </aside>
+      )}
     </article>
   );
 }
