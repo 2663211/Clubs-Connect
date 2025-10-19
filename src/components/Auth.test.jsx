@@ -1,6 +1,6 @@
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
-import Auth from './Auth.js';
+import Auth from './Auth';
 import { supabase } from '../supabaseClient.js';
 
 afterEach(() => {
