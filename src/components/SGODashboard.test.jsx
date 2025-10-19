@@ -1,6 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+<<<<<<< HEAD
 import SGODashboard from './SGODashboard.js';
 
 // Mock useNavigate
@@ -31,6 +32,13 @@ jest.mock('../supabaseClient', () => ({
     },
   },
 }));
+=======
+import SGODashboard from './SGODashboard';
+import SGOEntities from './SGOentities';
+import App from '../App.jsx';
+import Auth from './Auth';
+import { supabase } from '../supabaseClient';
+>>>>>>> testing-migration
 
 afterEach(() => {
   cleanup();
