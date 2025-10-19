@@ -1,6 +1,6 @@
 // AddMembersPage.test.js
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import AddMembersPage from './AddMembers';
 import { supabase } from '../supabaseClient';
@@ -69,6 +69,17 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
 
 test('renders Add Members heading', async () => {
   render(

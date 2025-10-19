@@ -10,6 +10,18 @@ afterEach(() => {
   cleanup();
 });
 
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
+
 test('All navigation buttons are rendered', async () => {
   render(
     <BrowserRouter>

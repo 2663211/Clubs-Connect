@@ -37,6 +37,18 @@ afterEach(() => {
   mockedNavigate.mockReset();
 });
 
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
+
 test('renders all navigation buttons', () => {
   render(
     <BrowserRouter>

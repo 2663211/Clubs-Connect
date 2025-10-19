@@ -45,28 +45,33 @@ export default function EntityPage() {
       } = await supabase.auth.getUser();
       if (error) return console.error('Auth error:', error.message);
       setUser(user);
+
       if (user && entityId) {
         try{
-        const {data: execRes, error} = await   supabase
+        const {data: execRes, error} = await supabase
             .from('cso_exec')
             .select('exec_id')
             .eq('cso_id', entityId)
             .limit(1);
 
-            //if(error) throw error;
+          //if(error) throw error;
 
             const{data: profileRes}= await supabase
             .from('profiles')
-            .select('role').eq('id', user.id)
+            .select('role')
+            .eq('id', user.id)
             .single();
-        
+
         if(profileRes.role === 'sgo'){
           setCanPost(true);
           fetchPosts(true);
         }else{
         if(execRes != null){
            const { data: execS_N } = await supabase
-                .from('executive').select('student_number').eq('id', execRes[0].exec_id).single();
+                .from('executive')
+                .select('student_number')
+                .eq('id', execRes[0].exec_id)
+                .single();
               const s_n = execS_N.student_number;
               if (s_n === user.id) {
                 setCanPost(true);
