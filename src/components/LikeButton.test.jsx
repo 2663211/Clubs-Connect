@@ -87,24 +87,47 @@ describe('LikeButton UI', () => {
     });
   });
 
-  test('clicking again unlikes and decrements count', async () => {
-    renderLikeButton();
-    const button = await screen.findByRole('button');
-    expect(button).toHaveTextContent('5 Likes');
+  test('decrements like count after unliking', async () => {
+      supabase.from.mockImplementation((table) => {
+        if (table === 'Comments') {
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockReturnThis(),
+            order: vi.fn().mockReturnThis(),
+            limit: vi.fn().mockResolvedValue({
+              data: [{ liked: true }],
+              error: null,
+            }),
+            update: vi.fn().mockReturnThis(),
+          };
+        }
+        if (table === 'posts') {
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockReturnThis(),
+            single: vi.fn().mockResolvedValue({
+              data: { like_count: 10 },
+              error: null,
+            }),
+            update: vi.fn().mockReturnThis(),
+          };
+        }
+      });
 
-    // like first
-    fireEvent.click(button);
-    await waitFor(() => {
-        expect(button).toHaveTextContent('6 👍Likes');
+      renderLikeButton();
+
+      await waitFor(() => {
+        expect(screen.getByText(/10.*👍Likes/i)).toBeInTheDocument();
+      });
+
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        expect(screen.getByText(/9.*Likes/i)).toBeInTheDocument();
+      });
     });
-    // unlike
-    
-    fireEvent.click(button);
-    await waitFor(() => {
-      expect(button).toHaveTextContent('5 Likes');
-    });
-    
-  });
+  
 
   
 });
