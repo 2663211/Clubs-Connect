@@ -71,6 +71,13 @@ export default function EntityPage() {
             .select('role')
             .eq('id', user.id)
             .single();
+          const { data: csoData } = await supabase //check if I am a member
+                          .from('cso_members')
+                          .select('cso_id')
+                          .eq('student_number', user.id);
+                      if(csoData.length!=0){
+                        fetchPosts(true);
+                      }
 
           if (profileRes.role === 'sgo') {
             setCanPost(true);
@@ -86,9 +93,7 @@ export default function EntityPage() {
               if (s_n === user.id) {
                 setCanPost(true);
                 fetchPosts(true);
-              } else {
-                fetchPosts(false);
-              }
+              } 
             } else {
               fetchPosts(false);
             }
