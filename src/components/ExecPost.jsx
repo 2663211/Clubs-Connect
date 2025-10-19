@@ -1,7 +1,8 @@
 // ExecPost.js
 //Mukondi changes
 import React, { useState, useEffect, useRef } from 'react';
-import mail_icon from '../images/mail_icon.jpg';
+import mail_icon from '../images/mail_icon.png';
+import paperclipIcon from '../images/paperclip.png';
 
 import { supabase } from '../supabaseClient';
 import '../styles/ExecPost.css';
@@ -105,38 +106,47 @@ export default function ExecPost({ entityId, onPostCreated, onPostError }) {
 
   return (
     <form className="exec-post" onSubmit={handleSubmit}>
-      <h3>Create Post</h3>
-
       <textarea
-        placeholder="Write your caption..."
+        placeholder="Create a post"
         value={caption}
         onChange={e => setCaption(e.target.value)}
         rows={4}
         className="post-caption-input"
       />
 
-      <input
-        type="file"
-        onChange={handleFileChange}
-        className="post-file-input"
-        ref={fileInputRef} // ✅ attach ref
-      />
+      {file && <p className="post-file-name">📎 {file.name}</p>}
 
-      <button type="submit" disabled={loading} className="post-submit-button">
-        {loading ? 'Posting...' : 'Post'}
-      </button>
+      {/* ✅ Just wrap these three items in a div */}
+      <div className="post-actions-row">
+        <button type="submit" disabled={loading} className="post-submit-button">
+          {loading ? 'Posting...' : 'Post'}
+        </button>
 
-      <form className="post-restriction-input">
-        <label for="p_r" className="post-restriction-label">
-          <img src={mail_icon} className="cover" id="mail_icon" alt="post icon" />
-          Post for:
+        <label className="post-images-label">
+          <img src={paperclipIcon} alt="Attach" className="post-paperclip-icon" />
+          Images
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="post-file-input"
+            ref={fileInputRef}
+          />
+        </label>
+
+        <label htmlFor="p_r" className="post-restriction-label">
+          <img src={mail_icon} className="cover" id="mail_icon" alt="post-mail-icon" />
+          POST FOR:
           <select className="post_restriction" id="p_r" defaultValue={''}>
-            <option value=""></option>
-            <option value="Members_only">Members_only</option>
-            <option value="Everyone">Everyone</option>
+            <option className="post-item" value=""></option>
+            <option className="post-item" value="Members_only">
+              Members only
+            </option>
+            <option className="post-item" value="Everyone">
+              Everyone
+            </option>
           </select>
         </label>
-      </form>
+      </div>
     </form>
   );
 }

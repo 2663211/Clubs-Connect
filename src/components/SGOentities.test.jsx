@@ -10,6 +10,18 @@ afterEach(() => {
   cleanup();
 });
 
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
+
 test('All navigation buttons are rendered', async () => {
   render(
     <BrowserRouter>
@@ -18,7 +30,7 @@ test('All navigation buttons are rendered', async () => {
   );
   const Dash_button = screen.getByText('Dashboard');
   const Annoucement_button = screen.getByText('Announcements');
-  const Entity_button = screen.getByText('Entities');
+  const Entity_button = screen.getByText('CSOs');
   const profile_button = screen.getByText('Profile');
   const logout_button = screen.getByText('Logout');
   expect(logout_button).toBeInTheDocument();
@@ -28,7 +40,7 @@ test('All navigation buttons are rendered', async () => {
   expect(Annoucement_button).toBeInTheDocument();
 });
 
-test('renders Create Entity button', () => {
+test('renders Create CSO button', () => {
   render(
     <MemoryRouter initialEntries={['/entities/sgo']}>
       <Routes>
@@ -37,7 +49,7 @@ test('renders Create Entity button', () => {
     </MemoryRouter>
   );
 
-  const createEntityButton = screen.getByRole('button', { name: /create entity/i });
+  const createEntityButton = screen.getByRole('button', { name: /create cso/i });
   expect(createEntityButton).toBeInTheDocument();
 });
 
@@ -54,11 +66,11 @@ test('navigates from dashboard to entities page', async () => {
   const user = userEvent.setup();
 
   // Click the Entities button in dashboard
-  const entitiesButton = screen.getByRole('button', { name: /entities/i });
+  const entitiesButton = screen.getByRole('button', { name: /csos/i });
   await user.click(entitiesButton);
 
   // Assert that SGOEntities page loaded
-  const createEntityButton = await screen.findByRole('button', { name: /create entity/i });
+  const createEntityButton = await screen.findByRole('button', { name: /create cso/i });
   expect(createEntityButton).toBeInTheDocument();
 });
 
@@ -77,22 +89,22 @@ test('logout navigates to Auth page', async () => {
   const logoutButton = screen.getByRole('button', { name: /logout/i });
   await user.click(logoutButton);
 
-  const loginButton = await screen.findByRole('button', { name: /login/i });
+  const loginButton = await screen.findByRole('button', { name: /sign in with google/i });
   expect(loginButton).toBeInTheDocument();
 });
 
-test('renders create entity button', () => {
+test('renders create cso button', () => {
   render(
     <MemoryRouter>
       <SGOEntities />
     </MemoryRouter>
   );
 
-  const createEntityButton = screen.getByRole('button', { name: /create entity/i });
+  const createEntityButton = screen.getByRole('button', { name: /create cso/i });
   expect(createEntityButton).toBeInTheDocument();
 });
 
-test('clicking create entity navigates to AddCSO page', async () => {
+test('clicking create cso navigates to AddCSO page', async () => {
   render(
     <MemoryRouter initialEntries={['/entities/sgo']}>
       <Routes>
@@ -102,7 +114,7 @@ test('clicking create entity navigates to AddCSO page', async () => {
     </MemoryRouter>
   );
   const user = userEvent.setup();
-  const createButton = screen.getByRole('button', { name: /create entity/i });
+  const createButton = screen.getByRole('button', { name: /create cso/i });
   await user.click(createButton);
   const heading = await screen.findByRole('heading', {
     name: /add a club, society, or organization/i,

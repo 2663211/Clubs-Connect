@@ -1,17 +1,20 @@
-.entities-list {
+.CSOentities-list {
   display: list-item;
+  padding: 20px;
   width: 850px;
 }
 
 /* Entity card */
-.entity-card-cso {
+.entity-card-cso1 {
   display: flex;
   background: #fff;
   padding: 15px;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 800px;
-  height: 100px;
+  border: 1px solid gray;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  width: 850px;
+  height: 150px;
+  margin-bottom: 20 px;
   text-align: left;
   transition:
     transform 0.2s,
@@ -25,8 +28,8 @@
 }
 .entity-name {
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 .entity-cluster {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }

@@ -17,6 +17,7 @@ import Search from './components/Search';
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
 import StudySessions from './components/StudySessions';
+import Announcements from './components/announcements';
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
         <Route path="/cso/member" element={<CSOMember />} />
+        <Route path="/announcements/sgo" element={<Announcements />} />
 
         <Route path="/events" element={<ExecEvents />} />
 
