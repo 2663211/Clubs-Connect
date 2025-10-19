@@ -1,221 +1,596 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/StudentDashboard.css';
-import StudentHeader from './StudentHeader';
-import Search from './Search';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+
+import StudentDashboard from './StudentDashboard';
 import { supabase } from '../supabaseClient';
-import FollowButton from './FollowButton';
-import LikeButton from './LikeButton';
-import sendButton from '../images/send.png';
-import waitingSend from '../images/waitingForSend.png';
-import CommentSection from './CommentSection';
+import { jsx, jsxs } from 'react/jsx-runtime';
 
-function timeSince(date) {
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-  let interval = Math.floor(seconds / 31536000);
-  if (interval >= 1) return interval === 1 ? '1 year ago' : `${interval} years ago`;
+// Mock dependencies
+jest.mock('../supabaseClient', () => ({
+  supabase: {
+    auth: {
+      getUser: jest.fn(),
+    },
+    from: jest.fn(),
+  },
+}));
 
-  interval = Math.floor(seconds / 2592000);
-  if (interval >= 1) return interval === 1 ? '1 month ago' : `${interval} months ago`;
+jest.mock('react-router-dom', async () => {
+  const actual = await jest.requireActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useParams: () => ({ entityId: undefined }),
+  };
+});
 
-  interval = Math.floor(seconds / 86400);
-  if (interval >= 1) return interval === 1 ? '1 day ago' : `${interval} days ago`;
+const mockNavigate = jest.fn();
 
-  interval = Math.floor(seconds / 3600);
-  if (interval >= 1) return interval === 1 ? '1 hour ago' : `${interval} hours ago`;
+jest.mock('./StudentHeader', () => ({
+  default: () => <div data-testid="student-header">Student Header</div>,
+}));
 
-  interval = Math.floor(seconds / 60);
-  if (interval >= 1) return interval === 1 ? '1 minute ago' : `${interval} minutes ago`;
+jest.mock('./Search', () => ({
+  default: () => <div data-testid="search">Search Component</div>,
+}));
 
-  return 'Just now';
-}
+jest.mock('./FollowButton', () => ({
+  default: ({ csoId }) => <button data-testid={`follow-btn-${csoId}`}>Follow</button>,
+}));
 
-export default function StudentDashboard() {
-  const navigate = useNavigate();
-  const { entityId } = useParams();
-  const [user, setUser] = useState(null);
-  const [entity, setEntity] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [followers, setFollowers] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [activeCommentBox, setActiveCommentBox] = useState(null);
+jest.mock('./LikeButton', () => ({
+  default: ({ postId }) => <button data-testid={`like-btn-${postId}`}>Like</button>,
+}));
 
-  useEffect(() => {
-    console.log('dashboard loading');
-    const fetchFollowPost = async () => {
-      setLoading(true);
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      setUser(user);
+jest.mock('./CommentSection', () => ({
+  default: ({ postId, studentNumber }) => (
+    <div data-testid={`comment-section-${postId}`}>
+      Comment Section for post {postId}
+    </div>
+  ),
+}));
 
-      try {
-        // get CSOs user follows
-        const { data: FollowData, error } = await supabase
-          .from('cso_follow')
-          .select('cso_id')
-          .eq('student_number', user.id)
-          .eq('follow_status', true);
+// Helper to wrap component with Router
+const renderWithRouter = (component, route = '/') => {
+  return render(
+    <MemoryRouter initialEntries={[route]}>
+      {component}
+    </MemoryRouter>
+  );
+};
 
-        if (error) {
-          console.error('Error fetching follow status:', error.message);
-          return;
-        }
-
-        if (!FollowData || FollowData.length === 0) {
-          setPosts([]);
-          setLoading(false);
-          return;
-        }
-
-        // fetch posts from followed CSOs
-        const { data: postData, postError } = await supabase
-          .from('posts')
-          .select('*')
-          .in(
-            'cso_id',
-            FollowData.map(f => f.cso_id)
-          )
-          .eq('member_only', false)
-          .order('created_at', { ascending: false });
-
-        if (postError) {
-          console.error('Error fetching posts:', postError.message);
-          return;
-        }
-        setPosts(postData);
-
-        // fetch CSO info for those posts
-        const { data: CSOData, CSOerror } = await supabase
-          .from('cso')
-          .select('id, name, logo_url')
-          .in(
-            'id',
-            postData.map(p => p.cso_id)
-          );
-
-        if (CSOerror) {
-          console.error('Error fetching CSO', CSOerror.message);
-          return;
-        }
-        setEntity(CSOData);
-
-        const { data: followerCounts, followerError } = await supabase
-          .from('cso_follow')
-          .select('cso_id', { count: 'exact' })
-          .in(
-            'cso_id',
-            CSOData.map(c => c.id)
-          )
-          .eq('follow_status', true);
-
-        if (followerError) {
-          console.error('Error fetching follower counts:', followerError.message);
-          return;
-        }
-        const counts = {};
-        followerCounts.forEach(f => {
-          counts[f.cso_id] = (counts[f.cso_id] || 0) + 1;
-        });
-        setFollowers(counts);
-      } catch (err) {
-        console.error('error fetching data', err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFollowPost();
-  }, [entityId]);
-
-  const toggleCommentBox = postId => {
-    setActiveCommentBox(prev => (prev === postId ? null : postId));
+describe('StudentDashboard Component - UI Tests', () => {
+  const mockUser = {
+    id: 'user-123',
+    email: 'test@example.com',
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  return (
-    <article className="dashboard">
-      <StudentHeader />
-      <Search />
-      <section className="posts">
-        {posts.length === 0 ? (
-          <p className="no-posts">No posts yet.</p>
-        ) : (
-          <div className="post-container">
-            {posts.map(post => {
-              const cso = entity.find(c => c.id === post.cso_id);
+  const mockFollowData = [
+    { cso_id: 1 },
+    { cso_id: 2 },
+  ];
 
-              return (
-                <article key={post.id} className="post-section">
-                  {cso && (
-                    <header className="CSOInfo">
-                      {cso.logo_url && (
-                        <img src={cso.logo_url} alt={cso.name} className="cso-logo" />
-                      )}
-                      <section
-                        className="cso-details"
-                        onClick={() => navigate(`/entities/${cso.id}`)}
-                      >
-                        <p className="CSOname">{cso.name}</p>
-                        <p className="followerCount">
-                          {followers[cso.id] || 0}{' '}
-                          {followers[cso.id] === 1 ? 'follower' : 'followers'}
-                        </p>
-                        <p className="postDate">{timeSince(post.created_at)}</p>
-                      </section>
-                      <FollowButton csoId={cso.id} />
-                    </header>
-                  )}
+  const mockPosts = [
+    {
+      id: 1,
+      cso_id: 1,
+      caption: 'First post caption',
+      media_url: 'https://example.com/image1.jpg',
+      media_type: 'image',
+      member_only: false,
+      created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+    },
+    {
+      id: 2,
+      cso_id: 2,
+      caption: 'Second post with video',
+      media_url: 'https://example.com/video.mp4',
+      media_type: 'video',
+      member_only: false,
+      created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+    },
+    {
+      id: 3,
+      cso_id: 1,
+      caption: null,
+      media_url: 'https://example.com/audio.mp3',
+      media_type: 'audio',
+      member_only: false,
+      created_at: new Date(Date.now() - 2592000000).toISOString(), // 1 month ago
+    },
+  ];
 
-                  {post.caption && <p className="postCaption">{post.caption}</p>}
+  const mockCSOData = [
+    {
+      id: 1,
+      name: 'Wits DevSoc',
+      logo_url: 'https://example.com/logo1.jpg',
+    },
+    {
+      id: 2,
+      name: 'Drama Society',
+      logo_url: 'https://example.com/logo2.jpg',
+    },
+  ];
 
-                  {post.media_url && (
-                    <div className="postMedia">
-                      {post.media_type === 'image' && (
-                        <img src={post.media_url} alt="Post media" className="postImage" />
-                      )}
-                      {post.media_type === 'video' && (
-                        <video controls className="postVideo">
-                          <source src={post.media_url} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      )}
-                      {post.media_type === 'audio' && (
-                        <audio controls className="postAudio">
-                          <source src={post.media_url} type="audio/mpeg" />
-                          Your browser does not support the audio element.
-                        </audio>
-                      )}
-                    </div>
-                  )}
+  const mockFollowerCounts = [
+    { cso_id: 1 },
+    { cso_id: 1 },
+    { cso_id: 1 },
+    { cso_id: 2 },
+    { cso_id: 2 },
+  ];
 
-                  <section className="engagement">
-                    {/* <button className="like-btn">Like</button> */}
-                    <LikeButton postId={post.id} />
-                    <button
-                      className={`comment-btn ${activeCommentBox === post.id ? 'active' : ''}`}
-                      onClick={() => {
-                        toggleCommentBox(post.id);
-                      }}
-                    >
-                      Comment
-                    </button>
-                  </section>
-                  {activeCommentBox === post.id && (
-                    <section className="comment-section">
-                      <CommentSection postId={post.id} studentNumber={user.id} />
-                    </section>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
-    </article>
-  );
-}
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockNavigate.mockClear();
+
+    supabase.auth.getUser.mockResolvedValue({
+      data: { user: mockUser },
+      error: null,
+    });
+
+    supabase.from.mockImplementation((table) => {
+      if (table === 'cso_follow') {
+        return {
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          in: jest.fn().mockResolvedValue({
+            data: mockFollowerCounts,
+            error: null,
+          }),
+        };
+      }
+      if (table === 'posts') {
+        return {
+          select: jest.fn().mockReturnThis(),
+          in: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          order: jest.fn().mockResolvedValue({
+            data: mockPosts,
+            error: null,
+          }),
+        };
+      }
+      if (table === 'cso') {
+        return {
+          select: jest.fn().mockReturnThis(),
+          in: jest.fn().mockResolvedValue({
+            data: mockCSOData,
+            error: null,
+          }),
+        };
+      }
+    });
+
+  });
+
+  describe('Initial Rendering', () => {
+    test('renders loading state initially', () => {
+      renderWithRouter(<StudentDashboard />);
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
+    test('renders StudentHeader component', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('student-header')).toBeInTheDocument();
+      });
+    });
+
+    test('renders Search component', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('search')).toBeInTheDocument();
+      });
+    });
+
+    test('renders posts section after loading', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      const postsSection = document.querySelector('.posts');
+      expect(postsSection).toBeInTheDocument();
+    });
+  });
+
+  describe('No Posts State', () => {
+    test('displays "No posts yet" when user follows no CSOs', async () => {
+      supabase.from.mockImplementation((table) => {
+        if (table === 'cso_follow') {
+          return {
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockReturnThis(),
+            then: (resolve) => resolve({ data: [], error: null }),
+          };
+        }
+      });
+
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('No posts yet.')).toBeInTheDocument();
+      });
+    });
+
+    test('displays "No posts yet" when followed CSOs have no posts', async () => {
+      supabase.from.mockImplementation((table) => {
+        if (table === 'cso_follow') {
+          return {
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockReturnThis(),
+            then: (resolve) => resolve({ data: mockFollowData, error: null }),
+          };
+        }
+        if (table === 'posts') {
+          return {
+            select: jest.fn().mockReturnThis(),
+            in: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockReturnThis(),
+            order: jest.fn().mockResolvedValue({
+              data: [],
+              error: null,
+            }),
+          };
+        }
+      });
+
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('No posts yet.')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Post Display', () => {
+    test('renders all posts from followed CSOs', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+        expect(screen.getByText('Second post with video')).toBeInTheDocument();
+      });
+    });
+
+    test('renders CSO names for each post', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Wits DevSoc').length).toBeGreaterThan(0);
+        expect(screen.getByText('Drama Society')).toBeInTheDocument();
+      });
+    });
+
+    test('renders CSO logos', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const logos = screen.getAllByRole('img', { name: /Wits DevSoc|Drama Society/i });
+        expect(logos.length).toBeGreaterThan(0);
+      });
+    });
+
+    test('displays follower counts correctly', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        // Check that follower count elements exist
+        const followerElements = document.querySelectorAll('.followerCount');
+        expect(followerElements.length).toBeGreaterThan(0);
+        
+        // Check that follower text is displayed (flexible check)
+        const hasFollowerText = Array.from(followerElements).some(el => 
+          el.textContent.includes('follower')
+        );
+        expect(hasFollowerText).toBe(true);
+      });
+    });
+
+    test('displays follower count with correct singular/plural format', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const followerElements = document.querySelectorAll('.followerCount');
+        expect(followerElements.length).toBe(3); // 3 posts total
+        
+        // Verify each has a number and "follower" or "followers" text
+        followerElements.forEach(el => {
+          expect(el.textContent).toMatch(/\d+ followers?/);
+        });
+      });
+    });
+
+
+    test('displays singular "follower" for count of 1', async () => {
+      const singleFollower = [{ cso_id: 1 }];
+      
+      supabase.auth.getUser.mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      });
+
+      let callCount = 0;
+      supabase.from.mockImplementation((table) => {
+        if (table === 'cso_follow') {
+          callCount++;
+          // First call: get followed CSOs
+          if (callCount === 1) {
+            return {
+              select: jest.fn().mockReturnThis(),
+              eq: jest.fn().mockReturnThis(),
+              then: (resolve) => resolve({ data: mockFollowData, error: null }),
+            };
+          }
+          // Second call: get follower counts
+          return {
+            select: jest.fn().mockReturnThis(),
+            in: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({
+              data: singleFollower,
+              error: null,
+            }),
+          };
+        }
+        if (table === 'posts') {
+          return {
+            select: jest.fn().mockReturnThis(),
+            in: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockReturnThis(),
+            order: jest.fn().mockResolvedValue({
+              data: [mockPosts[0]],
+              error: null,
+            }),
+          };
+        }
+        if (table === 'cso') {
+          return {
+            select: jest.fn().mockReturnThis(),
+            in: jest.fn().mockResolvedValue({
+              data: [mockCSOData[0]],
+              error: null,
+            }),
+          };
+        }
+      });
+
+
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const followerElement = screen.getByText((content, element) => {
+          return element.textContent === '1 follower';
+        });
+        expect(followerElement).toBeInTheDocument();
+      });
+    });
+
+    test('displays post timestamps using timeSince format', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('1 hour ago')).toBeInTheDocument();
+        expect(screen.getByText('1 day ago')).toBeInTheDocument();
+        expect(screen.getByText('1 month ago')).toBeInTheDocument();
+      });
+    });
+
+    test('renders post captions when available', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+        expect(screen.getByText('Second post with video')).toBeInTheDocument();
+      });
+    });
+
+    test('does not render caption section when caption is null', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const postCaptions = document.querySelectorAll('.postCaption');
+        expect(postCaptions.length).toBe(2); // Only 2 posts have captions
+      });
+    });
+  });
+
+  describe('Media Display', () => {
+    test('renders image media with correct src', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const image = screen.getByAltText('Post media');
+        expect(image).toBeInTheDocument();
+        expect(image.src).toContain('image1.jpg');
+        expect(image.classList.contains('postImage')).toBe(true);
+      });
+    });
+
+    test('renders video media with controls', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const video = document.querySelector('.postVideo');
+        expect(video).toBeInTheDocument();
+        expect(video).toHaveAttribute('controls');
+      });
+    });
+
+    test('renders video source with correct src', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const videoSource = document.querySelector('.postVideo source');
+        expect(videoSource).toBeInTheDocument();
+        expect(videoSource.src).toContain('video.mp4');
+        expect(videoSource.type).toBe('video/mp4');
+      });
+    });
+
+    test('renders audio media with controls', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const audio = document.querySelector('.postAudio');
+        expect(audio).toBeInTheDocument();
+        expect(audio).toHaveAttribute('controls');
+      });
+    });
+
+    test('renders audio source with correct src', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const audioSource = document.querySelector('.postAudio source');
+        expect(audioSource).toBeInTheDocument();
+        expect(audioSource.src).toContain('audio.mp3');
+        expect(audioSource.type).toBe('audio/mpeg');
+      });
+    });
+  });
+
+  describe('Engagement Buttons', () => {
+    test('renders Like button for each post', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('like-btn-1')).toBeInTheDocument();
+        expect(screen.getByTestId('like-btn-2')).toBeInTheDocument();
+        expect(screen.getByTestId('like-btn-3')).toBeInTheDocument();
+      });
+    });
+
+    test('renders Comment button for each post', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        const commentButtons = screen.getAllByText('Comment');
+        expect(commentButtons.length).toBe(3);
+      });
+    });
+
+    test('renders Follow button for each CSO', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getAllByTestId('follow-btn-1').length).toBe(2);
+        expect(screen.getAllByTestId('follow-btn-2').length).toBe(1);
+      });
+    });
+  });
+
+  describe('Comment Section Interactions', () => {
+    test('comment section is hidden by default', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('comment-section-1')).not.toBeInTheDocument();
+      });
+    });
+
+    test('shows comment section when Comment button is clicked', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+      });
+
+      const commentButtons = screen.getAllByText('Comment');
+      fireEvent.click(commentButtons[0]);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('comment-section-1')).toBeInTheDocument();
+      });
+    });
+
+    test('hides comment section when Comment button is clicked again', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+      });
+
+      const commentButtons = screen.getAllByText('Comment');
+      fireEvent.click(commentButtons[0]);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('comment-section-1')).toBeInTheDocument();
+      });
+
+      fireEvent.click(commentButtons[0]);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('comment-section-1')).not.toBeInTheDocument();
+      });
+    });
+
+    
+
+    test('only one comment section can be open at a time', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+      });
+
+      const commentButtons = screen.getAllByText('Comment');
+      
+      // Open first comment section
+      fireEvent.click(commentButtons[0]);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('comment-section-1')).toBeInTheDocument();
+      });
+
+      // Open second comment section
+      fireEvent.click(commentButtons[1]);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('comment-section-1')).not.toBeInTheDocument();
+        expect(screen.getByTestId('comment-section-2')).toBeInTheDocument();
+      });
+    });
+
+    test('passes correct postId to CommentSection component', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getByText('First post caption')).toBeInTheDocument();
+      });
+
+      const commentButtons = screen.getAllByText('Comment');
+      fireEvent.click(commentButtons[0]);
+
+      await waitFor(() => {
+        expect(screen.getByText('Comment Section for post 1')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Navigation', () => {
+    test('navigates to entity page when CSO details are clicked', async () => {
+      renderWithRouter(<StudentDashboard />);
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Wits DevSoc').length).toBeGreaterThan(0);
+      });
+
+      const csoDetails = document.querySelector('.cso-details');
+      fireEvent.click(csoDetails);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/entities/1');
+    });
+
+  });
+
+
+  
+
+  
+  });

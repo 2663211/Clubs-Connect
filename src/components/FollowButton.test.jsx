@@ -12,7 +12,7 @@ describe('Follow Button', () => {
   });
   test('renders button with "Follow" text when not following', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });
-    supabase.from.mockReturnValue({
+    supabase.from.jest.fn().mockReturnValue({
       select: () => ({
         eq: () => ({
           eq: () => ({
@@ -29,7 +29,7 @@ describe('Follow Button', () => {
 
   test('renders button with "Following" text when already following', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });
-    supabase.from.mockReturnValue({
+    supabase.from.jest.fn().mockReturnValue({
       select: () => ({
         eq: () => ({
           eq: () => ({
@@ -48,7 +48,7 @@ describe('Follow Button', () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });
 
     // Initial: already following
-    supabase.from.mockReturnValueOnce({
+    supabase.from.jest.fn().mockReturnValueOnce({
       select: () => ({
         eq: () => ({
           eq: () => ({
@@ -59,7 +59,7 @@ describe('Follow Button', () => {
     });
 
     // When unfollow is clicked
-    supabase.from.mockReturnValueOnce({
+    supabase.from.jest.fn().mockReturnValueOnce({
       delete: () => ({
         eq: () => ({
           eq: () => Promise.resolve({ error: null }),
@@ -77,7 +77,7 @@ describe('Follow Button', () => {
 
   test('button is disabled while loading', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });
-    supabase.from.mockReturnValue({
+    supabase.from.jest.fn().mockReturnValue({
       select: () => ({
         eq: () => ({
           eq: () => ({
