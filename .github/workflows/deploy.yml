@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./terrestrial-trappist
+        working-directory: ./docs # Changed from ./terrestrial-trappist
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./terrestrial-trappist/dist # Update this path!
+          path: ./docs/dist # Changed from ./terrestrial-trappist/dist
 
   deploy:
     needs: build
