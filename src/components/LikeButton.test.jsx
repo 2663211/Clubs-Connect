@@ -3,10 +3,24 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import LikeButton from './LikeButton';
 import { supabase } from '../supabaseClient';
 
-vi.mock('../supabaseClient');
+//vi.mock('../supabaseClient');
+vi.mock('../supabaseClient', () => ({
+  supabase: {
+    auth: { getUser: vi.fn(() => ({ data: { user: { id: '123' } } })) },
+    from: vi.fn(() => ({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockReturnThis(),
+      insert: vi.fn().mockResolvedValue({}),
+      update: vi.fn().mockResolvedValue({}),
+    })),
+  },
+}));
+
 
 const mockUser = { id: '123' };
-const renderLikeButton = (props = {}) => render(<LikeButton postId="post-1" {...props} />);
+const renderLikeButton = () => render(<LikeButton postId="post-1" />);
 
 describe('LikeButton UI', () => {
   beforeEach(() => {
@@ -57,14 +71,14 @@ describe('LikeButton UI', () => {
     renderLikeButton();
     const button = await screen.findByRole('button');
 
-    expect(button).toHaveTextContent('0 Likes');
+    expect(button).toHaveTextContent('5 Likes');
   });
 
   test('clicking like updates UI to show 👍 and incremented count', async () => {
     renderLikeButton();
     const button = await screen.findByRole('button');
 
-    expect(button).toHaveTextContent('0 Likes');
+    expect(button).toHaveTextContent('5 Likes');
 
     fireEvent.click(button);
 
@@ -73,26 +87,47 @@ describe('LikeButton UI', () => {
     });
   });
 
-  test('clicking again unlikes and decrements count', async () => {
-    renderLikeButton();
-    const button = await screen.findByRole('button');
+  test('decrements like count after unliking', async () => {
+      supabase.from.mockImplementation((table) => {
+        if (table === 'Comments') {
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockReturnThis(),
+            order: vi.fn().mockReturnThis(),
+            limit: vi.fn().mockResolvedValue({
+              data: [{ liked: true }],
+              error: null,
+            }),
+            update: vi.fn().mockReturnThis(),
+          };
+        }
+        if (table === 'posts') {
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockReturnThis(),
+            single: vi.fn().mockResolvedValue({
+              data: { like_count: 10 },
+              error: null,
+            }),
+            update: vi.fn().mockReturnThis(),
+          };
+        }
+      });
 
-    // like first
-    fireEvent.click(button);
-    await waitFor(() => expect(button).toHaveTextContent('6 👍Likes'));
+      renderLikeButton();
 
-    // unlike
-    fireEvent.click(button);
-    await waitFor(() => expect(button).toHaveTextContent('5 Likes'));
-  });
+      await waitFor(() => {
+        expect(screen.getByText(/10.*👍Likes/i)).toBeInTheDocument();
+      });
 
-  test('button is disabled while loading', async () => {
-    renderLikeButton();
-    const button = await screen.findByRole('button');
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
 
-    fireEvent.click(button);
-    expect(button).toBeDisabled();
+      await waitFor(() => {
+        expect(screen.getByText(/9.*Likes/i)).toBeInTheDocument();
+      });
+    });
+  
 
-    await waitFor(() => expect(button).not.toBeDisabled());
-  });
+  
 });

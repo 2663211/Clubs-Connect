@@ -7,8 +7,8 @@ import { handleLogout } from './Auth';
 
 // Mock useNavigate from react-router-dom
 const mockedNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async() => ({
+  ...(await vi.importActual('react-router-dom')),
   useNavigate: () => mockedNavigate,
 }));
 
