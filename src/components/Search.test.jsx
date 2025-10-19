@@ -15,8 +15,8 @@ vi.mock('../supabaseClient', () => ({
 
 // Mock useNavigate
 const mockedNavigate = vi.fn();
-vi.mock('react-router', () => ({
-  ...vi.requireActual('react-router'),
+vi.mock('react-router', async() => ({
+  ...(await vi.importActual('react-router')),
   useNavigate: () => mockedNavigate,
 }));
 

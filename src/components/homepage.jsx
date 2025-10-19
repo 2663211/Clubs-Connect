@@ -13,7 +13,7 @@ export default function Homepage() {
   return (
     <>
       <header className="HomePageHeader">
-        <img src="logo192.png" alt="Clubs Connect" className="logo" />
+        <img src="network.png" alt="Clubs Connect" className="logo" />
         <nav>
           <ul>
             <li>
