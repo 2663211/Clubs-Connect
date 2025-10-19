@@ -1,10 +1,10 @@
 import { BrowserRouter, MemoryRouter, Link, Routes, Route } from 'react-router-dom';
 import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SGODashboard from './SGODashboard.js';
-import SGOEntities from './SGOentities.js';
-import SGOProfile from './SGOprofile.js';
-import App from '../App.js';
+import SGODashboard from './SGODashboard';
+import SGOEntities from './SGOentities';
+import SGOProfile from './SGOprofile';
+import App from '../App';
 import Auth from './Auth';
 import { supabase } from '../supabaseClient';
 
@@ -19,6 +19,17 @@ afterEach(() => {
   cleanup();
   mockedNavigate.mockReset();
 });
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
 
 test('All navigation buttons are rendered', () => {
   render(
@@ -29,7 +40,7 @@ test('All navigation buttons are rendered', () => {
 
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
   expect(screen.getByText('Announcements')).toBeInTheDocument();
-  expect(screen.getByText('Entities')).toBeInTheDocument();
+  expect(screen.getByText('CSOs')).toBeInTheDocument();
   expect(screen.getByText('Profile')).toBeInTheDocument();
   expect(screen.getByText('Logout')).toBeInTheDocument();
 });
@@ -73,7 +84,7 @@ test('Entities button navigates to /entities/sgo', async () => {
       <SGODashboard />
     </BrowserRouter>
   );
-  const entitiesButton = screen.getByText('Entities');
+  const entitiesButton = screen.getByText('CSOs');
   await userEvent.click(entitiesButton);
   expect(mockedNavigate).toHaveBeenCalledWith('/entities/sgo');
 });

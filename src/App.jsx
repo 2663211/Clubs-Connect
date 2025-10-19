@@ -4,7 +4,6 @@ import HomePage from './components/homepage';
 import Auth from './components/Auth';
 import SGODashboard from './components/SGODashboard';
 import StudentDashboard from './components/StudentDashboard';
-import ExecDashboard from './components/ExecDashboard';
 import SGOentities from './components/SGOentities';
 import SGOprofile from './components/SGOprofile';
 import AddCSO from './components/addCSO';
@@ -17,6 +16,7 @@ import Search from './components/Search';
 import CSOPage from './components/CSOPage';
 import EntityPage from './components/CSOPage';
 import StudySessions from './components/StudySessions';
+import Announcements from './components/announcements';
 
 export default function App() {
   return (
@@ -31,12 +31,12 @@ export default function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard/sgo" element={<SGODashboard />} />
         <Route path="/dashboard/student" element={<StudentDashboard />} />
-        <Route path="/dashboard/exec" element={<ExecDashboard />} />
         <Route path="/entities/sgo" element={<SGOentities />} />
         <Route path="/profile/sgo" element={<SGOprofile />} />
         <Route path="/entities/add" element={<AddCSO />} />
         <Route path="/profile/student" element={<StudentProfile />} />
         <Route path="/cso/member" element={<CSOMember />} />
+        <Route path="/announcements/sgo" element={<Announcements />} />
 
         <Route path="/events" element={<ExecEvents />} />
 

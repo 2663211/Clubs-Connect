@@ -49,3 +49,22 @@ test('renders all CSO form fields', () => {
   expect(screen.getByRole('button', { name: /add cso/i })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
 });
+
+test('Cancel button navigates back to SGOEntities page', async () => {
+  render(
+    <MemoryRouter initialEntries={['/entities/add']}>
+      <Routes>
+        <Route path="/entities/add" element={<AddCSO />} />
+        <Route path="/entities/sgo" element={<SGOEntities />} />
+      </Routes>
+    </MemoryRouter>
+  );
+
+  const user = userEvent.setup();
+
+  const cancelButton = screen.getByRole('button', { name: /cancel/i });
+  await user.click(cancelButton);
+
+  const createButton = await screen.findByRole('button', { name: /create entity/i });
+  expect(createButton).toBeInTheDocument();
+});

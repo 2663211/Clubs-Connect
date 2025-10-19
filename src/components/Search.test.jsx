@@ -1,22 +1,22 @@
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import Search from './Search';
 import { supabase } from '../supabaseClient';
+jest.mock('../supabaseClient');
 
 // Mock supabase
-vi.mock('../supabaseClient', () => ({
+jest.mock('../supabaseClient', () => ({
   supabase: {
-    from: vi.fn(() => ({
-      select: vi.fn(),
+    from: jest.fn(() => ({
+      select: jest.fn(),
     })),
   },
 }));
 
 // Mock useNavigate
-const mockedNavigate = vi.fn();
-vi.mock('react-router', () => ({
-  ...vi.requireActual('react-router'),
+const mockedNavigate = jest.fn();
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
   useNavigate: () => mockedNavigate,
 }));
 
@@ -31,9 +31,9 @@ describe('Search Component', () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     supabase.from.mockImplementation(() => ({
-      select: vi.fn().mockResolvedValue({ data: mockCSOs, error: null }),
+      select: jest.fn().mockResolvedValue({ data: mockCSOs, error: null }),
     }));
   });
 

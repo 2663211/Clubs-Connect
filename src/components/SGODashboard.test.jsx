@@ -1,8 +1,8 @@
 import { BrowserRouter, MemoryRouter, Link, Routes, Route } from 'react-router-dom';
 import { render, screen, cleanup, within, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SGODashboard from './SGODashboard.js';
-import SGOEntities from './SGOentities.js';
+import SGODashboard from './SGODashboard';
+import SGOEntities from './SGOentities';
 import App from '../App.jsx';
 import Auth from './Auth';
 import { supabase } from '../supabaseClient';
