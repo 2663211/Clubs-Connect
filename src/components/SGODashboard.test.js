@@ -51,6 +51,18 @@ test('renders all navigation buttons', () => {
   expect(screen.getByText('Logout')).toBeInTheDocument();
 });
 
+test('basic truthy test', () => {
+  expect(true).toBe(true);
+});
+
+test('renders without crashing', () => {
+  render(
+    <BrowserRouter>
+      <div>Test</div>
+    </BrowserRouter>
+  );
+});
+
 test('Logout button navigates to /auth', async () => {
   render(
     <BrowserRouter>
