@@ -40,6 +40,13 @@ export default function AnnouncementPage() {
   const [posting, setPosting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editCaption, setEditCaption] = useState('');
+  const [notification, setNotification] = useState({ message: '', visible: false });
+
+  // Helper function to show notifications
+  const showNotification = message => {
+    setNotification({ message, visible: true });
+    setTimeout(() => setNotification({ message: '', visible: false }), 3000);
+  };
 
   // Fetch logged-in user and permissions
   useEffect(() => {
@@ -112,7 +119,10 @@ export default function AnnouncementPage() {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!user || !canPost) return;
-    if (!caption.trim()) return alert('Please enter announcement text.');
+    if (!caption.trim()) {
+      showNotification('Please enter announcement text.');
+      return;
+    }
 
     setPosting(true);
 
@@ -151,13 +161,13 @@ export default function AnnouncementPage() {
 
       if (insertError) throw insertError;
 
-      alert('Announcement posted successfully!');
+      showNotification('Announcement posted successfully!');
       setCaption('');
       setFile(null);
       await fetchAnnouncements();
     } catch (err) {
       console.error(err);
-      alert('Error posting announcement: ' + err.message);
+      showNotification('Error posting announcement: ' + err.message);
     } finally {
       setPosting(false);
     }
@@ -165,7 +175,10 @@ export default function AnnouncementPage() {
 
   // EDIT
   const handleEditSubmit = async id => {
-    if (!editCaption.trim()) return alert('Caption cannot be empty!');
+    if (!editCaption.trim()) {
+      showNotification('Caption cannot be empty!');
+      return;
+    }
 
     try {
       const { error } = await supabase
@@ -175,13 +188,13 @@ export default function AnnouncementPage() {
 
       if (error) throw error;
 
-      alert('Announcement updated!');
+      showNotification('Announcement updated!');
       setEditingId(null);
       setEditCaption('');
       fetchAnnouncements();
     } catch (err) {
       console.error(err);
-      alert('Error editing post: ' + err.message);
+      showNotification('Error editing post: ' + err.message);
     }
   };
 
@@ -195,9 +208,10 @@ export default function AnnouncementPage() {
       if (error) throw error;
 
       setAnnouncements(announcements.filter(a => a.id !== id));
+      showNotification('Announcement deleted successfully!');
     } catch (err) {
       console.error(err);
-      alert('Error deleting post: ' + err.message);
+      showNotification('Error deleting post: ' + err.message);
     }
   };
 
@@ -217,6 +231,13 @@ export default function AnnouncementPage() {
           <img src={Icon} alt="SGO" className="announcement-cso-logo-large" />
           <h1 className="announcement-header-title">Student Governance Office</h1>
         </header>
+
+        {/* Notification Box */}
+        {notification.visible && (
+          <aside className="announcement-notification-box" role="status" aria-live="polite">
+            <p>{notification.message}</p>
+          </aside>
+        )}
 
         {/* Post creation (SGO only) */}
         {canPost && (

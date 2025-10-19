@@ -36,6 +36,15 @@ export default function EntityPage() {
   const [editingPostId, setEditingPostId] = useState(null);
   const [editCaption, setEditCaption] = useState('');
 
+  // notification state
+  const [notification, setNotification] = useState({ message: '', visible: false });
+
+  // Helper function to show notifications
+  const showNotification = message => {
+    setNotification({ message, visible: true });
+    setTimeout(() => setNotification({ message: '', visible: false }), 3000);
+  };
+
   // Fetch user
   useEffect(() => {
     const fetchUser = async () => {
@@ -47,8 +56,8 @@ export default function EntityPage() {
       setUser(user);
 
       if (user && entityId) {
-        try{
-        const {data: execRes, error} = await supabase
+        try {
+          const { data: execRes, error } = await supabase
             .from('cso_exec')
             .select('exec_id')
             .eq('cso_id', entityId)
@@ -56,18 +65,18 @@ export default function EntityPage() {
 
           //if(error) throw error;
 
-            const{data: profileRes}= await supabase
+          const { data: profileRes } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', user.id)
             .single();
 
-        if(profileRes.role === 'sgo'){
-          setCanPost(true);
-          fetchPosts(true);
-        }else{
-        if(execRes != null){
-           const { data: execS_N } = await supabase
+          if (profileRes.role === 'sgo') {
+            setCanPost(true);
+            fetchPosts(true);
+          } else {
+            if (execRes != null) {
+              const { data: execS_N } = await supabase
                 .from('executive')
                 .select('student_number')
                 .eq('id', execRes[0].exec_id)
@@ -76,17 +85,16 @@ export default function EntityPage() {
               if (s_n === user.id) {
                 setCanPost(true);
                 fetchPosts(true);
-              }
-              else{
+              } else {
                 fetchPosts(false);
               }
-         }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to fetch exec data:', err.message);
+        }
       }
-    } catch(err){
-      console.error('Failed to fetch exec data:',err.message);
-    }
-    }
-  };
+    };
     fetchUser();
   }, [entityId]);
 
@@ -111,62 +119,63 @@ export default function EntityPage() {
   }, [entityId]);
 
   // Fetch posts
-  const fetchPosts = async user  => {
+  const fetchPosts = async user => {
     try {
       //show member posts
-      if(user===true){
-        try{
-      const { data, error } = await supabase
-        .from('posts')
-        .select(
-          'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
-        )
-        .eq('cso_id', entityId)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setPosts(data || []);
+      if (user === true) {
+        try {
+          const { data, error } = await supabase
+            .from('posts')
+            .select(
+              'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
+            )
+            .eq('cso_id', entityId)
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          setPosts(data || []);
+        } catch (err) {
+          console.error(err.message);
+        } finally {
+          setPostsLoading(false);
+        }
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('posts')
+            .select(
+              'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
+            )
+            .eq('cso_id', entityId)
+            .eq('member_only', false)
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          setPosts(data || []);
+        } catch (err) {
+          console.error(err.message);
+        } finally {
+          setPostsLoading(false);
+        }
+      }
     } catch (err) {
-      console.error(err.message);
-    } finally {
-      setPostsLoading(false);
+      console.error('Failed to fetch posts data:', err.message);
     }
-  }
-  else{
-        try{
-      const { data, error } = await supabase
-        .from('posts')
-        .select(
-          'id, caption, media_url, media_type, created_at, user_id(id, full_name, avatar_url)'
-        )
-        .eq('cso_id', entityId)
-        .eq('member_only',false)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setPosts(data || []);
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setPostsLoading(false);
-    }
-  }
-}catch(err){
-      console.error('Failed to fetch posts data:',err.message);
-    }
-};
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, [entityId]);
+  };
 
   // Save Edit
   const handleEditSubmit = async id => {
-    if (!editCaption.trim()) return alert('Caption cannot be empty');
+    if (!editCaption.trim()) {
+      showNotification('Caption cannot be empty');
+      return;
+    }
     try {
       await supabase.from('posts').update({ caption: editCaption }).eq('id', id);
       setEditingPostId(null);
       setEditCaption('');
-      fetchPosts();
+      showNotification('Post updated successfully!');
+      fetchPosts(canPost);
     } catch (err) {
       console.error('Edit error:', err.message);
+      showNotification('Error updating post: ' + err.message);
     }
   };
 
@@ -177,9 +186,10 @@ export default function EntityPage() {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
       setPosts(posts.filter(p => p.id !== id));
+      showNotification('Post deleted successfully!');
     } catch (err) {
       console.error(err);
-      alert('Error deleting post: ' + err.message);
+      showNotification('Error deleting post: ' + err.message);
     }
   };
 
@@ -203,6 +213,13 @@ export default function EntityPage() {
               <FollowButton csoId={entity.id} />
             </div>
           </header>
+
+          {/* Notification Box */}
+          {notification.visible && (
+            <aside className="cso-notification-box" role="status" aria-live="polite">
+              <p>{notification.message}</p>
+            </aside>
+          )}
 
           {canPost && <ExecPost entityId={entityId} onPostCreated={fetchPosts} />}
 
