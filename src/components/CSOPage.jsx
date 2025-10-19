@@ -76,7 +76,7 @@ export default function EntityPage() {
             setCanPost(true);
             fetchPosts(true);
           } else {
-            if (execRes.lognth != 0) {
+            if (execRes.legnth != 0) {
               const { data: execS_N } = await supabase
                 .from('executive')
                 .select('student_number')
