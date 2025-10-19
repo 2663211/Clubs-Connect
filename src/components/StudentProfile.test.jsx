@@ -1,40 +1,40 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { vi } from 'vitest';
+
 import StudentProfile from './StudentProfile';
 import { supabase } from '../supabaseClient';
 
 // Mock dependencies
-vi.mock('../supabaseClient', () => ({
+jest.mock('../supabaseClient', () => ({
   supabase: {
     auth: {
-      getUser: vi.fn(),
+      getUser: jest.fn(),
     },
-    from: vi.fn(),
+    from: jest.fn(),
     storage: {
-      from: vi.fn(),
+      from: jest.fn(),
     },
   },
 }));
 
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+jest.mock('react-router-dom', async () => {
+  const actual = await jest.requireActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => jest.fn(),
   };
 });
 
-vi.mock('./StudentHeader', () => ({
+jest.mock('./StudentHeader', () => ({
   default: () => <div data-testid="student-header">Student Header</div>,
 }));
 
-vi.mock('./CSO_member', () => ({
+jest.mock('./CSO_member', () => ({
   default: () => <div data-testid="cso-member">CSO Member</div>,
 }));
 
-vi.mock('./FollowButton', () => ({
+jest.mock('./FollowButton', () => ({
   default: ({ csoId }) => <button data-testid={`follow-btn-${csoId}`}>Follow</button>,
 }));
 
@@ -72,7 +72,7 @@ describe('StudentProfile Component - UI Tests', () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
 
     // Setup default mocks to return data
     supabase.auth.getUser.mockResolvedValue({
@@ -83,18 +83,18 @@ describe('StudentProfile Component - UI Tests', () => {
     supabase.from.mockImplementation((table) => {
       if (table === 'profiles') {
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({
+          select:jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({
             data: mockProfile,
             error: null,
           }),
-          update: vi.fn().mockReturnThis(),
+          update: jest.fn().mockReturnThis(),
         };
       }
       if (table === 'cso') {
         return {
-          select: vi.fn().mockResolvedValue({
+          select: jest.fn().mockResolvedValue({
             data: mockCsos,
             error: null,
           }),
@@ -102,13 +102,13 @@ describe('StudentProfile Component - UI Tests', () => {
       }
       if (table === 'cso_follow') {
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockResolvedValue({
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockResolvedValue({
             data: [],
             error: null,
           }),
-          delete: vi.fn().mockReturnThis(),
-          insert: vi.fn().mockResolvedValue({
+          delete: jest.fn().mockReturnThis(),
+          insert: jest.fn().mockResolvedValue({
             data: null,
             error: null,
           }),
@@ -455,19 +455,19 @@ describe('StudentProfile Component - UI Tests', () => {
       supabase.from.mockImplementation((table) => {
         if (table === 'cso') {
           return {
-            select: vi.fn().mockResolvedValue({ data: manyCsos, error: null }),
+            select: jest.fn().mockResolvedValue({ data: manyCsos, error: null }),
           };
         }
         if (table === 'cso_follow') {
           return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ data: [], error: null }),
           };
         }
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+          select:jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({ data: mockProfile, error: null }),
         };
       });
 
@@ -490,19 +490,19 @@ describe('StudentProfile Component - UI Tests', () => {
       supabase.from.mockImplementation((table) => {
         if (table === 'cso') {
           return {
-            select: vi.fn().mockResolvedValue({ data: manyCsos, error: null }),
+            select: jest.fn().mockResolvedValue({ data: manyCsos, error: null }),
           };
         }
         if (table === 'cso_follow') {
           return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ data: [], error: null }),
           };
         }
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({ data: mockProfile, error: null }),
         };
       });
 
@@ -532,19 +532,19 @@ describe('StudentProfile Component - UI Tests', () => {
       supabase.from.mockImplementation((table) => {
         if (table === 'cso') {
           return {
-            select: vi.fn().mockResolvedValue({ data: manyCsos, error: null }),
+            select: jest.fn().mockResolvedValue({ data: manyCsos, error: null }),
           };
         }
         if (table === 'cso_follow') {
           return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ data: [], error: null }),
           };
         }
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({ data: mockProfile, error: null }),
         };
       });
 
@@ -573,19 +573,19 @@ describe('StudentProfile Component - UI Tests', () => {
       supabase.from.mockImplementation((table) => {
         if (table === 'cso') {
           return {
-            select: vi.fn().mockResolvedValue({ data: manyCsos, error: null }),
+            select: jest.fn().mockResolvedValue({ data: manyCsos, error: null }),
           };
         }
         if (table === 'cso_follow') {
           return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ data: [], error: null }),
           };
         }
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({ data: mockProfile, error: null }),
         };
       });
 
@@ -708,19 +708,19 @@ describe('StudentProfile Component - UI Tests', () => {
       supabase.from.mockImplementation((table) => {
         if (table === 'cso') {
           return {
-            select: vi.fn().mockResolvedValue({ data: manyCsos, error: null }),
+            select: jest.fn().mockResolvedValue({ data: manyCsos, error: null }),
           };
         }
         if (table === 'cso_follow') {
           return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ data: [], error: null }),
           };
         }
         return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({ data: mockProfile, error: null }),
         };
       });
 

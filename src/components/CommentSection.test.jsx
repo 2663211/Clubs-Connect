@@ -3,18 +3,18 @@ import userEvent from '@testing-library/user-event';
 import CommentSection from './CommentSection';
 import { supabase } from '../supabaseClient';
 
-vi.mock('../supabaseClient');
+jest.mock('../supabaseClient');
 
 describe('CommentSection', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   test('1.1 - renders without crashing', () => {
-    const mockSelect = vi.fn().mockReturnValue({
-      eq: vi.fn().mockReturnValue({
-        neq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({ data: [], error: null })
+    const mockSelect = jest.fn().mockReturnValue({
+      eq:jest.fn().mockReturnValue({
+        neq: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({ data: [], error: null })
         })
       })
     });
@@ -26,12 +26,12 @@ describe('CommentSection', () => {
   });
 
   test('4.4 - prevents empty comment submission', async () => {
-    const mockInsert = vi.fn();
+    const mockInsert = jest.fn();
     supabase.from.mockReturnValue({ 
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          neq: vi.fn().mockReturnValue({
-            order: vi.fn().mockResolvedValue({ data: [], error: null })
+      select: jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          neq: jest.fn().mockReturnValue({
+            order: jest.fn().mockResolvedValue({ data: [], error: null })
           })
         })
       }),
