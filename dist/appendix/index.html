@@ -1,0 +1,812 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-bguv2lll"> <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Appendix | Bit-by-Bit</title><link rel="canonical" href="https://2663211.github.io/Clubs-Connect/appendix/"/><link rel="sitemap" href="/Clubs-Connect/sitemap-index.xml"/><link rel="shortcut icon" href="/Clubs-Connect/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v5.14.4"/><meta name="generator" content="Starlight v0.36.0"/><meta property="og:title" content="Appendix"/><meta property="og:type" content="article"/><meta property="og:url" content="https://2663211.github.io/Clubs-Connect/appendix/"/><meta property="og:locale" content="en"/><meta property="og:description" content="This is where the evidence of the scrum methodology is."/><meta property="og:site_name" content="Bit-by-Bit"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="This is where the evidence of the scrum methodology is."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/Clubs-Connect/_astro/print.DNXP8c50.css" media="print"><link rel="stylesheet" href="/Clubs-Connect/_astro/index.q4U915EP.css">
+<style>@layer starlight.components{:root{--sl-badge-default-border: var(--sl-color-accent);--sl-badge-default-bg: var(--sl-color-accent-low);--sl-badge-default-text: #fff;--sl-badge-note-border: var(--sl-color-blue);--sl-badge-note-bg: var(--sl-color-blue-low);--sl-badge-note-text: #fff;--sl-badge-danger-border: var(--sl-color-red);--sl-badge-danger-bg: var(--sl-color-red-low);--sl-badge-danger-text: #fff;--sl-badge-success-border: var(--sl-color-green);--sl-badge-success-bg: var(--sl-color-green-low);--sl-badge-success-text: #fff;--sl-badge-caution-border: var(--sl-color-orange);--sl-badge-caution-bg: var(--sl-color-orange-low);--sl-badge-caution-text: #fff;--sl-badge-tip-border: var(--sl-color-purple);--sl-badge-tip-bg: var(--sl-color-purple-low);--sl-badge-tip-text: #fff}[data-theme=light]:root{--sl-badge-default-bg: var(--sl-color-accent-high);--sl-badge-note-bg: var(--sl-color-blue-high);--sl-badge-danger-bg: var(--sl-color-red-high);--sl-badge-success-bg: var(--sl-color-green-high);--sl-badge-caution-bg: var(--sl-color-orange-high);--sl-badge-tip-bg: var(--sl-color-purple-high)}.sl-badge:where(.astro-avdet4wd){display:inline-block;border:1px solid var(--sl-color-border-badge);border-radius:.25rem;font-family:var(--sl-font-system-mono);line-height:normal;color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere}.sidebar-content .sl-badge:where(.astro-avdet4wd){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-avdet4wd){--sl-color-bg-badge: transparent;--sl-color-border-badge: currentColor;color:inherit}.default:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-default-bg);--sl-color-border-badge: var(--sl-badge-default-border);--sl-color-text-badge: var(--sl-badge-default-text)}.note:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-note-bg);--sl-color-border-badge: var(--sl-badge-note-border);--sl-color-text-badge: var(--sl-badge-note-text)}.danger:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-danger-bg);--sl-color-border-badge: var(--sl-badge-danger-border);--sl-color-text-badge: var(--sl-badge-danger-text)}.success:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-success-bg);--sl-color-border-badge: var(--sl-badge-success-border);--sl-color-text-badge: var(--sl-badge-success-text)}.tip:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-tip-bg);--sl-color-border-badge: var(--sl-badge-tip-border);--sl-color-text-badge: var(--sl-badge-tip-text)}.caution:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-caution-bg);--sl-color-border-badge: var(--sl-badge-caution-border);--sl-color-text-badge: var(--sl-badge-caution-text)}.small:where(.astro-avdet4wd){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-avdet4wd){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-avdet4wd){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-avdet4wd){vertical-align:middle}}
+@layer starlight.components{.card-grid:where(.astro-zntqmydn){display:grid;grid-template-columns:100%;gap:1rem}.card-grid:where(.astro-zntqmydn)>*{margin-top:0!important}@media (min-width: 50rem){.card-grid:where(.astro-zntqmydn){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-zntqmydn){--stagger-height: 5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-zntqmydn)>*:nth-child(2n){transform:translateY(var(--stagger-height))}}}
+@layer starlight.components{.card:where(.astro-v5tidmuc){--sl-card-border: var(--sl-color-purple);--sl-card-bg: var(--sl-color-purple-low);border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-black);padding:clamp(1rem,calc(.125rem + 3vw),2.5rem);flex-direction:column;gap:clamp(.5rem,calc(.125rem + 1vw),1rem)}.card:where(.astro-v5tidmuc):nth-child(4n+1){--sl-card-border: var(--sl-color-orange);--sl-card-bg: var(--sl-color-orange-low)}.card:where(.astro-v5tidmuc):nth-child(4n+3){--sl-card-border: var(--sl-color-green);--sl-card-bg: var(--sl-color-green-low)}.card:where(.astro-v5tidmuc):nth-child(4n+4){--sl-card-border: var(--sl-color-red);--sl-card-bg: var(--sl-color-red-low)}.card:where(.astro-v5tidmuc):nth-child(4n+5){--sl-card-border: var(--sl-color-blue);--sl-card-bg: var(--sl-color-blue-low)}.title:where(.astro-v5tidmuc){font-weight:600;font-size:var(--sl-text-h4);color:var(--sl-color-white);line-height:var(--sl-line-height-headings);gap:1rem;align-items:center}.card:where(.astro-v5tidmuc) .icon:where(.astro-v5tidmuc){border:1px solid var(--sl-card-border);background-color:var(--sl-card-bg);padding:.2em;border-radius:.25rem;flex-shrink:0}.card:where(.astro-v5tidmuc) .body:where(.astro-v5tidmuc){margin:0;font-size:clamp(var(--sl-text-sm),calc(.5rem + 1vw),var(--sl-text-body))}}
+@layer starlight.components{svg:where(.astro-c6vsoqas){color:var(--sl-icon-color);font-size:var(--sl-icon-size, 1em);width:1em;height:1em}}
+@layer starlight.components{.sl-steps{--bullet-size: calc(var(--sl-line-height) * 1rem);--bullet-margin: .375rem;list-style:none;counter-reset:steps-counter var(--sl-steps-start, 0);padding-inline-start:0}.sl-steps>li{counter-increment:steps-counter;position:relative;padding-inline-start:calc(var(--bullet-size) + 1rem);padding-bottom:1px;min-height:calc(var(--bullet-size) + var(--bullet-margin))}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);position:absolute;top:0;inset-inline-start:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);font-weight:600;text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);border-radius:99rem;box-shadow:inset 0 0 0 1px var(--sl-color-gray-5)}.sl-steps>li:after{--guide-width: 1px;content:"";position:absolute;top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2);width:var(--guide-width);background-color:var(--sl-color-hairline-light)}}@layer starlight.content{.sl-steps>li>:first-child{--lh: calc(1em * var(--sl-line-height));--shift-y: calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh: calc(1em * var(--sl-line-height-headings))}@supports (--prop: 1lh){.sl-steps>li>:first-child{--lh: 1lh}}}
+@layer starlight.components{.sl-link-button:where(.astro-xwgiixxa){align-items:center;border:1px solid transparent;border-radius:999rem;display:inline-flex;font-size:var(--sl-text-sm);gap:.5em;line-height:1.1875;outline-offset:.25rem;padding:.4375rem 1.125rem;text-decoration:none}.sl-link-button:where(.astro-xwgiixxa).primary{background:var(--sl-color-text-accent);border-color:var(--sl-color-text-accent);color:var(--sl-color-black)}.sl-link-button:where(.astro-xwgiixxa).primary:hover{color:var(--sl-color-black)}.sl-link-button:where(.astro-xwgiixxa).secondary{border-color:inherit;color:var(--sl-color-white)}.sl-link-button:where(.astro-xwgiixxa).minimal{color:var(--sl-color-white);padding-inline:0}.sl-link-button:where(.astro-xwgiixxa) svg{flex-shrink:0}@media (min-width: 50rem){.sl-link-button:where(.astro-xwgiixxa){font-size:var(--sl-text-base);padding:.9375rem 1.25rem}}.sl-markdown-content .sl-link-button:where(.astro-xwgiixxa){margin-inline-end:1rem}.sl-markdown-content .sl-link-button:where(.astro-xwgiixxa):not(:where(p *)){margin-block:1rem}}
+</style><script type="module" src="/Clubs-Connect/_astro/page.CqwDW6Ek.js"></script></head> <body class="astro-bguv2lll"> <a href="#_top" class="astro-7q3lir66">Skip to content</a>  <div class="page sl-flex astro-vrdttmbt"> <header class="header astro-vrdttmbt"><div class="header astro-kmkmnagf"> <div class="title-wrapper sl-flex astro-kmkmnagf"> <a href="/Clubs-Connect/" class="site-title sl-flex astro-m46x6ez3">  <img class="light:sl-hidden print:hidden astro-m46x6ez3" alt src="/Clubs-Connect/_astro/logo_white.DfOTZMKz.png" width="500" height="500"> <img class="dark:sl-hidden print:block astro-m46x6ez3" alt src="/Clubs-Connect/_astro/logo_black.sO-OOxmm.png" width="500" height="500"> <span class="sr-only astro-m46x6ez3" translate="no"> Bit-by-Bit </span> </a>  </div> <div class="sl-flex print:hidden astro-kmkmnagf"> <site-search class="astro-kmkmnagf astro-v37mnknz" data-translations="{&#34;placeholder&#34;:&#34;Search&#34;}"> <button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-v37mnknz"> <svg aria-hidden="true" class="astro-v37mnknz astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg> <span class="sl-hidden md:sl-block astro-v37mnknz" aria-hidden="true">Search</span> <kbd class="sl-hidden md:sl-flex astro-v37mnknz" style="display: none;"> <kbd class="astro-v37mnknz">Ctrl</kbd><kbd class="astro-v37mnknz">K</kbd> </kbd> </button> <dialog style="padding:0" aria-label="Search" class="astro-v37mnknz"> <div class="dialog-frame sl-flex astro-v37mnknz">  <button data-close-modal class="sl-flex md:sl-hidden astro-v37mnknz"> Cancel </button> <div class="search-container astro-v37mnknz"> <div id="starlight__search" class="astro-v37mnknz"></div> </div> </div> </dialog> </site-search>  <script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script> <script type="module" src="/Clubs-Connect/_astro/Search.astro_astro_type_script_index_0_lang.YfzVygWN.js"></script>   </div> <div class="sl-hidden md:sl-flex print:hidden right-group astro-kmkmnagf"> <div class="sl-flex social-icons astro-kmkmnagf"> <a href="https://github.com/thetomaunatlala-777/Clubs-Connect" rel="me" class="sl-flex astro-wy4te6ga"><span class="sr-only astro-wy4te6ga">GitHub</span><svg aria-hidden="true" class="astro-wy4te6ga astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a> </div> <starlight-theme-select>  <label style="--sl-select-width: 6.25em" class="astro-4yphtoen"> <span class="sr-only astro-4yphtoen">Select theme</span> <svg aria-hidden="true" class="icon label-icon astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg> <select autocomplete="off" class="astro-4yphtoen"> <option value="dark" class="astro-4yphtoen">Dark</option><option value="light" class="astro-4yphtoen">Light</option><option value="auto" selected class="astro-4yphtoen">Auto</option> </select> <svg aria-hidden="true" class="icon caret astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg> </label>  </starlight-theme-select>  <script>
+	StarlightThemeProvider.updatePickers();
+</script> <script type="module">const r="starlight-theme",o=e=>e==="auto"||e==="dark"||e==="light"?e:"auto",c=()=>o(typeof localStorage<"u"&&localStorage.getItem(r));function n(e){typeof localStorage<"u"&&localStorage.setItem(r,e==="light"||e==="dark"?e:"")}const l=()=>matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";function t(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e==="auto"?l():e,n(e)}matchMedia("(prefers-color-scheme: light)").addEventListener("change",()=>{c()==="auto"&&t("auto")});class s extends HTMLElement{constructor(){super(),t(c()),this.querySelector("select")?.addEventListener("change",a=>{a.currentTarget instanceof HTMLSelectElement&&t(o(a.currentTarget.value))})}}customElements.define("starlight-theme-select",s);</script> <script type="module">class s extends HTMLElement{constructor(){super();const e=this.querySelector("select");e&&(e.addEventListener("change",t=>{t.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=t.currentTarget.value)}),window.addEventListener("pageshow",t=>{if(!t.persisted)return;const n=e.querySelector("option[selected]")?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}}customElements.define("starlight-lang-select",s);</script> </div> </div> </header> <nav class="sidebar print:hidden astro-vrdttmbt" aria-label="Main"> <starlight-menu-button class="print:hidden astro-jif73yzw"> <button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-jif73yzw"> <svg aria-hidden="true" class="open-menu astro-jif73yzw astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg> <svg aria-hidden="true" class="close-menu astro-jif73yzw astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg> </button> </starlight-menu-button> <script type="module">class s extends HTMLElement{constructor(){super(),this.btn=this.querySelector("button"),this.btn.addEventListener("click",()=>this.toggleExpanded());const t=this.closest("nav");t&&t.addEventListener("keyup",e=>this.closeOnEscape(e))}setExpanded(t){this.setAttribute("aria-expanded",String(t)),document.body.toggleAttribute("data-mobile-menu-expanded",t)}toggleExpanded(){this.setExpanded(this.getAttribute("aria-expanded")!=="true")}closeOnEscape(t){t.code==="Escape"&&(this.setExpanded(!1),this.btn.focus())}}customElements.define("starlight-menu-button",s);</script>   <div id="starlight__sidebar" class="sidebar-pane astro-vrdttmbt"> <div class="sidebar-content sl-flex astro-vrdttmbt"> <sl-sidebar-state-persist data-hash="1vanldw" class="astro-kku4brbg"> <script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script>  <ul class="top-level astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/" aria-current="false" class="large astro-3ii7xxms"> <span class="astro-3ii7xxms">Home</span>  </a> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Introduction</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="0"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/introduction/team/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">The Bit-by-Bit Team</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/introduction/about_team/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">About</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/introduction/project_overview/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Project Overview</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Planning</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="1"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/planning/methodology/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Methodology</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/planning/tech_stack/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Technology Stack</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Analysis</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="2"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/analysis/business_rules/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Business Rules</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/analysis/requirements/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Requirements</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/analysis/user_stories/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">User Stories</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Design</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="3"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/design/interface_design/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Interface Design</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/design/data_models/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Database</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Development</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="4"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/development/git_methodology/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Git/GitHub Methodology</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/development/dev_guides/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Development Guides</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/development/code_structure/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Code Structure</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/development/api/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">API</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/development/3rd_party/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Third-Party Code</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Deployment</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="5"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/deployment/deploy_plan/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Deployment Plan</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Testing</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="6"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/testing/testplan/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Test plan</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/testing/uat/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">User Testing</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/testing/attack/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Supply Chain Attack</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/testing/audit/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Security Audit</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <summary class="astro-3ii7xxms"> <span class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Maintanance</span>  </span> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </summary> <sl-sidebar-restore data-index="7"></sl-sidebar-restore> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/Clubs-Connect/maintanance/user_guide/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">User Guide</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/llms/" aria-current="false" class="large astro-3ii7xxms"> <span class="astro-3ii7xxms">LLMs Usage</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/references/" aria-current="false" class="large astro-3ii7xxms"> <span class="astro-3ii7xxms">References</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/Clubs-Connect/appendix/" aria-current="page" class="large astro-3ii7xxms"> <span class="astro-3ii7xxms">Appendix</span>  </a> </li> </ul>   <script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script> </sl-sidebar-state-persist>  <div class="md:sl-hidden"> <div class="mobile-preferences sl-flex astro-wu23bvmt"> <div class="social-icons astro-wu23bvmt"> <a href="https://github.com/thetomaunatlala-777/Clubs-Connect" rel="me" class="sl-flex astro-wy4te6ga"><span class="sr-only astro-wy4te6ga">GitHub</span><svg aria-hidden="true" class="astro-wy4te6ga astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a> </div> <starlight-theme-select>  <label style="--sl-select-width: 6.25em" class="astro-4yphtoen"> <span class="sr-only astro-4yphtoen">Select theme</span> <svg aria-hidden="true" class="icon label-icon astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg> <select autocomplete="off" class="astro-4yphtoen"> <option value="dark" class="astro-4yphtoen">Dark</option><option value="light" class="astro-4yphtoen">Light</option><option value="auto" selected class="astro-4yphtoen">Auto</option> </select> <svg aria-hidden="true" class="icon caret astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg> </label>  </starlight-theme-select>  <script>
+	StarlightThemeProvider.updatePickers();
+</script>   </div>  </div> </div> </div> </nav> <div class="main-frame astro-vrdttmbt">  <script type="module">const a=document.getElementById("starlight__sidebar"),n=a?.querySelector("sl-sidebar-state-persist"),o="sl-sidebar-state",i=()=>{let t=[];const e=n?.dataset.hash||"";try{const s=sessionStorage.getItem(o),r=JSON.parse(s||"{}");Array.isArray(r.open)&&r.hash===e&&(t=r.open)}catch{}return{hash:e,open:t,scroll:a?.scrollTop||0}},c=t=>{try{sessionStorage.setItem(o,JSON.stringify(t))}catch{}},d=()=>c(i()),l=(t,e)=>{const s=i();s.open[e]=t,c(s)};n?.addEventListener("click",t=>{if(!(t.target instanceof Element))return;const e=t.target.closest("summary")?.closest("details");if(!e)return;const s=e.querySelector("sl-sidebar-restore"),r=parseInt(s?.dataset.index||"");isNaN(r)||l(!e.open,r)});addEventListener("visibilitychange",()=>{document.visibilityState==="hidden"&&d()});addEventListener("pageHide",d);</script> <div class="lg:sl-flex astro-67yu43on"> <aside class="right-sidebar-container print:hidden astro-67yu43on"> <div class="right-sidebar astro-67yu43on"> <div class="lg:sl-hidden astro-pb3aqygn"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-doynk5tl"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-doynk5tl"><details id="starlight__mobile-toc" class="astro-doynk5tl"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-doynk5tl"><span class="toggle sl-flex astro-doynk5tl">On this page<svg aria-hidden="true" class="caret astro-doynk5tl astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-doynk5tl"></span></summary><div class="dropdown astro-doynk5tl"><ul class="isMobile astro-g2bywc46" style="--depth: 0;"> <li class="astro-g2bywc46" style="--depth: 0;"> <a href="#_top" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Overview</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#project-proposal" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Project Proposal</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#meeting-minutes" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Meeting Minutes</span> </a>  </li> </ul> </div></details></nav></mobile-starlight-toc><script type="module" src="/Clubs-Connect/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C181hMzK.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-pb3aqygn"><div class="sl-container astro-pb3aqygn"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-g2bywc46" style="--depth: 0;"> <li class="astro-g2bywc46" style="--depth: 0;"> <a href="#_top" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Overview</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#project-proposal" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Project Proposal</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#meeting-minutes" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Meeting Minutes</span> </a>  </li> </ul> </nav></starlight-toc><script type="module" src="/Clubs-Connect/_astro/TableOfContents.astro_astro_type_script_index_0_lang.CKWWgpjV.js"></script></div></div> </div> </aside> <div class="main-pane astro-67yu43on">  <main data-pagefind-body class="astro-bguv2lll" lang="en" dir="ltr">    <div class="content-panel astro-7nkwcw3z"> <div class="sl-container astro-7nkwcw3z"> <h1 id="_top" class="astro-j6tvhyss">Appendix</h1>  </div> </div>  <div class="content-panel astro-7nkwcw3z"> <div class="sl-container astro-7nkwcw3z"> <div class="sl-markdown-content"> <div class="sl-heading-wrapper level-h2"><h2 id="project-proposal">Project Proposal</h2><a class="sl-anchor-link" href="#project-proposal"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentcolor" d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z"></path></svg></span><span class="sr-only">Section titled “Project Proposal”</span></a></div>
+<ol>
+<li>
+<p>What is the name of your project?<br>
+Clubs Connect (Sample name)</p>
+</li>
+<li>
+<p>Give a brief description of the project.<br>
+Clubs Connect is a web application designed to bring together various university structures such as clubs, societies, university offices, and councils for the holistic benefit of students. It allows students to interact with these structures, learn about what they do, see upcoming events, and discover how to get involved.</p>
+<p>The platform also encourages collaboration between clubs and societies for events and campaigns, offers tips for attracting new members, and connects them with companies or partners who can fund or support their activities. It’s a space to encourage partnership, visibility, and unity across the university community.</p>
+</li>
+<li>
+<p>Provide a feature description of the project.<br>
+The platform includes the following key features:</p>
+<ul>
+<li>Entity Pages: Each society, office, council, or company gets a dedicated page with info like name, logo, what they do, contact details, posts, events, exec team members, etc. Think of it like a mini website.</li>
+<li>Page Admin and Contributors: An exec member can create the entity page and invite others from their team to contribute. The creator becomes the admin and can transfer ownership as teams change annually.</li>
+<li>Messaging System:
+Personal messages between students and exec members.
+Group chats for society members.
+Optional communal messaging boards for finding collaborators, asking questions, or networking.</li>
+<li>Membership Control:
+Users can follow or sign up for societies.
+Some content (like polls, internal announcements) can be restricted to signed-up members only.</li>
+<li>Calendar Integration: Students can track events, volunteering opportunities, or anything they’re attending through an integrated calendar view.</li>
+<li>Polls &#x26; Forms: Entity pages can include polls, newsletters, feedback forms, and even elections (for student councils).</li>
+<li>Event &#x26; Notification Posts: Societies and offices can post updates, event info, and notifications. Users who follow or are members will get these updates.</li>
+<li>Collaboration Requests: Clubs can reach out to each other or companies for partnerships or sponsorships through formal request features.</li>
+<li>SGO Oversight:
+SGO can post admin notices, send invitations, and manage societies directly on the platform.
+Could also help verify page creators using Wits emails and internal society membership data.</li>
+<li>Companies &#x26; Sponsors: Can create a profile, find societies to partner with, and be visible to relevant execs. <br></li>
+</ul>
+</li>
+<li>
+<p>Provide a list of API modules your project will provide.</p>
+<ul>
+<li>Authentication API - (student login, exec verification using Wits emails)</li>
+<li>Messaging API - (personal and group messaging features)</li>
+<li>Posts &#x26; Feed API - (for handling page updates, notices, polls, etc.)</li>
+<li>Membership &#x26; Follower Management API - (joining/following a society)</li>
+<li>Collaboration Request API - (between clubs or with companies)</li>
+<li>Notification API - (for alerting users of new posts, events, messages)</li>
+<li>Calendar Events API - (add/view/manage event participation)</li>
+<li>Admin Tools API - (SGO tools for managing societies, exec roles, invitations) \</li>
+</ul>
+</li>
+<li>
+<p>Provide a list of UI pages your project will require.</p>
+<ul>
+<li>Homepage - (Intro to Clubs Connect, search bar, featured societies/offices)</li>
+<li>Login/Signup Page</li>
+<li>Dashboard - (based on role: student, exec, SGO, company)</li>
+<li>Entity Profile Page - (for clubs, societies, councils, offices, companies)</li>
+<li>Messaging Interface - (personal and group chats)</li>
+<li>Event Calendar Page - (personalised for the user)</li>
+<li>Collaboration Requests Page - (sent/received requests)</li>
+<li>Polls &#x26; Forms Interface - (to participate or create)</li>
+<li>Notifications Page</li>
+<li>SGO Admin Panel (to manage societies, verify users, send notices)</li>
+</ul>
+</li>
+<li>
+<p>Provide a list of database components your project requires.</p>
+<ul>
+<li>User Table</li>
+<li>Entity Table</li>
+<li>Posts Table</li>
+<li>Events Table</li>
+<li>Messages Table</li>
+<li>Membership Table</li>
+<li>Collaboration Requests Table</li>
+<li>Polls &#x26; Feedback Forms Table</li>
+<li>Notifications Table</li>
+</ul>
+</li>
+<li>
+<p>Provide a potential use case of an external API.</p>
+<ul>
+<li>Google Calendar API: To sync and display upcoming events or volunteering activities for each student.</li>
+<li>Messaging API (like Twilio Conversations or Stream Chat): To enable real-time messaging between users and groups.</li>
+<li>Google Maps API: To show directions to event venues or office locations inside/outside campus.</li>
+</ul>
+</li>
+</ol>
+<p><em>An exec member is someone who is part of the entity leadership team</em> <br>
+<em>An entity is referring either a society, a club, a council, wits office</em></p>
+<div class="sl-heading-wrapper level-h2"><h2 id="meeting-minutes">Meeting Minutes</h2><a class="sl-anchor-link" href="#meeting-minutes"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentcolor" d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z"></path></svg></span><span class="sr-only">Section titled “Meeting Minutes”</span></a></div>
+<p>MEETING DETAILS <br>
+<strong>Date:</strong> 25 August 2025 <br>
+<strong>Time:</strong> 17:30 - 18:00 <br>
+<strong>Venue:</strong> Online (Zoom) <br>
+<strong>Attendees:</strong> Vusani Radzilani (Client), Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Paballo Molaontoa, Mukondi Ramabulana <br>
+<strong>Absent:</strong> None <br></p>
+<p>AGENDA</p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress on/of work</li>
+<li>Features to be implemented in Sprint 2</li>
+<li>Wireframes feedback</li>
+</ol>
+<p>MINUTES <br></p>
+<p><strong>Discussion points:</strong><br>
+Opening and welcome:</p>
+<ul>
+<li>Everyone is available and present</li>
+</ul>
+<p>Progress on/of work:</p>
+<ul>
+<li>Nothing much has been done so far</li>
+<li>There is progress with the wireframes with different views for different roles</li>
+</ul>
+<p>Features to be implemented in Sprint 2:</p>
+<ul>
+<li>Create our own API - important.</li>
+<li>We need to host the application - don’t have to run it locally.</li>
+<li>Need features that work, Sprint 1 was based largely on documentation.</li>
+<li>Extend roles to be more meaningful - different users with different roles should be able to do role based activities. Should be able to approve or deny requests to join society. ROLES NEED TO BE SOLIDIFIED!</li>
+<li>Testing needs to be there, automated testing should go without saying.</li>
+<li>Follow methodology Scrumban - must have evidence of meetings</li>
+<li>Clubs module must be implemented - translates to the roles and permissions</li>
+</ul>
+<p>Wireframes feedback:</p>
+<ul>
+<li>Create posts from the page of the CSO instead of creating post from profile</li>
+<li>Have different privileges as an exec but be able to have same</li>
+<li>The CSO form, aka the entity, have a feature where you type in the student number and the student appears</li>
+</ul>
+<p><strong>Decisions made:</strong>
+None</p>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em> <br></p>
+<ol>
+<li>SGO role activities, edit ERD - Busisiwe Mnisi - 27/08/25,<br></li>
+<li>SGO role activities - Paballo Molaontoa - 27/08/25,<br></li>
+<li>Posts by CSOs - Theto Maunatlala - 27/08/25,<br></li>
+<li>Research testing - Mukondi Ramabulana - 27/08/25,<br></li>
+<li>Editing UIs and add new ones - Mmakwena Moichela - 27/08/25,<br></li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 18:25. The next meeting will be held on 27/08/25 at 19:00 on Discord</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<p><img src="/Clubs-Connect/M1.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 27 August 2025<br>
+<strong>Time:</strong> 19:00 - 19: 30<br>
+<strong>Venue:</strong> Online (Discord)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana<br>
+<strong>Absent:</strong> Paballo Molaontoa<br></p>
+<p>AGENDA</p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress on/of work</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Progress on/of work:</p>
+<ul>
+<li>Problems with the linter, it seems to be breaking things</li>
+<li>Also cloning the app seems to be giving some team members problems, they are struggling to run the app and make it work.</li>
+<li>UI wireframes is done, homepage if fixed as per feedback from client</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Duplicate Mukondi branch and make it main, it will serve as a base code where we will add features.</li>
+<li>Deploy the application as version 1 for the the working features - Busisiwe will do it.</li>
+<li>Ignore the linter for now and focus on making the application work and having more features.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Create CSOs and pages - Busisiwe Mnisi - 1 September 2025,<br></li>
+<li>Continue with SFO features - Paballo Molaontoa - 1 September 2025,<br></li>
+<li>Get started on the API, implement features - Theto Maunatlala - 1 September 2025,<br></li>
+<li>Configuring Jest to work on GitHub Actions, implement exec features - Mukondi Ramabulana - 1 September 2025,<br></li>
+<li>Implement student profile - Mmakwena Moichela - 1 September 2025,<br></li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 19:30. The next meeting will be held on 1 September 2025 at 1415 at MSL Labs</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<p><img src="/Clubs-Connect/M2.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 01 September 2025<br>
+<strong>Time:</strong> 14:15 - 15:00<br>
+<strong>Venue:</strong> MSL Labs<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Paballo Molaontoa<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA</p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress on/of work</li>
+<li>Current working features</li>
+<li>Features in progress</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Progress on/of work:</p>
+<ul>
+<li>There is a problem with sign up so we have to start a new Supabase project.</li>
+<li>The focus is on getting the app working for submission, the following is the stas of the project.</li>
+</ul>
+<p>Current working features:</p>
+<ul>
+<li>UI Test</li>
+<li>Exec can post</li>
+<li>API - needs to be deployed and tested</li>
+</ul>
+<p>Features in progress:</p>
+<ul>
+<li>API Testing</li>
+<li>User feedback</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Finalize application for submission</li>
+</ul>
+<p><strong>Action items:</strong>
+<em>Action item - Person Responsible - Due Date</em></p>
+<ol>
+<li>Add to documentation - Busisiwe Mnisi - 2 September 2025,</li>
+<li>Get user feedback, and migrate Supabase to a new project - Paballo Molaontoa - 2 September 2025,</li>
+<li>Test API and deploy it - Theto Maunatlala - 2 September 2025,</li>
+<li>Write tests for CSO pages and posting features - Mukondi Ramabulana - 2 September 2025,</li>
+<li>Deploy, and write some tests - Mmakwena Moichela - 2 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 15:30. The next meeting will be held on 2 September 2025 at 19:00 online</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 03 September 2025<br>
+<strong>Time:</strong> 19:00 - 20:15<br>
+<strong>Venue:</strong> Teams (Online)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Paballo Molaontoa, Vusani Radzilani (Client)<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome<br></li>
+<li>Feedback from client<br></li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Feedback from client:</p>
+<ul>
+<li>Document APIs used, for the 3rd part code</li>
+<li>Need to get more feedback, ask more people</li>
+<li>Make use of GitHub issues to keep track of bugs, if there is one - open an issue and then close it when</li>
+<li>Every piece of code you did not create you must put it in 3rd party documentation -</li>
+<li>Put testing guide under testing</li>
+<li>Must be able to derive a feedback form the form from users and document the discussion and evaluation.</li>
+<li>Start working with the requirements that were discussed in the last sprint.</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Communicate later today or tomorrow for meeting for the Sprint Planning.</li>
+<li>Meet 2 hours before the meeting with the client</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br>
+Team to resume work at the beginning of Sprint 3.</p>
+<p>CLOSURE<br>
+The meeting was adjourned at 15:30. The next meeting will be the Sprint planning meeting held on 4 September 2025 at 19:00 or later.</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<p><img src="/Clubs-Connect/M4a.png" alt="Meeting Minutes" title="Meeting">
+<img src="/Clubs-Connect/M4b.png" alt="Meeting Minutes" title="Meeting">
+<img src="/Clubs-Connect/M4c.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 04 September 2025<br>
+<strong>Time:</strong> 17:30 - 19:00<br>
+<strong>Venue:</strong> Teams (Online)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Paballo Molaontoa<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome<br></li>
+<li>Features left to be implemented per role<br></li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Features left to be implemented per role:<br></p>
+<p><strong>Student:</strong></p>
+<ul>
+<li>Add functionality of selecting interests, so that on the news feed the students see posts from CSOs that they are interested in - put it underneath the Groups Joined</li>
+<li>The news feed will show recent posts from CSOs, and when you click on the CSO, then you can see all their post</li>
+<li>Comments: extra feat at the moment, still have to check and API for it, storing it on Supabase will be hard.</li>
+<li>Implement searching for clubs</li>
+<li>Chat - has all the group chats that the student is a member of</li>
+<li>Events tab for everyone, events that appear there are based on member or follower</li>
+<li>When they click on Groups Joined they go to the pages of the CSOs</li>
+<li>Preferably: Have a buttons that takes one to WhatsApp instead of chat inside the application</li>
+</ul>
+<p><strong>Executives:</strong></p>
+<ul>
+<li>Execs are members by definition</li>
+<li>Execs can make new events - can delete and update</li>
+<li>Execs have the same profile as students, the difference will be when they click on the CSO, they will have additional functionality</li>
+<li>Execs are students with additional functionality, so we don’t need a different dashboard</li>
+</ul>
+<p><strong>SGO:</strong></p>
+<ul>
+<li>Have SGO change roles to member or follower</li>
+<li>Remove the executive roles in the profiles table as now execs are students, and when the SGO changes roles of members selected as exec go to the exec table</li>
+<li>Can have an option to see requests to join CSO on top</li>
+<li>Have a search button to search users</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Ask Vusani if it fine to get feedback from people other than witsies</li>
+<li>Everyone should test to increase code coverage</li>
+<li>Use CSOs going forward to be consistent with terminology</li>
+<li>The executive will no longer have a different dashboard</li>
+<li>Remove the subscription required when creating a CSO, not relevant if the sign ups are a blackbox</li>
+<li>Remove profile from SGO</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br>
+Work will be assigned after the sprint planning meeting with the client</p>
+<p>CLOSURE<br>
+The meeting was adjourned at 19:00. The next meeting will be the Sprint planning meeting held on online, 4 September 2025 at 19:00 with the client.</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<p><img src="/Clubs-Connect/M5.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS: SPRINT PLANNING MEETING<br>
+<strong>Date:</strong> 04 September 2025<br>
+<strong>Time:</strong> 19:00 - 19:45<br>
+<strong>Venue:</strong> Teams (Online)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Paballo Molaontoa, Vusani Radzilani (Client)<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA</p>
+<ol>
+<li>Opening and welcome</li>
+<li>Feedback from client for Sprint 2</li>
+<li>Features to be implemented for Sprint 3</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Feedback from the client for Sprint 2:</p>
+<ul>
+<li>We need to have a bug tracker, it’s something we struggled with</li>
+<li>We need to improve documentation, we needed to document 3rd party code and justification - it was on the rubric. We need to have a full proof</li>
+<li>Deployment issues - everything we are working on should be deployed, the client should be able to run the application in his own time at his on his own pc.</li>
+<li>Bugs - need to be sorted, if they are affecting the logic, then we will lose marks</li>
+<li>Have more tests, they should be meaningful and show they were tested thoroughly. Which tests should we have as we are creating a production/industry application? We need to have test thoroughly</li>
+<li>Need to get more people for user feedback - we care about the feedback, does not matter how they get to interact with the application</li>
+</ul>
+<p>Features to be implemented for Sprint 3:</p>
+<ul>
+<li>All APIs should be finalised</li>
+<li>All features that were not working on Sprint 2 should be working</li>
+<li>SGO should have an ability to remove people people from CSOs</li>
+<li>There should be a difference to a post that is seen by members or followers</li>
+<li>leave the functionality of removing a CSO to</li>
+<li>Assume that SGO has a list to change roles</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Do work per role, and per week</li>
+<li>Present the features done during meeting before the marking</li>
+<li>Every week something must be done</li>
+<li>Meet every Tuesday during the lab slot and Fridays online at 7pm, but flexible</li>
+<li>Because of recesses, we will communicate via chat.</li>
+<li>Busisiwe to remind everyone every Tuesday and Fridays to write on the doc and also to move things along the Kanban board</li>
+<li>Think about having more APIs as we go in case we struggle with testing</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Implement the search button to search for users for SGO - Busisiwe Mnisi - 16 September 2025,</li>
+<li>Adding execs to exec table when changing the role and test SGO functionality - Paballo Molaontoa - 16 September 2025,</li>
+<li>Implement events functionality - Theto Maunatlala - 16 September 2025,</li>
+<li>Make execs be able to post - Mukondi Ramabulana - 16 September 2025,</li>
+<li>Implement searching for clubs and navigating to the CSO pages for students - Mmakwena Moichela - 16 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 19:45. The next meeting will be the held on 16 September 2025 at 14:15 at the MSL Labs</p>
+<p>ADDITIONAL NOTES<br>
+Make sure the spelling is correct to avoid falling tests</p>
+<p><img src="/Clubs-Connect/M6.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 16 September 2025<br>
+<strong>Time:</strong> 14:15 - 17:00<br>
+<strong>Venue:</strong> MSL Labs<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Mukondi Ramabulana, Paballo Molaontoa<br>
+<strong>Absent:</strong> Theto Maunatlala, Mmakwena Moichela<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress of/on work done</li>
+<li>Concerns, problems encountered</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Progress of/on work done:</p>
+<ul>
+<li>The change role to executive function is implemented</li>
+<li>The logic for the exec/student to see CSO page is implemented</li>
+<li>The search for CSO and students is implemented</li>
+<li>The creation of events is implemented.</li>
+</ul>
+<p>Concerns, problems encountered:</p>
+<ul>
+<li>The members logic, how the table should look like in the database, and scalability issues</li>
+<li>The amount of APIs used, ask the client how many we should use exactly</li>
+<li>Due to workload from other modules as well, the feature implementation might be slow</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Think about implementation of getting data from a CSV file</li>
+<li>Deploy the current features to get feedback on them.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Test SGO files, look into starting a group chat for CSOs - Busisiwe Mnisi - 23 September 2025,</li>
+<li>Implement update CSO and adding of members - Paballo Molaontoa - 23 September 2025,</li>
+<li>Continue with events implementation and testing - Theto Maunatlala - 23 September 2025,</li>
+<li>Implement seeing CSO students are a member of - Mukondi Ramabulana - 23 September 2025,</li>
+<li>Implement latest posts showing on news feed - Mmakwena Moichela - 23 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 17:00. The next meeting will be held at the MSL Labs, on 22 September 2025 at 14:15</p>
+<p>ADDITIONAL NOTES<br>
+None</p>
+<p><img src="/Clubs-Connect/M7.jpg" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 25 September 2025<br>
+<strong>Time:</strong> 18:00 - 20:00<br>
+<strong>Venue:</strong> Discord (Online)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela<br>
+<strong>Absent:</strong> Mukondi Ramabulana<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress of/on work done</li>
+<li>Concerns, problems encountered</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Progress of/on work done:</p>
+<ul>
+<li>The SGO profile is complete, they too can update their profile</li>
+<li>The events functionality is implemented, the exec can post events and students can see them</li>
+<li>The members functionality is implemented, the SGO can add members to CSOs</li>
+<li>The exec functionality to post for members or everyone is implemented</li>
+</ul>
+<p>Concerns, problems encountered:</p>
+<ul>
+<li>Team members are behind on testing, at the moment the priority is implementing features whole balancing with other work but as soon they are done testing will also be done to increase code coverage</li>
+<li>Messaging is postponed to the next Sprint, the focus is to have all the features that are important done in this Sprint.</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Meet with the client before the end of Sprint 3 and get feedback earlier on.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Implement SGO announcements &#x26; do software audit - Busisiwe Mnisi - 25 September 2025,</li>
+<li>Implement update CSO - Paballo Molaontoa - 25 September 2025,</li>
+<li>Implement adding events into a calender- Theto Maunatlala - 25 September 2025,</li>
+<li>Edit UI for exec posting - Mukondi Ramabulana - 25 September 2025,</li>
+<li>Implement liking posts - Mmakwena Moichela - 25 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 15:45. The next meeting will be online, 25 September 2025 at 18:00.</p>
+<p>ADDITIONAL NOTES<br>
+The team will meet an hour earlier on the 25th of September 2025 and meet the client later at 19:00.</p>
+<p><img src="/Clubs-Connect/M8.jpg" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 25 September 2025<br>
+<strong>Time:</strong> 19:00 - 20:00<br>
+<strong>Venue:</strong> Online (Discord)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress of/on work done</li>
+<li>Concerns, problems encountered</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is doing well</li>
+</ul>
+<p>Progress of/on work done so far:</p>
+<ul>
+<li>The events are almost done, UI and calender are left. The announcements are done also the UI is left, and like and comments are in progress. Most of the work is still in progress.</li>
+</ul>
+<p>Concerns, problems encountered:</p>
+<ul>
+<li>Testing, it has been a struggle for everyone, people will try their best but the main focus is to finish the features.</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Some features will no longer be implemented like messaging, requesting financial statements, filling membership form and</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Continue with documentation, research - Busisiwe Mnisi - 29 September 2025,</li>
+<li>User feedback, continue update CSO feature - Paballo Molaontoa - 29 September 2025,</li>
+<li>Merge new features to main, add test users, document calendar API and finish events page - Theto Maunatlala - 29 September 2025,</li>
+<li>UI and automated testing, start with exec collaboration - Mukondi Ramabulana - 29 September 2025,</li>
+<li>Fix like and comment and do testing - Mmakwena Moichela - 29 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 20:00. The next meeting will be at the MSL Labs, on 29 September 2025 at 14:15.</p>
+<p>ADDITIONAL NOTES<br>
+None.</p>
+<p><img src="/Clubs-Connect/M9.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 29 September 2025<br>
+<strong>Time:</strong> 16:00 - 17:00<br>
+<strong>Venue:</strong> MSL Labs<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress of/on work done</li>
+<li>Concerns, problems encountered</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>The team is fatigued because of the workload and is on the verge of dying.</li>
+</ul>
+<p>Progress of/on work</p>
+<ul>
+<li>Comments and liking of posts is implemented</li>
+<li>Announcements are not working properly so they will not be shown to the client tomorrow.</li>
+<li>The student can see the CSOs they are part of on their profile</li>
+<li>Events can be added to the Google Calendar and the Exec can create events</li>
+</ul>
+<p>Concerns, problems encountered:</p>
+<ul>
+<li>Testing, it has been a struggle for everyone, people will try their best but the main focus is to finish the features for the client.</li>
+<li>Deployment, the deployed site on GitHub pages is not working as expected and we will migrate to Azure.</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>To not touch the announcements, will fix the for the final submission</li>
+</ul>
+<p><strong>Action items</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Continue with documentation - Busisiwe Mnisi - 30 September 2025,</li>
+<li>Testing - Paballo Molaontoa - 30 September 2025,</li>
+<li>Testing - Theto Maunatlala - 30 September 2025,</li>
+<li>Testing - Mukondi Ramabulana - 29 September 2025,</li>
+<li>Testing and deployment - Mmakwena Moichela - 30 September 2025,</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 17:00. The next meeting will be at the MSL Labs with the client, on 30 September 2025 at 14:15.</p>
+<p>ADDITIONAL NOTES<br>
+None.</p>
+<p><img src="/Clubs-Connect/M10.jpg" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 30 September 2025<br>
+<strong>Time:</strong> 14:30 - 17:00<br>
+<strong>Venue:</strong> MSL Labs<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana, Vusani Radzilani<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Feedback from the client</li>
+<li>Concerns, problems encountered</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>The team is fatigued.</li>
+</ul>
+<p>Feedback from the client:</p>
+<ul>
+<li>User feedback: use GitHub to track user feedback, like the avatar one. Put an issue and then track it to resolve it, also get feedback on the changes and document them.</li>
+<li>Automated testing: Need to document what are we not testing. No redness in the coverage report, it must improve.</li>
+<li>Application: The cards for the group’s joined needs to have an outline, to be clear a bit. Need to ensure that non-members don’t see member I let posts.</li>
+<li>Think about the implementation of having a picture as a requirement when posting.</li>
+<li>Put in a loader so that the user can see it’s loading or disable the buttons from being double clicked and post twice.</li>
+<li>API: Add more endpoints to the API, one is not enough</li>
+<li>Fix the redirect of the deployment app when we move to Azure</li>
+</ul>
+<p>Concerns, problems encountered:</p>
+<ul>
+<li>Testing, our code coverage is bad and we don’t have enough tests.</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Have a conversation about what in and out of scope with tests</li>
+<li>Focus on making sure that the current functionality works and ensure that the app is thorough tested.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br>
+We are still going to have a Sprint Planning Meeting, for now the team is on break.</p>
+<p>CLOSURE<br>
+The meeting was adjourned at 17:00. The next meeting will be confirmed.</p>
+<p>ADDITIONAL NOTES<br>
+None.</p>
+<p><img src="/Clubs-Connect/M11.jpg" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 14 October 2025<br>
+<strong>Time:</strong> 19:00 - 19:34<br>
+<strong>Venue:</strong> Online (Discord)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Theto Maunatlala, Mmakwena Moichela, Mukondi Ramabulana<br>
+<strong>Absent:</strong> None<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Progress on/of work</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>The team is fatigued.</li>
+</ul>
+<p>Progress on/of work:</p>
+<ul>
+<li>A lot of the work was not done due to a test that the team had today for the Computer Graphics Course.</li>
+<li>We need to use an API of other groups, so we need to implement that during this week</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Deploy the migrated application, if it works then we will go with it.</li>
+<li>Have work complete by Friday, 17 October 2025 as the team has a test on Monday.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Fix announcements and editing of posts, thereafter focus on the documentation and group report - Busisiwe Mnisi - 17 October 2025,</li>
+<li>Testing of SGO features- Paballo Molaontoa - 17 October 2025,</li>
+<li>Testing and re-deploy API - Theto Maunatlala - 17 October 2025,</li>
+<li>Testing and fix pages for deployment, make sure only members can see members only - Mukondi Ramabulana - 17 October 2025,</li>
+<li>Testing and deployment, and add styling for other features - Mmakwena Moichela - 17 October 2025</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 19:34. The next meeting will be on Friday the 17th of October 2025 online on Discord.</p>
+<p>ADDITIONAL NOTES<br>
+None.</p>
+<p><img src="/Clubs-Connect/M12.png" alt="Meeting Minutes" title="Meeting"></p>
+<hr>
+<p>MEETING DETAILS<br>
+<strong>Date:</strong> 17 October 2025<br>
+<strong>Time:</strong> 16:00 - 16:40<br>
+<strong>Venue:</strong> Online (Discord)<br>
+<strong>Attendees:</strong> Busisiwe Mnisi, Paballo Molaontoa, Mmakwena Moichela, Mukondi Ramabulana<br>
+<strong>Absent:</strong> Theto Maunatlala<br></p>
+<p>AGENDA<br></p>
+<ol>
+<li>Opening and welcome</li>
+<li>Things yet to finalize</li>
+</ol>
+<p>MINUTES<br></p>
+<p><strong>Discussion points:</strong></p>
+<p>Opening and welcome:</p>
+<ul>
+<li>Everyone is overwhelmed as the submission is 2 days away. Theto Maunatlala sent her apologies and update on the work she has done so far.</li>
+</ul>
+<p>Things yet to finalize:</p>
+<ul>
+<li>Testing, tests are still being done, we still have not met the code coverage yet. Also, the CI for testing is included</li>
+<li>Put logic for checking CSO, fix how CSOs look on search</li>
+<li>The navigation bar is fixed so that adapts to differnt screen sizes</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<ul>
+<li>Busisiwe Mnisi will submit the work.</li>
+<li>Have a meeting on Sunday evening to check if everything is ready to be submitted.</li>
+</ul>
+<p><strong>Action items:</strong><br>
+<em>Action item - Person Responsible - Due Date</em><br></p>
+<ol>
+<li>Deploy documentation website, finish the documentation website and report - Busisiwe Mnisi - 19 October 2025,</li>
+<li>Finish Testing of SGO features and write about user feedback- Paballo Molaontoa - 19 October 2025,</li>
+<li>Write about API, - Theto Maunatlala - 19 October 2025,</li>
+<li>Put logic for checking CSO, fix how CSOs look on search, write about automated testing - Mukondi Ramabulana - 19 October 2025,</li>
+<li>Move deployment to master, continue with testing, write about deployment - Mmakwena Moichela - 19 October 2025</li>
+</ol>
+<p>CLOSURE<br>
+The meeting was adjourned at 16:40. This was the final documented meeting for the project development.</p>
+<p>ADDITIONAL NOTES<br>
+None.</p>
+<p><img src="/Clubs-Connect/M13.png" alt="Meeting Minutes" title="Meeting">
+<img src="/Clubs-Connect/M14.png" alt="Meeting Minutes" title="Update from Thetho Maunatlala"></p>
+<hr> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/Clubs-Connect/references/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg> <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">References</span> </span> </a>  </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
