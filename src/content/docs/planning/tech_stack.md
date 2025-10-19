@@ -28,7 +28,7 @@ an open-source alternative to Firebase that provides authentication, storage, an
 **JavaScript**
 a versatile programming language used for frontend, backend, and testing across the stack. Unified choice for React, Supabase integration, and Jest testing, ensuring consistency, productivity, and maintainability.
 
-**Node.js**
+**Node.js & Express JS**
 A JavaScript runtime that enables backend development outside the browser. It powers the server-side logic and connects the frontend to the database (Supabase).
 
 ## Tools & Infrastructure
@@ -57,3 +57,7 @@ is a built-in project management tool that uses Kanban boards for task tracking.
 
 **npm packages**
 (Node Package Manager) is used to install and manage third-party libraries and tools. It provides access to a vast ecosystem of reusable packages, saving time and effort in development.
+
+## Architecture Diagram
+
+<iframe frameborder="0" style="width:100%;height:1072px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=HSLD.drawio&dark=auto#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1aMmSalPh2FG3bikjMm4QL1139OUgHt9N%26export%3Ddownload"></iframe>

@@ -36,23 +36,32 @@ As outlined in the methodology, the team follows a flat structure where all memb
 - The client will provide timely feedback to support acceptance testing.
 - External dependencies such as APIs will be mocked to avoid instability in tests.
 
-## In Scope (Features to be tested)
+## In Scope (Features to Be Tested)
 
-- Authentication
-- Adding a CSO
-- Changing roles
-- Posting on a CSO page
-- Following a CSO
-- API functionality
-- Creating a CSO events
-- API testing
-- Test files for all componest
+The following features will be covered in the testing process to ensure that all core functionalities of the Clubs Connect platform are working as intended:
 
-## Out of Scope (Features not to be tested)
+- **Authentication** – Verify login, sign-up, and access control.
+- **Adding a CSO** – Test creation of new clubs or societies.
+- **Changing roles** – Ensure role assignment and permissions are correctly applied.
+- **Posting on a CSO page** – Validate creation, editing, and deletion of posts.
+- **Following a CSO** – Confirm users can follow and unfollow clubs and see updates.
+- **API functionality** – Check API responses, data retrieval, and data consistency.
+- **Creating CSO events** – Test event creation, display, and calendar integration.
+- **Comments** – Ensure commenting, editing, and deletion works as expected.
+- **Likes** – Confirm likes are correctly recorded and displayed.
+- **Dashboards** – Verify student, executive, and SGO dashboards reflect correct data.
+- **Other interactive features** – Test any additional functionality with user interaction.
 
-- Browser compatibility across different platforms
-- External APIs from third-party projects
-- Index.js, report web vitals
+Note: All files containing executable functionality will be tested to ensure that each feature behaves correctly.
+
+## Out of Scope (Features Not to Be Tested)
+
+The following files and features will not be included in the testing process:
+
+- **`index.js` and app routing files** – These are required by Vite for the build process and primarily handle routing between pages. They do not contain feature-specific functionality, so testing is not necessary.
+- **Report Web Vitals** – Performance measurement scripts included by default; they are not part of the application’s functional requirements.
+
+Reason: Testing is focused on **functional features** that directly impact user experience. Infrastructure and configuration files, while important for application setup, do not implement interactive functionality and are therefore out of scope.
 
 ## Environment & Tools
 

@@ -7,15 +7,19 @@ description: Audit of the system - Supply Chain Attack
 
 ### Audit Results
 
-The first step in response to the attack was to audit the system. We used React for the development and it uses npm packages, and the first thing was to find out if the we were using some of the affected packages, the .
+The first step in responding to the supply chain attack was to conduct a thorough audit of the system. The Clubs Connect application is built using React and relies on npm packages. The audit focused on identifying whether any of the packages in use were affected by known vulnerabilities.
 
-1. Dependabots Alerts
-   We enabled the Dependabots Alert on GitHub to run on main. These were thenresults
+1. **Dependabot Alerts**  
+   Dependabot alerts were enabled on GitHub for the `main` branch. These alerts provided automated notifications about vulnerable dependencies and helped identify packages requiring attention.
+   ![Dependabot Alert](/Clubs-Connect/dependabots1.png "Dependabot Alert")
+   ![Dependabot Alert](/Clubs-Connect/dependabots2.png "Dependabot Alert")
 
-2. Code Scanning
-   As an extra layer of protection we employed code scanning to help detect obfuscated code than can be caused by malware. These were the initial results after the tool was enabled. We used CodeQL and the results are as follows from GitHub
+2. **Code Scanning**  
+    As an additional layer of protection, code scanning was employed to detect obfuscated or suspicious code that could be introduced by malware. We used GitHub’s CodeQL tool, which provides static analysis to identify security risks in the codebase.
+   ![CodeQL Scan](/Clubs-Connect/codeql.png "CodeQL Scan")
 
-3. npm audit results. We ran npm audit on the terminal
+3. **npm Audit Results**  
+   We ran `npm audit` in the terminal to analyze the project dependencies. The key results are summarized below:
 
 ```
 {
@@ -123,20 +127,42 @@ The first step in response to the attack was to audit the system. We used React 
 
 ### Analysis of results
 
+The audit revealed a small number of vulnerabilities, with one high-severity and one low-severity issue. Most vulnerabilities originated from dependencies used indirectly by the project through Create React App and its associated packages.
+
 ### Solution/ fix of results
 
-Most of the alerts we could not fix them because we were using Create React App which used React 5.0.0, the last
+- **React/Vite Migration**: To address unresolved issues with Create React App dependencies, the project was migrated to Vite. This migration reduced dependency-related vulnerabilities and enabled better control over the build process.
+- **Dependency Updates**: Fixed vulnerabilities in `devalue`, Astro, and Vite packages. These are some of the closed alerts that we could fix:
+  ![Closed Dependabot Alert](/Clubs-Connect/closed-dependabots.png "Closed Dependabot Alert")
+  ![Closed CodeQL Alerts](/Clubs-Connect/closed-codeql.png "Closed CodeQL Alerts")
 
 ## Risk Assessment
 
-## Mitigation & Prevention
+The identified vulnerabilities, if exploited, could allow attackers to perform actions such as prototype pollution or file exposure. Although the risk is mitigated by limited direct exposure and read-only production configurations, it is essential to remain vigilant and maintain regular audits.
 
-To mitigate the impact of
+## Mitigation & Prevention
 
 ### Protecting Against Supply Chain Attacks (Upstream Protection)
 
+- Enable Dependabot alerts and automated updates for dependencies.
+- Use code scanning and static analysis tools such as CodeQL.
+- Review third-party packages before integration.
+- Maintain minimal direct dependencies wherever possible.
+
 ### Protecting Against Malware Infection (Downstream Protection)
+
+- Apply least privilege principles for access to the codebase.
+- Conduct regular security audits of builds and CI/CD pipelines.
+- Monitor user and contributor activity for anomalies.
 
 ## Lessons Learned & Recommendations
 
-One of the biggest lesson learned is that anyone can be victim to cyber crime even the most technincal people hence it is important to install tools that will help in identifying the problems when our judgement fails as humans. How a single compromise can affect millions of people around the world (This chain shows how a single compromised account can lead to the spread of malicious code, credential theft, and mass data leakage across an organization’s entire development environment.)
+- Supply chain attacks can affect even well-maintained projects; proactive monitoring and automated tools are essential.
+- The migration to Vite demonstrates that architectural adjustments can mitigate dependency-related vulnerabilities.
+- Human judgment alone is insufficient for security; automated scanning and dependency alerts are critical for maintaining a safe environment.
+- Maintain systematic resolution of security alerts using CodeQL and Dependabot.
+- Continue periodic audits and static analysis to ensure the security of newly added code and dependencies.
+
+## Conclusion
+
+The Clubs Connect team actively manages security debt, addressing vulnerabilities promptly while strengthening the overall application architecture. The system now has improved protection against supply chain risks, DOM-based XSS, and dependency-related vulnerabilities, ensuring safer interactions for students, executives, and SGO staff.

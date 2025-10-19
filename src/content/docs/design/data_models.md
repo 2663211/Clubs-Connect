@@ -173,7 +173,7 @@ Supabase automatically creates indexes on **primary key** columns for fast looku
 **Purpose:**  
 Indexes improve query performance when filtering, sorting, or joining tables.
 
-## Stored Procedures, Triggers, and Functions
+## Stored Procedures & Triggers
 
 Currently, our setup does not include custom stored procedures or triggers.
 
@@ -217,12 +217,10 @@ INSERT INTO events (title, description, date, location, exec_id)
 VALUES ('Tech Talk', 'Introduction to Web Development', '2025-10-25 18:00', 'Room 101', 'exec-uuid-1');
 ```
 
-## Backup & Maintenance Guidelines
+## Backup & Restore
 
 Backup: Supabase provides automatic daily backups. Manual backups can also be performed through the dashboard or CLI.
 
 Restore: Databases can be restored to any available point in time.
-
-Maintenance: Monitor table growth, remove obsolete data regularly, and track API usage to maintain performance.
 
 **Reference:** [Supabase Functions & Triggers](https://supabase.com/docs/guides/platform/backups)

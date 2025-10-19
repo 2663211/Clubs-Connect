@@ -56,7 +56,7 @@ export default defineConfig({
           label: "Design",
           items: [
             { label: "Interface Design", slug: "design/interface_design" },
-            { label: "Database Documentation", slug: "design/data_models" },
+            { label: "Database", slug: "design/data_models" },
           ],
         },
         {
