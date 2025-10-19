@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/SGODashboard.css';
 import { handleLogout } from './Auth';
 import { supabase } from '../supabaseClient';
+import searchLogo from '../images/icons8-search.gif';
 
 export default function SGODashboard() {
   const navigate = useNavigate();
@@ -236,7 +237,7 @@ export default function SGODashboard() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />{' '}
-          <img src={require('../images/icons8-search.gif')} id="search-icon" alt="search" />
+          <img src={searchLogo} id="search-icon" alt="search" />
         </section>
 
         {loading ? (

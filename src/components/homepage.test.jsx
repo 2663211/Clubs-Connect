@@ -1,13 +1,14 @@
 import { BrowserRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import Homepage from './homepage';
 
 import { handleLogout } from './Auth';
 
 // Mock useNavigate from react-router-dom
-const mockedNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+const mockedNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  ...vi.requireActual('react-router-dom'),
   useNavigate: () => mockedNavigate,
 }));
 

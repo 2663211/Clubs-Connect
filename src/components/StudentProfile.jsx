@@ -11,23 +11,23 @@ import FollowButton from './FollowButton';
 
 import profilePhoto2 from '../images/anotherProfile.png';
 
-import CSO_member from './CSO_member';
+import CSOMember from './CSO_member';
 
 /**
  * Only allows http(s) and relative URLs in image src attributes.
  * Returns defaultImage if the URL contains a dangerous scheme.
  */
 function sanitizeImageUrl(url, defaultImage) {
-  if (
-    typeof url !== 'string' ||
-    url.trim() === '' ||
-    url.startsWith('javascript:') ||
-    url.startsWith('data:') ||
-    url.startsWith('vbscript:')
-  ) {
+  if (typeof url !== 'string' || url.trim() === '') return defaultImage;
+
+  const unsafeSchemes = ['javascript', 'data', 'vbscript'];
+  const scheme = url.split(':')[0].toLowerCase();
+
+  if (unsafeSchemes.includes(scheme)) {
     return defaultImage;
   }
-  // Accept relative URLs and absolute http(s)
+
+  // Allow only relative or absolute http(s) URLs
   const allowed = /^(https?:\/\/|\/)/i;
   return allowed.test(url) ? url : defaultImage;
 }
@@ -406,7 +406,7 @@ export default function StudentProfile() {
             </section>
             <aside className="CSO_membership">
               <h3>Groups Joined</h3>
-              <CSO_member />
+              <CSOMember />
             </aside>
             <aside className="interests">
               {/* //<div className="card"> */}

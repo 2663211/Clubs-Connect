@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-// Debug environment variables (safe for production)
+// Debug environment variables
 console.log('🔧 Environment Variables Check:');
 console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Loaded' : '❌ Missing');
 console.log(
@@ -20,117 +20,84 @@ console.log('NODE_ENV:', process.env.NODE_ENV || 'development');
 
 const app = express();
 
-// Production-ready CORS configuration
+// Allowed origins
 const allowedOrigins = [
-  // Development origins
   'http://localhost:3000',
-  'http://localhost:5000',
-  'http://localhost:5001',
-  'http://localhost:5002',
-  'http://127.0.0.1:5001',
-  'http://127.0.0.1:5002',
-  // Production origins
-  'https://2663211.github.io',
-  'https://clubs-connect-2.vercel.app', // Add if you use Vercel
-  'https://clubs-connect.netlify.app', // Add if you use Netlify
+  'https://gentle-coast-05e458303.1.azurestaticapps.net',
 ];
 
-// More permissive CORS for production API
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      console.log('🌐 Request from origin:', origin || 'no-origin');
+// CORS configuration
+const corsOptions = {
+  origin: (origin, callback) => {
+    console.log('🌐 Request from origin:', origin || 'no-origin');
 
-      // Allow requests with no origin (mobile apps, Postman, etc.)
-      if (!origin) {
-        return callback(null, true);
-      }
+    // Allow requests with no origin (Postman, mobile apps, server-to-server)
+    if (!origin) {
+      console.log('✅ Allowing request with no origin');
+      return callback(null, true);
+    }
 
-      // Check if origin is allowed
-      if (allowedOrigins.some(allowedOrigin => origin.startsWith(allowedOrigin))) {
-        return callback(null, true);
-      }
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ Origin allowed:', origin);
+      return callback(null, true);
+    }
 
-      // For development, be more permissive
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('🔧 Development mode - allowing origin:', origin);
-        return callback(null, true);
-      }
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('✅ Development mode - allowing origin:', origin);
+      return callback(null, true);
+    }
 
-      // Log blocked origins for debugging
-      console.log('❌ CORS blocked origin:', origin);
-      console.log('📝 Allowed origins:', allowedOrigins);
+    // Reject in production
+    console.log('❌ CORS blocked origin:', origin);
+    callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  preflightContinue: false,
+  maxAge: 86400, // Cache preflight for 24 hours
+};
 
-      callback(new Error(`CORS policy violation. Origin ${origin} not allowed.`));
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: [
-      'Origin',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'Cache-Control',
-      'Pragma',
-    ],
-    credentials: true,
-    optionsSuccessStatus: 200, // For legacy browser support
-    maxAge: 86400, // Cache preflight response for 24 hours
-  })
-);
+// Apply CORS middleware FIRST - this is critical
+app.use(cors(corsOptions));
 
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-  console.log('📡 Preflight request for:', req.url);
-  res.sendStatus(200);
-});
+// Explicitly handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 
-// Request logging middleware
+// Request logging (after CORS)
 app.use((req, res, next) => {
   console.log(`📝 ${req.method} ${req.url} from ${req.get('origin') || req.get('host')}`);
   next();
 });
 
+// Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Supabase client setup
 let supabase;
-
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
   console.error('❌ Missing required environment variables!');
-  console.log('Required variables:');
-  console.log('- SUPABASE_URL');
-  console.log('- SUPABASE_SERVICE_ROLE_KEY');
-
-  if (process.env.NODE_ENV === 'production') {
-    process.exit(1);
-  } else {
-    console.log('⚠️  Development mode - continuing without Supabase...');
-    supabase = null;
-  }
+  if (process.env.NODE_ENV === 'production') process.exit(1);
+  supabase = null;
 } else {
   try {
     supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-      global: {
-        headers: { 'x-application': 'clubs-connect-api' },
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
+      global: { headers: { 'x-application': 'clubs-connect-api' } },
     });
     console.log('✅ Supabase client created successfully');
   } catch (error) {
     console.error('❌ Failed to create Supabase client:', error.message);
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    if (process.env.NODE_ENV === 'production') process.exit(1);
     supabase = null;
   }
 }
 
-// Health check route with detailed info
+// Health check
 app.get('/', (req, res) => {
   res.json({
     service: 'Clubs Connect API',
@@ -139,13 +106,13 @@ app.get('/', (req, res) => {
     environment: process.env.NODE_ENV || 'development',
     cors: {
       requestOrigin: req.get('origin') || 'no-origin',
-      allowedOrigins: allowedOrigins,
+      allowedOrigins,
     },
     version: '1.0.0',
   });
 });
 
-// API status endpoint
+// API status
 app.get('/api/status', (req, res) => {
   res.json({
     api: 'healthy',
@@ -155,7 +122,7 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// CORS test endpoint
+// CORS test
 app.get('/api/cors-test', (req, res) => {
   res.json({
     message: 'CORS is working!',
@@ -187,7 +154,7 @@ app.use((error, req, res, next) => {
       error: 'CORS Error',
       message: error.message,
       origin: req.get('origin'),
-      allowedOrigins: allowedOrigins,
+      allowedOrigins,
     });
   }
 
@@ -211,14 +178,34 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`🔗 Health check: http://localhost:${PORT}/`);
     console.log(`🧪 CORS test: http://localhost:${PORT}/api/cors-test`);
     console.log(`📊 Events API: http://localhost:${PORT}/api/events`);
-    console.log(`🌐 CORS enabled for:`, allowedOrigins.slice(0, 3), '...');
+    console.log('🔐 Allowed origins:', allowedOrigins);
   });
+
+  // Keep-alive in production to prevent server sleep (Render free tier)
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🏓 Keep-alive enabled - pinging every 14 minutes');
+
+    setInterval(
+      async () => {
+        try {
+          // Ping the server's own health endpoint
+          const response = await fetch(`https://clubs-connect-api.onrender.com/api/status`);
+          if (response.ok) {
+            console.log('🏓 Keep-alive ping successful');
+          } else {
+            console.log('⚠️ Keep-alive ping returned status:', response.status);
+          }
+        } catch (err) {
+          console.error('❌ Keep-alive ping failed:', err.message);
+        }
+      },
+      14 * 60 * 1000
+    ); // Every 14 minutes
+  }
 
   // Graceful shutdown
   process.on('SIGTERM', () => {
     console.log('🛑 SIGTERM received, shutting down gracefully');
-    server.close(() => {
-      console.log('✅ Process terminated');
-    });
+    server.close(() => console.log('✅ Process terminated'));
   });
 }

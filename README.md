@@ -60,3 +60,9 @@ Go to GitHub.
 Open a Pull Request from your branch → main.
 
 Wait for teammate responsible for main to review and merge it.
+
+# 🌐 Live Demo
+
+🚀 **View the deployed site here:**  
+👉 [https://gentle-coast-05e458303.1.azurestaticapps.net](https://gentle-coast-05e458303.1.azurestaticapps.net/)
+
