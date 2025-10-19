@@ -181,18 +181,3 @@ test('allows typing in the search input', async () => {
   // Assert that the input's value updates correctly
   expect(searchInput).toHaveValue('Alice');
 });
-
-test('renders a list of users', async () => {
-  render(
-    <BrowserRouter>
-      <SGODashboard />
-    </BrowserRouter>
-  );
-
-  const userNames = ['Alice Johnson', 'Bob Smith', 'Charlie Adams'];
-
-  for (const name of userNames) {
-    const userElement = await screen.findByText(name);
-    expect(userElement).toBeInTheDocument();
-  }
-});

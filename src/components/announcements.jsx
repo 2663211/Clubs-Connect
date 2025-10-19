@@ -40,6 +40,14 @@ export default function AnnouncementPage() {
   const [posting, setPosting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editCaption, setEditCaption] = useState('');
+  const [notification, setNotification] = useState({ message: '', visible: false });
+  const [deleteModal, setDeleteModal] = useState({ open: false, announcementId: null });
+
+  // Helper function to show notifications
+  const showNotification = message => {
+    setNotification({ message, visible: true });
+    setTimeout(() => setNotification({ message: '', visible: false }), 3000);
+  };
 
   // Fetch logged-in user and permissions
   useEffect(() => {
@@ -112,7 +120,10 @@ export default function AnnouncementPage() {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!user || !canPost) return;
-    if (!caption.trim()) return alert('Please enter announcement text.');
+    if (!caption.trim()) {
+      showNotification('Please enter announcement text.');
+      return;
+    }
 
     setPosting(true);
 
@@ -151,13 +162,13 @@ export default function AnnouncementPage() {
 
       if (insertError) throw insertError;
 
-      alert('Announcement posted successfully!');
+      showNotification('Announcement posted successfully!');
       setCaption('');
       setFile(null);
       await fetchAnnouncements();
     } catch (err) {
       console.error(err);
-      alert('Error posting announcement: ' + err.message);
+      showNotification('Error posting announcement: ' + err.message);
     } finally {
       setPosting(false);
     }
@@ -165,7 +176,10 @@ export default function AnnouncementPage() {
 
   // EDIT
   const handleEditSubmit = async id => {
-    if (!editCaption.trim()) return alert('Caption cannot be empty!');
+    if (!editCaption.trim()) {
+      showNotification('Caption cannot be empty!');
+      return;
+    }
 
     try {
       const { error } = await supabase
@@ -175,19 +189,23 @@ export default function AnnouncementPage() {
 
       if (error) throw error;
 
-      alert('Announcement updated!');
+      showNotification('Announcement updated!');
       setEditingId(null);
       setEditCaption('');
       fetchAnnouncements();
     } catch (err) {
       console.error(err);
-      alert('Error editing post: ' + err.message);
+      showNotification('Error editing post: ' + err.message);
     }
   };
 
-  // DELETE
-  const handleDelete = async id => {
-    if (!window.confirm('Are you sure you want to delete this post?')) return;
+  // DELETE - Updated to use modal
+  const handleDeleteClick = id => {
+    setDeleteModal({ open: true, announcementId: id });
+  };
+
+  const handleDeleteConfirm = async () => {
+    const id = deleteModal.announcementId;
 
     try {
       const { error } = await supabase.from('announcements').delete().eq('id', id);
@@ -195,9 +213,12 @@ export default function AnnouncementPage() {
       if (error) throw error;
 
       setAnnouncements(announcements.filter(a => a.id !== id));
+      showNotification('Announcement deleted successfully!');
+      setDeleteModal({ open: false, announcementId: null });
     } catch (err) {
       console.error(err);
-      alert('Error deleting post: ' + err.message);
+      showNotification('Error deleting post: ' + err.message);
+      setDeleteModal({ open: false, announcementId: null });
     }
   };
 
@@ -217,6 +238,13 @@ export default function AnnouncementPage() {
           <img src={Icon} alt="SGO" className="announcement-cso-logo-large" />
           <h1 className="announcement-header-title">Student Governance Office</h1>
         </header>
+
+        {/* Notification Box */}
+        {notification.visible && (
+          <aside className="announcement-notification-box" role="status" aria-live="polite">
+            <p>{notification.message}</p>
+          </aside>
+        )}
 
         {/* Post creation (SGO only) */}
         {canPost && (
@@ -292,7 +320,7 @@ export default function AnnouncementPage() {
                               </button>
                               <button
                                 className="announcement-dropdown-item delete"
-                                onClick={() => handleDelete(a.id)}
+                                onClick={() => handleDeleteClick(a.id)}
                               >
                                 Delete
                               </button>
@@ -358,6 +386,25 @@ export default function AnnouncementPage() {
           )}
         </section>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.open && (
+        <aside className="announcement-modal-overlay" role="dialog" aria-modal="true">
+          <section className="announcement-modal">
+            <header>
+              <h2>Confirm Deletion</h2>
+            </header>
+            <p>Are you sure you want to delete this announcement?</p>
+
+            <footer className="announcement-modal-actions">
+              <button onClick={handleDeleteConfirm}>Yes, Delete</button>
+              <button onClick={() => setDeleteModal({ open: false, announcementId: null })}>
+                Cancel
+              </button>
+            </footer>
+          </section>
+        </aside>
+      )}
     </article>
   );
 }
