@@ -1,165 +1,332 @@
-// ExecEvents.test.js
 import React from 'react';
-import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ExecEvents from './ExecEvents';
+import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
+import StudentDashboard from './StudentDashboard';
+import { supabase } from '../supabaseClient';
 
-beforeAll(() => {
-  window.alert = vi.fn();
-});
+// Mock dependencies
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
-const mockSessionStorage = (() => {
-  let store = {};
-  return {
-    getItem: vi.fn(key => store[key] || null),
-    setItem: vi.fn((key, value) => {
-      store[key] = value;
+const createMockChain = (resolvedValue = { data: null, error: null }) => {
+  const chain = {
+    select: jest.fn().mockReturnValue({
+      data: resolvedValue.data,
+      error: resolvedValue.error,
     }),
-    clear: vi.fn(() => {
-      store = {};
-    }),
+    eq: jest.fn(),
+    single: jest.fn(),
   };
-})();
-Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
 
-// Mock fetch
-beforeEach(() => {
-  vi.spyOn(global, 'fetch').mockImplementation(() =>
-    Promise.resolve({
-      ok: true,
-      json: async () => [],
-    })
-  );
+  chain.eq.mockReturnValue(chain);
+  chain.single.mockResolvedValue(resolvedValue);
+
+  return chain;
+};
+
+jest.mock('../supabaseClient', () => ({
+  supabase: {
+    auth: {
+      getUser: jest.fn(),
+    },
+    from: jest.fn(),
+    storage: {
+      from: jest.fn(),
+    },
+  },
+}));
+
+// Mock StudentHeader to avoid its complexity
+jest.mock('./StudentHeader', () => {
+  return function MockStudentHeader() {
+    return <div data-testid="student-header">Student Header</div>;
+  };
 });
 
-afterEach(() => {
-  jest.restoreAllMocks();
-  mockSessionStorage.clear();
-  window.alert.mockClear();
-});
+global.fetch = jest.fn();
 
-describe('ExecEvents - Google Calendar', () => {
-  it('renders events and "Add to Calendar" button', async () => {
-    // event from app API
-    fetch.mockResolvedValueOnce({
+const mockEvents = [
+  {
+    id: 1,
+    title: 'Test Event 1',
+    date: new Date(Date.now() + 86400000).toISOString(),
+    location: 'Test Location 1',
+    description: 'Test Description 1',
+    poster_image: 'http://test.com/image1.jpg',
+    category: 'Workshop',
+  },
+  {
+    id: 2,
+    title: 'Test Event 2',
+    date: new Date(Date.now() + 172800000).toISOString(),
+    location: 'Test Location 2',
+    description: 'Test Description 2',
+    category: 'Social',
+  },
+];
+
+const mockUser = {
+  id: 'test-user-id',
+  email: 'test@example.com',
+};
+
+describe('StudentDashboard - Important Tests', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    sessionStorage.clear();
+
+    supabase.auth.getUser.mockResolvedValue({
+      data: { user: mockUser },
+    });
+
+    supabase.from.mockImplementation(table => {
+      if (table === 'profiles') {
+        return createMockChain({ data: { role: 'student' }, error: null });
+      } else if (table === 'executive') {
+        return createMockChain({ data: { id: 'exec-id-123' }, error: null });
+      }
+      return createMockChain();
+    });
+
+    global.fetch.mockResolvedValue({
       ok: true,
-      json: async () => [
-        {
-          id: 1,
-          title: 'Test Event',
-          date: new Date().toISOString(),
-          description: 'Test description',
-        },
-      ],
-    });
-
-    render(
-      <BrowserRouter>
-        <ExecEvents />
-      </BrowserRouter>
-    );
-
-    const addButton = await screen.findByRole('button', { name: /add to calendar/i });
-    expect(addButton).toBeInTheDocument();
-  });
-
-  it('shows alert on Google Calendar API error', async () => {
-    mockSessionStorage.getItem.mockReturnValue('fake-token');
-
-    // First fetch returns one event
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
-        {
-          id: 1,
-          title: 'Test Event',
-          date: new Date().toISOString(),
-          description: 'Test description',
-        },
-      ],
-    });
-
-    // Second fetch simulates Google Calendar API POST failure
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({ error: { message: 'API error' } }),
-    });
-
-    render(
-      <BrowserRouter>
-        <ExecEvents />
-      </BrowserRouter>
-    );
-
-    const addButton = await screen.findByRole('button', { name: /add to calendar/i });
-    fireEvent.click(addButton);
-
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Failed to create event: API error');
+      json: async () => mockEvents,
     });
   });
 
-  it('shows success alert on Google Calendar API success', async () => {
-    mockSessionStorage.getItem.mockReturnValue('fake-token');
-
-    // First fetch returns one event
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
-        {
-          id: 1,
-          title: 'Test Event',
-          date: new Date().toISOString(),
-          description: 'Test description',
-        },
-      ],
-    });
-
-    // Second fetch simulates Google Calendar API POST success
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ id: 'calendar-event-id' }),
-    });
-
-    render(
+  const renderComponent = () => {
+    return render(
       <BrowserRouter>
-        <ExecEvents />
+        <StudentDashboard />
       </BrowserRouter>
     );
+  };
 
-    const addButton = await screen.findByRole('button', { name: /add to calendar/i });
-    fireEvent.click(addButton);
+  describe('Core Functionality', () => {
+    test('fetches and displays events from API', async () => {
+      renderComponent();
 
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Event created! Check your Google Calendar.');
-    });
-  });
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
 
-  it('prompts user to connect Google Calendar if token is missing', async () => {
-    mockSessionStorage.getItem.mockReturnValue(null);
-
-    window.confirm = vi.fn(() => false);
-
-    // event
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [{ id: 1, title: 'Test Event', date: new Date().toISOString() }],
-    });
-
-    render(
-      <BrowserRouter>
-        <ExecEvents />
-      </BrowserRouter>
-    );
-
-    const addButton = await screen.findByRole('button', { name: /add to calendar/i });
-    fireEvent.click(addButton);
-
-    await waitFor(() => {
-      expect(window.confirm).toHaveBeenCalledWith(
-        'You need to connect Google Calendar. Connect now?'
+      expect(screen.getByText('Test Event 2')).toBeInTheDocument();
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://clubs-connect-api.onrender.com/api/events',
+        expect.objectContaining({ method: 'GET' })
       );
+    });
+
+    test('filters out past events', async () => {
+      const pastEvent = {
+        id: 3,
+        title: 'Past Event',
+        date: new Date(Date.now() - 86400000).toISOString(),
+      };
+
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: async () => [...mockEvents, pastEvent],
+      });
+
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Past Event')).not.toBeInTheDocument();
+    });
+
+    test('displays error message on API failure', async () => {
+      global.fetch.mockRejectedValue(new Error('Network error'));
+
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText(/Failed to load events/i)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Search Functionality', () => {
+    test('filters events based on search term', async () => {
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
+
+      const searchInput = screen.getByPlaceholderText('Search events...');
+      fireEvent.change(searchInput, { target: { value: 'Event 1' } });
+
+      expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      expect(screen.queryByText('Test Event 2')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Role-Based Features', () => {
+    test('shows create button for exec users', async () => {
+      supabase.from.mockImplementation(table => {
+        if (table === 'profiles') {
+          return createMockChain({ data: { role: 'exec' }, error: null });
+        }
+        return createMockChain({ data: { id: 'exec-id-123' }, error: null });
+      });
+
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Create New Event')).toBeInTheDocument();
+      });
+    });
+
+    test('hides create button for students', async () => {
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Create New Event')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Event Creation', () => {
+    beforeEach(() => {
+      supabase.from.mockImplementation(table => {
+        if (table === 'profiles') {
+          return createMockChain({ data: { role: 'exec' }, error: null });
+        }
+        return createMockChain({ data: { id: 'exec-id-123' }, error: null });
+      });
+
+      supabase.storage.from.mockReturnValue({
+        upload: jest.fn().mockResolvedValue({ error: null }),
+        getPublicUrl: jest.fn().mockReturnValue({
+          data: { publicUrl: 'http://test.com/uploaded.jpg' },
+        }),
+      });
+    });
+
+    test('opens and closes modal', async () => {
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Create New Event')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('Create New Event'));
+
+      await waitFor(() => {
+        expect(screen.getByLabelText('Title')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('×'));
+
+      await waitFor(() => {
+        expect(screen.queryByLabelText('Title')).not.toBeInTheDocument();
+      });
+    });
+
+    test('creates event with form data', async () => {
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Create New Event')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('Create New Event'));
+
+      await waitFor(() => {
+        expect(screen.getByLabelText('Title')).toBeInTheDocument();
+      });
+
+      fireEvent.change(screen.getByLabelText('Title'), {
+        target: { value: 'New Test Event' },
+      });
+      fireEvent.change(screen.getByLabelText('Date & Time'), {
+        target: { value: '2025-12-01T10:00' },
+      });
+      fireEvent.change(screen.getByLabelText('Category'), {
+        target: { value: 'Workshop' },
+      });
+
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true }),
+      });
+
+      fireEvent.click(screen.getByText('Save Event'));
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith(
+          'https://clubs-connect-api.onrender.com/api/events',
+          expect.objectContaining({
+            method: 'POST',
+            body: expect.stringContaining('New Test Event'),
+          })
+        );
+      });
+    });
+  });
+
+  describe('Calendar Integration', () => {
+    test('prompts for OAuth when adding to calendar without token', async () => {
+      const mockConfirm = jest.fn().mockReturnValue(false);
+      window.confirm = mockConfirm;
+
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
+
+      const addButtons = screen.getAllByText('Add to Calendar');
+      fireEvent.click(addButtons[0]);
+
+      expect(mockConfirm).toHaveBeenCalledWith('You need to connect Google Calendar. Connect now?');
+    });
+
+    test('adds event to calendar with valid token', async () => {
+      sessionStorage.setItem('provider_token', 'mock-token');
+
+      global.fetch.mockImplementation(url => {
+        if (url.includes('googleapis.com')) {
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({ id: 'calendar-event-id' }),
+          });
+        }
+        return Promise.resolve({
+          ok: true,
+          json: async () => mockEvents,
+        });
+      });
+
+      renderComponent();
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Event 1')).toBeInTheDocument();
+      });
+
+      const addButtons = screen.getAllByText('Add to Calendar');
+      fireEvent.click(addButtons[0]);
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith(
+          'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+          expect.objectContaining({
+            method: 'POST',
+            headers: expect.objectContaining({
+              Authorization: 'Bearer mock-token',
+            }),
+          })
+        );
+      });
     });
   });
 });

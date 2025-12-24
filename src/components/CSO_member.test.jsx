@@ -19,26 +19,32 @@ describe('CSO memberships', () => {
     { id: 2, name: 'Robotics Society', cluster: 'STEM', logo_url: '/robotics.png' },
   ];
   const mockMemberships = [
-    { id: 1, name: 'Drama Club', cluster: 'Arts', logo_url: '/drama.png',student_number: '1234' },
-    { id: 2, name: 'Robotics Society', cluster: 'STEM', logo_url: '/robotics.png', student_number: '1235' }
-  ]
+    { id: 1, name: 'Drama Club', cluster: 'Arts', logo_url: '/drama.png', student_number: '1234' },
+    {
+      id: 2,
+      name: 'Robotics Society',
+      cluster: 'STEM',
+      logo_url: '/robotics.png',
+      student_number: '1235',
+    },
+  ];
   const mockUserId = '1234';
 
-beforeEach(()=>{
-     jest.clearAllMocks();
-});
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-test('basic truthy test', () => {
-  expect(true).toBe(true);
-});
-test('renders without crashing', () => {
-  render(
-    <BrowserRouter>
-      <div>Test</div>
-    </BrowserRouter>
-  );
-});
-  test('renders entity section', async () => {
+  test('basic truthy test', () => {
+    expect(true).toBe(true);
+  });
+  test('renders without crashing', () => {
+    render(
+      <BrowserRouter>
+        <div>Test</div>
+      </BrowserRouter>
+    );
+  });
+  test('renders entity section with no entities', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUserId } });
     supabase.from.mockReturnValue({
       select: () => ({
@@ -52,7 +58,22 @@ test('renders without crashing', () => {
 
     render(<CSOMember />);
 
-    await waitFor(() => expect(screen.getByText(/No entities found/i)).toBeInTheDocument());
+    await screen.findByText(/No entities found/i);
   });
+  test('renders entity section with found entity', async () => {
+    supabase.auth.getUser.mockResolvedValue({ data: { user: mockUserId } });
+    supabase.from.mockReturnValue({
+      select: () => ({
+        eq: () => ({
+          eq: () => ({
+            single: () => Promise.resolve({ data: mockCSOs[0], error: null }),
+          }),
+        }),
+      }),
+    });
 
+    render(<CSOMember />);
+
+    await screen.findByText(/Drama club/i);
+  });
 });

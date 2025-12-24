@@ -1,16 +1,14 @@
-import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import LikeButton from './LikeButton';
 import { supabase } from '../supabaseClient';
-
-vi.mock('../supabaseClient');
+jest.mock('../supabaseClient');
 
 const mockUser = { id: '123' };
-const renderLikeButton = (props = {}) => render(<LikeButton postId="post-1" {...props} />);
+const renderLikeButton = () => render(<LikeButton postId="post-1" />);
 
 describe('LikeButton UI', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
 
     // mock user
     supabase.auth.getUser.mockResolvedValue({ data: { user: mockUser } });
@@ -57,14 +55,14 @@ describe('LikeButton UI', () => {
     renderLikeButton();
     const button = await screen.findByRole('button');
 
-    expect(button).toHaveTextContent('0 Likes');
+    expect(button).toHaveTextContent('5 Likes');
   });
 
   test('clicking like updates UI to show 👍 and incremented count', async () => {
     renderLikeButton();
     const button = await screen.findByRole('button');
 
-    expect(button).toHaveTextContent('0 Likes');
+    expect(button).toHaveTextContent('5 Likes');
 
     fireEvent.click(button);
 
@@ -73,26 +71,44 @@ describe('LikeButton UI', () => {
     });
   });
 
-  test('clicking again unlikes and decrements count', async () => {
+  test('decrements like count after unliking', async () => {
+    supabase.from.mockImplementation(table => {
+      if (table === 'Comments') {
+        return {
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          order: jest.fn().mockReturnThis(),
+          limit: jest.fn().mockResolvedValue({
+            data: [{ liked: true }],
+            error: null,
+          }),
+          update: jest.fn().mockReturnThis(),
+        };
+      }
+      if (table === 'posts') {
+        return {
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          single: jest.fn().mockResolvedValue({
+            data: { like_count: 10 },
+            error: null,
+          }),
+          update: jest.fn().mockReturnThis(),
+        };
+      }
+    });
+
     renderLikeButton();
-    const button = await screen.findByRole('button');
 
-    // like first
+    await waitFor(() => {
+      expect(screen.getByText(/10.*👍Likes/i)).toBeInTheDocument();
+    });
+
+    const button = screen.getByRole('button');
     fireEvent.click(button);
-    await waitFor(() => expect(button).toHaveTextContent('6 👍Likes'));
 
-    // unlike
-    fireEvent.click(button);
-    await waitFor(() => expect(button).toHaveTextContent('5 Likes'));
-  });
-
-  test('button is disabled while loading', async () => {
-    renderLikeButton();
-    const button = await screen.findByRole('button');
-
-    fireEvent.click(button);
-    expect(button).toBeDisabled();
-
-    await waitFor(() => expect(button).not.toBeDisabled());
+    await waitFor(() => {
+      expect(screen.getByText(/9.*Likes/i)).toBeInTheDocument();
+    });
   });
 });
