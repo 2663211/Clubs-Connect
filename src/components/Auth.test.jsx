@@ -38,7 +38,6 @@ test('renders Login view', async () => {
   );
   expect(await screen.findByText(/Login/i)).toBeInTheDocument();
   expect(await screen.findByRole('button', { name: /Sign in with Google/i })).toBeInTheDocument();
-  expect(await screen.findByText(/Use your Wits Google Account to Sign in/i)).toBeInTheDocument();
 });
 
 test('renders Login legend', async () => {
@@ -112,7 +111,6 @@ test('renders Signup view after toggling', async () => {
   fireEvent.click(toggleButton);
   expect(await screen.findByText(/Signup/i)).toBeInTheDocument();
   expect(await screen.findByRole('button', { name: /Sign up with Google/i })).toBeInTheDocument();
-  expect(await screen.findByText(/Use your Wits Google Account to Sign up/i)).toBeInTheDocument();
 });
 
 test('renders Signup legend', async () => {

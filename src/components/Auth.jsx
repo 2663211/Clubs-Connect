@@ -28,6 +28,9 @@ export default function Auth() {
   const allowedDomain = '@students.wits.ac.za';
   const isWitsEmail = email => email.toLowerCase().endsWith(allowedDomain);
 
+  //to allow all users
+  const RESTRICT_TO_WITS_EMAILS = false; // Set to false to allow all users
+
   const navigate = useNavigate();
 
   // Fetch profile full_name and role from Supabase profiles table
@@ -66,7 +69,7 @@ export default function Auth() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        if (!isWitsEmail(session.user.email)) {
+        if (RESTRICT_TO_WITS_EMAILS && !isWitsEmail(session.user.email)) {
           supabase.auth.signOut();
           setError('Only Wits University emails are allowed.');
         } else {
@@ -86,7 +89,7 @@ export default function Auth() {
 
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
-        if (!isWitsEmail(session.user.email)) {
+        if (RESTRICT_TO_WITS_EMAILS && !isWitsEmail(session.user.email)) {
           await supabase.auth.signOut();
           setError('Only Wits University emails are allowed.');
           setUser(null);
@@ -118,7 +121,7 @@ export default function Auth() {
   // Signup handler. Remove
   const handleSignUp = async e => {
     e.preventDefault();
-    if (!isWitsEmail(email)) {
+    if (RESTRICT_TO_WITS_EMAILS && !isWitsEmail(email)) {
       setError('Only Wits University emails are allowed.');
       return;
     }
@@ -150,7 +153,7 @@ export default function Auth() {
   // Login handler. Remove for google sign ups
   const handleLogin = async e => {
     e.preventDefault();
-    if (!isWitsEmail(email)) {
+    if (RESTRICT_TO_WITS_EMAILS && !isWitsEmail(email)) {
       setError('Only Wits University emails are allowed.');
       return;
     }
@@ -259,10 +262,6 @@ export default function Auth() {
                     Already have an account? Login here
                   </button>
                 </fieldset>
-
-                <p className="toggle-text">
-                  <b>Use your Wits Google Account to Sign up</b>
-                </p>
               </form>
             ) : (
               <form onSubmit={handleLogin} autoComplete="off">
@@ -288,10 +287,6 @@ export default function Auth() {
                     Don't have an account? Sign up here
                   </button>
                 </fieldset>
-
-                <p className="toggle-text">
-                  <b>Use your Wits Google Account to Sign in</b>
-                </p>
               </form>
             )}
 
